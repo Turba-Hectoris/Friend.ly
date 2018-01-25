@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import $ from 'jquery';
 // import AnyComponent from './components/filename.jsx'
 
-import {Header} from './components/Header';
+import Header from './components/Header.js';
+import Main from './components/Main.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,9 +19,15 @@ class App extends React.Component {
     return (
       <div>
         <Header isLogin={this.state.isLogin}/>
-      </div>  
+        <Main />
+      </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render((
+  <Router>
+    <App />
+  </Router>
+), document.getElementById('app'));
+
