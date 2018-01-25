@@ -21,9 +21,22 @@ export class Profile extends React.Component {
         lt-lg-w-4
         lt-lg-h-2">
           <div className="lt-body">
-            
+            <div className="profile-view">
+              <div className="profile-image-box">
+                <img src="stock-user-profile" alt="" className="profile-image"/>
+              </div>
+            </div>
           </div>
       </div>
     );
   }
 }
+
+/**
+ * 1) Profile Photo
+ *  a) User can update profile
+ * 2) serve up active events 
+ * 3) Catagories of Interest
+ *  a) User can edit/update their catagories
+ * 4) visual analytics of past events participated in 
+ */
