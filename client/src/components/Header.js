@@ -20,6 +20,11 @@ const Header = (props) => (
           props.isLogin? (<span><Link to="/logout">Logout</Link></span>) 
           : (<span><Link to="/">Login</Link></span>)
         }      
+
+      <hr/>
+      <Route exact path="/" component={Login}/>
+      <Route path="/search" component={Search}/>
+      <Route path="/profile" component={Profile}/>
     </div>
 )
 
