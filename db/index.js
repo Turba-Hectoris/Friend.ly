@@ -16,7 +16,7 @@ const Users = sequelize.define('users', {
 	userID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
 	},
-	userName: {
+	username: {
 		type: Sequelize.STRING
 	},
 	passHash: {
@@ -27,12 +27,21 @@ const Users = sequelize.define('users', {
 	},
 	bio: {
 		type: Sequelize.STRING
+	},
+	email: {
+		type: Sequelize.STRING
+	},
+	gender: {
+		type: STRING.STRING
 	}
 })
 
 const Events = sequelize.define('events', {
 	eventID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
+	},
+	eventName: {
+		type: Sequelize.STRING
 	},
 	status: {
 		type: Sequelize.STRING
@@ -43,7 +52,7 @@ const Events = sequelize.define('events', {
 	date: {
 		type: Sequelize.DATE
 	},
-	chatroomID: {
+	capacity: {
 		type: Sequelize.INTEGER
 	}
 
