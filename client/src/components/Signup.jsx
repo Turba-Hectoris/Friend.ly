@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class Profile extends React.Component {
+class Signup extends React.Component {
   render() {
     return (
       <div className="lt
@@ -27,6 +27,8 @@ export class Profile extends React.Component {
               </div>
             </div>
           </div>
+      <div>
+        Signup
       </div>
     );
   }
@@ -40,3 +42,4 @@ export class Profile extends React.Component {
  *  a) User can edit/update their catagories
  * 4) visual analytics of past events participated in 
  */
+export default Signup
