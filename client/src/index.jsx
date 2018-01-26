@@ -5,7 +5,7 @@ import $ from 'jquery';
 // import AnyComponent from './components/filename.jsx'
 import Homepage from './components/Homepage.jsx';
 
-import { Header } from './components/Header.js';
+// import { Header } from './components/Header.js';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
 
