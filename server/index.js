@@ -28,7 +28,6 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
 
 })
-
 app.listen(1337, function() {
   console.log('listening on port 1337!');
 })
