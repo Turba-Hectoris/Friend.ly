@@ -5,8 +5,8 @@ import $ from 'jquery';
 // import AnyComponent from './components/filename.jsx'
 import Homepage from './components/Homepage.jsx';
 
-import Header from './components/Header.js';
-import Main from './components/Main.js';
+import Header from './components/Header.jsx';
+import Main from './components/Main.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class App extends React.Component {
 
   render () {
     return (
-      <div>
+      <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin}/>
         <Main />
         {

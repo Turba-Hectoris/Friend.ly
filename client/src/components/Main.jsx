@@ -1,20 +1,19 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 
-import Login from './Login';
-import Signup from './Signup';
-import Search from './Search';
-import Profile from './Profile';
+import Homepage from './Homepage.jsx';
+import Login from './Login.jsx';
+import Signup from './Signup.jsx';
+import Search from './Search.jsx';
+import Profile from './Profile.jsx';
 
 const Main = () => (
-  <div>
     <Switch>
-      <Route exact path="/" component={Login}/>
+      <Route exact path="/" component={Homepage}/>
       <Route path="/signup" component={Signup}/>
       <Route path="/search" component={Search}/>
       <Route path="/profile" component={Profile}/>
     </Switch>
-  </div>
 )
 
 export default Main
