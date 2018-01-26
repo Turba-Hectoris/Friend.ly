@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 // import AnyComponent from './components/filename.jsx'
 
-import {Header} from './components/Header';
+import { Header } from './components/Header.js';
 
 class App extends React.Component {
   constructor(props) {
