@@ -219,3 +219,13 @@ p {
     margin-left: 10%;
   }
 }
+}
+/* PROFILE STYLING */
+
+.profile-container {
+  display: grid;
+  grid-auto-columns: 50% 50%;
+  grid-auto-rows: 33% 33% 33%;
+}
+
+
