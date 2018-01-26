@@ -32,7 +32,7 @@ const Users = sequelize.define('users', {
 		type: Sequelize.STRING
 	},
 	gender: {
-		type: STRING.STRING
+		type: Sequelize.STRING
 	}
 })
 
