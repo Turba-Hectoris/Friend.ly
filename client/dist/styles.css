@@ -183,6 +183,7 @@ li {
   /*background-color:rgba(21, 116, 205, 0.05);*/
   background-color:white;
   border-radius:1em;
+<<<<<<< HEAD
   /*background-color:white;*/
   /*border-radius:1em;*/
   font-family: 'Roboto', sans-serif
@@ -242,6 +243,7 @@ p {
       display: initial;
   }
 }
+
 @media screen and (max-width: 600px) {
   .makeWhat {
     margin-left: 0%;
@@ -256,4 +258,171 @@ p {
   grid-auto-rows: 33% 33% 33%;
 }
 
+.profile-image {
+ max-height: 100%;
+ max-width: 100%;
+}
+/*****************************************************************/
+                       /* Dashboard CSS */
+/*****************************************************************/
+.db_container {
+  box-sizing: border-box;
+/*  padding-top: 4%;
+  padding-bottom:2%;
+  height:96%;*/
+  margin: 0;
+  background-color:grey;
+  height: 97vh;
+}
 
+.dashboard > div{
+  background: pink;
+  padding: 0;
+}
+
+.dashboard > div:nth-child(odd) {
+  background: lightblue;
+}
+
+.dashboard {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-areas:
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 '
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 '
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 '
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 '
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 '
+    'db_panel_1 db_panel_2 db_panel_2 db_panel_2 db_panel_3 ';
+  width: 100vw;
+  height: 97vh;
+}
+
+.db_panel_1 {
+  grid-area: db_panel_1;
+  display: grid;
+  height: 97vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.db_events {
+  grid-column: 1 / 2;
+  grid-row: 1 / 10;
+  background-color: yellow;
+  text-align: center;
+}
+
+.db_create{
+  text-align: center;
+  grid-column: 1 / 2;
+  grid-row: 9 / 11;
+  background-color: darkblue;
+}
+
+.db_panel_2 {
+  grid-area: db_panel_2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(20, 1fr);
+  height: 97vh;
+}
+
+.db_info {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  background-color: lightgreen;
+  text-align: center;
+}
+.db_chatroom {
+  grid-column: 1 / 2;
+  grid-row: 2 / 17;
+  background-color: darkgreen;
+  text-align: center;
+}
+
+.db_typing {
+  grid-column: 1 / 2;
+  grid-row: 17 / 21;
+  background-color: lightgreen;
+  text-align: center;
+}
+
+.db_panel_3 {
+  grid-area: db_panel_3;
+  display: grid;
+  height: 97vh;
+}
+
+.db_detail {
+  grid-area: db_detail;
+}
+
+@media only screen and (max-width: 900px) {
+  .dashboard {
+    display: grid;
+    grid-gap: 0.5em;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 100vw;
+    height: 97vh;
+  }
+  .db_panel_1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 10;
+    display: grid;
+    height: 97vh;
+  }
+  
+  .db_panel_2 {
+    grid-column: 2 / 11;
+    grid-row: 1 / 10;
+    display: grid;
+    height: 97vh;
+  }
+
+  .db_panel_3{
+    grid-column: 2 / 11;
+    grid-row: 1 / 10;
+    z-index: -1;
+    display: grid;
+    height: 97vh;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .dashboard {
+    display: grid;
+    grid-gap: 0.5em;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(10, 1fr);
+    width: 100vw;
+    height: 97vh;
+  }
+  .db_panel_1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 10;    
+    display: grid;
+    width: 100vw;
+    height: 97vh;
+  }
+  
+  .db_panel_2 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 10;
+    z-index: -1;
+    display: grid;
+    width: 100vw;
+    height: 97vh;
+  }
+  .db_panel_3{
+    grid-column: 1 / 2;
+    grid-row: 1 / 10;
+    z-index: -2;
+    display: grid;
+    width: 100vw;
+    height: 97vh;
+  }
+}

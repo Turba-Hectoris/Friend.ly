@@ -12,9 +12,9 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.post('/', function(req, res) {
   
 })
+
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../client/dist/index.html')))
-<<<<<<< HEAD
-=======
+
 app.post('/signup', (req, res) => {
 	const username = req.body.username;
 	db.Users.findOne({where: {username: username}}).then( async (result) => {
@@ -28,9 +28,6 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
 
 })
->>>>>>> dev
-
-
 
 app.listen(1337, function() {
   console.log('listening on port 1337!');

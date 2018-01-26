@@ -1,10 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import Login from './Login.jsx';
-import Signup from './Signup.jsx';
-import Search from './Search.jsx';
-import Profile from './Profile.jsx';
 
 const Header = (props) => (
     <header className="nav">

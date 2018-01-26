@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+
 class Homepage extends React.Component {
   constructor(props) {
     super(props)
