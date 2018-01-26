@@ -131,13 +131,11 @@ li {
   border-radius:1em;
 }
 /* PROFILE STYLING */
-.profile-body {
-  background-color: pink
+
+.profile-container {
+  display: grid;
+  grid-auto-columns: 50% 50%;
+  grid-auto-rows: 33% 33% 33%;
 }
-.profile-image-div {
-  border-radius: 50% 50%;
-}
-.profile-image {
- max-height: 100%;
- max-width: 100%;
-}
+
+
