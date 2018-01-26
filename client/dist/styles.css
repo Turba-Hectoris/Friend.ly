@@ -219,16 +219,13 @@ p {
     margin-left: 10%;
   }
 }
-
-
-
-.profile-body {
-  background-color: pink
 }
-.profile-image-div {
-  border-radius: 50% 50%;
+/* PROFILE STYLING */
+
+.profile-container {
+  display: grid;
+  grid-auto-columns: 50% 50%;
+  grid-auto-rows: 33% 33% 33%;
 }
-.profile-image {
- max-height: 100%;
- max-width: 100%;
- }
+
+
