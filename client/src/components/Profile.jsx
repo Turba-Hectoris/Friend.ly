@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class Profile extends React.Component {
+class Profile extends React.Component {
   render() {
     return (
       <div className="lt
@@ -51,6 +51,8 @@ export class Profile extends React.Component {
     );
   }
 }
+
+export default Profile;
 
 /**
  * 1) Profile Photo

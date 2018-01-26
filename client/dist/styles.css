@@ -129,6 +129,7 @@ li {
   /*background-color:rgba(21, 116, 205, 0.05);*/
   background-color:white;
   border-radius:1em;
+}
 /* PROFILE STYLING */
 .profile-body {
   background-color: pink
@@ -140,3 +141,50 @@ li {
  max-height: 100%;
  max-width: 100%;
 }
+/*****************************************************************/
+                       /* Dashboard CSS */
+/*****************************************************************/
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows:1fr 1fr 1fr 1fr 1fr 1fr;
+  background-color: pink;
+}
+
+.chat_two {
+  grid-column: 2 / 4;
+  grid-row: 2 / 6;
+  background-color:  lightblue;
+}
+
+.chat_three {
+  grid-column: 2 / 4;
+  grid-row: 6 / 7;
+  background-color:  lightyellow;
+}
+
+.chat_one {
+  grid-column: 2 / 4;
+  grid-row: 1 / 2;
+  background-color:  lightgreen;
+}
+
+.toCreate {
+  grid-column: 1 / span 1;
+  grid-row: 5 / span 2;
+  background-color:  yellow;
+}
+
+.eventsList {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 4;
+  background-color:  green;
+}
+
+
+
+
+
+
+
