@@ -54,6 +54,9 @@ const Events = sequelize.define('events', {
 	},
 	capacity: {
 		type: Sequelize.INTEGER
+	},
+	imgLink: {
+		type: Sequelize.STRING
 	}
 
 })

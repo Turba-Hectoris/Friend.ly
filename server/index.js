@@ -1,10 +1,10 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var request = require('request');
-var path = require('path');
-var app = express();
-var bcrypt = require('bcrypt');
-var db = require('../db/index.js');
+const express = require('express');
+const bodyParser = require('body-parser');
+const request = require('request');
+const path = require('path');
+const app = express();
+const bcrypt = require('bcrypt');
+const db = require('../db/index.js');
 
 
 app.use(bodyParser.json())
@@ -13,23 +13,45 @@ app.post('/', function(req, res) {
   
 })
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../client/dist/index.html')))
-<<<<<<< HEAD
-=======
 app.post('/signup', (req, res) => {
-	const username = req.body.username;
+	var username = req.body.username;
 	db.Users.findOne({where: {username: username}}).then( async (result) => {
 		if (!result) {
-			const password = await bcrypt.hash(req.body.password, 4)
-			db.Users.findCreateFind({where: {username: username, passHash: password}})	
+			var password = await bcrypt.hash(req.body.password, 4)
+			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email, gender: req.body.gender}})
+			.spread((user, created) => {
+				res.redirect(301, '/login')	
+			})
+			
+		} else {
+			res.send('noooo')
 		}
 	})
 })
 
 app.post('/login', (req, res) => {
+	var username = req.body.username;
+	var password = req.body.password
+	db.Users.findOne({where: {username: username}})
+	.then((user) => {
+		if (!user) {
+			res.send('no user with that name found!')
+		} else {
+		bcrypt.compare(password, user.dataValues.passHash)
+			.then((answer) => {
+				if (answer === false) {
+					res.redirect(301, '/login')
+				}
+				if (answer === true) {
+					res.send('right password!')
+				}
+			}
+	)}
+})})
 
+app.get('/login', (req, res) => {
+	res.send('poopies')
 })
->>>>>>> dev
-
 
 
 app.listen(1337, function() {
