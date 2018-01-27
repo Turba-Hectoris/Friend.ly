@@ -1,5 +1,6 @@
 const keys = require('../config.js');
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
 const sequelize = new Sequelize('hectorfriendlydb', keys.pgresLogin, keys.pgresPW, {
 	host: 'hrnyc12hector.csoqhkc1zx8z.us-east-2.rds.amazonaws.com',
 	dialect: 'postgres',
@@ -11,6 +12,7 @@ const sequelize = new Sequelize('hectorfriendlydb', keys.pgresLogin, keys.pgresP
 		idle: 10000
 	}
 })
+
 
 const Users = sequelize.define('users', {
 	userID: {
@@ -75,6 +77,11 @@ Users.sync({force: false})
 Events.sync({force: false})
 UserEvents.sync({force: false})
 
+Users.prototype.comparePassword = function (pwAttempt, callback) {
+	bcrypt.compare(pwAttempt, this.passHash, (err, isMatch) => {
+		callback(isMatch)
+	})
+}
 
 
 module.exports = {
