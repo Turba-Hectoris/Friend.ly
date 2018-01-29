@@ -47,11 +47,4 @@ export default Profile;
  * 3) Catagories of Interest
  *  a) User can edit/update their catagories
  * 4) visual analytics of past events participated in 
- *             <img  className="profile_image" src="stock-user-profile.jpg" alt=""/>
-
- *           <div className="profile_image"></div>
-          <div className="profile_info"></div>
-          <div className="profile_data"></div>
-          <div className="profile_events"></div>
-          <div className="profile_catagories"></div>
  */
