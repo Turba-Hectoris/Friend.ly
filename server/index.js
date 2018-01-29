@@ -4,11 +4,20 @@ const request = require('request');
 const path = require('path');
 const app = express();
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 const db = require('../db/index.js');
+const util = require('./utils.js');
 
-
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
+
+app.use(session({
+	secret: 'friends are the best',
+	resave: false,
+	saveUninitialized: true
+}));
+
 app.post('/', function(req, res) {
   
 })
@@ -24,9 +33,8 @@ app.post('/signup', (req, res) => {
 			.spread((user, created) => {
 				res.redirect(301, '/login')	
 			})
-			
 		} else {
-			res.send('noooo')
+			res.redirect('/signup')
 		}
 	})
 })
@@ -39,17 +47,16 @@ app.post('/login', (req, res) => {
 		if (!user) {
 			res.send('no user with that name found!')
 		} else {
-		bcrypt.compare(password, user.dataValues.passHash)
-			.then((answer) => {
-				if (answer === false) {
-					res.redirect(301, '/login')
-				}
-				if (answer === true) {
+			user.comparePassword(req.body.password, (isMatch) => {
+				if (!isMatch) {
+					res.redirect(301, 'login')
+				} else {
 					res.send('right password!')
 				}
-			}
-	)}
-})})
+			})
+		}
+	})
+})
 
 app.get('/login', (req, res) => {
 	res.send('poopies')
