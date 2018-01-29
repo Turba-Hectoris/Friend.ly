@@ -1,8 +1,5 @@
 import React from 'react';
-// import Paper from 'material-ui/Paper';
-// import TextField from 'material-ui/TextField';
-// import {List, ListItem} from 'material-ui/List';
-// import Avatar from 'material-ui/Avatar';
+
 
 class ChatRoom extends React.Component {
   constructor(props) {
@@ -18,31 +15,53 @@ class ChatRoom extends React.Component {
     this.handleSendButton = this.handleSendButton.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.handleNewMessage = this.handleNewMessage.bind(this);
-    this.getLastMessages = this.getLastMessages.bind(this);
+    this.withdrawMessage = this.withdrawMessage.bind(this);
   }
 
   componentDidMount () {
-    // get last messages initially? 
-    // this.getLastMessages();
-
-    this.state.ref.on('child_added', snapshot => this.handleNewMessage((snapshot.val())));
+    this.state.ref.on('child_added', 
+      snapshot => {
+        this.handleNewMessage(snapshot.val(), snapshot.key)
+      });
   }
 
   sendMessage () {
     this.state.ref.push({
       username: this.props.username,
       // profilePictureUrl: this.props.profilePictureUrl,
-      message: this.state.message
+      message: this.state.message,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
     });
   }
 
-  handleNewMessage (newMessage) {
-    console.log('newMessage is: ', newMessage);
+  withdrawMessage (message, index) {
+    const now = new Date().getTime();
+    const inOneMinute = (now - message.timestamp) < 60000 ? true : false;
+    const intention = window.confirm('Are you sure you want to withdraw this message?');
+    console.log(inOneMinute);
+    if( intention && inOneMinute) {
+      const messageRef = firebase.database().ref('/rooms/' + this.props.roomId + '/messages/' + message.key)
+      messageRef.set(null)
+      .then((data) => {
+        const messagesAfter = this.state.messages.slice(0);
+        messagesAfter.splice(index, 1);
+        this.setState({
+          messages: messagesAfter
+        });
+      })    
+    } else if(intention) {
+      window.alert('Sorry, too late to withdraw your message!')
+    }
+  }
+
+  handleNewMessage (newMessage, key) {
+    newMessage.createdAt = new Date(newMessage.timestamp).toLocaleTimeString();
+    newMessage.key = key;
     this.setState({messages: [...this.state.messages, newMessage]})
   }
 
-  handleMessageChange (e, message) {
-    this.setState({message})
+  handleMessageChange (e) {
+    this.setState({message: e.target.value})
   }
 
   handleKeyPress (e) {
@@ -52,32 +71,11 @@ class ChatRoom extends React.Component {
     }
   }
 
-  // handle send button 
   handleSendButton (e) {
     if(this.state.message.length) {
       this.sendMessage();
       this.setState({message: ''});
     }
-  }
-  
-  getLastMessages () {
-    this.state.ref.on('value', snapshot => {
-      console.log('snapshot.val on Value is: ', snapshot.val());
-      this.setState({
-        messages: snapshot.val()
-      })
-    });
-  }
-
-  createNewRoom (roomId) {
-    //after create an event, get the eventId as roomId to create a new room
-    let dbConnection = firebase.database().ref('/rooms');
-    roomId.messages = [];
-    dbConnection.push(roomId);
-  }
-
-  deleteRoom (roomId) {
-    firebase.database().ref('/rooms/' + roomId).remove();
   }
 
   render() {
@@ -86,34 +84,24 @@ class ChatRoom extends React.Component {
         <div className="db_messages">
           <h1>ChatRoom Messages </h1>
           <p>{'user: ' + this.props.username + '; roomId: ' + this.props.roomId}</p>
+          <ul>
+            {this.state.messages.map((message, index) => {
+              return (
+                <li key={index} onClick={() => this.withdrawMessage(message, index)}>
+                {message.username + ': ' + message.message + ' at ' + message.createdAt}
+                </li>
+              );
+            })}
+          </ul>
         </div>       
         <div className="db_typing">
-          <h3>Chat Typing</h3>
+            <input  value={this.state.message} onChange={this.handleMessageChange} onKeyPress={this.handleKeyPress} placeholder="Start chatting"/>
+            <button  onClick={this.handleSendButton}>Send</button>
         </div>
       </div>
     );
   }
 }
- {/*       <Paper>
-          <List>
-            { this.state.messages.map((message) => {
-              return (
-                <ListItem 
-                primaryText={message.username + ': ' + message.text}
-                leftAvatar={<Avatar src={message.profilePictureUrl} />}
-                />
-              );
-            })}
-          </List>
- {/*       <div ref={el => {this.el = el}} />      
-        </Paper>
-        <TextField 
-          type="text"
-          value={this.state.message}
-          onChange={this.handleMessageChange}
-          onKeyPress={this.handleKeyPress}
-          hintText="Start your chat"
-        />
-*/}
+
 
 export default ChatRoom

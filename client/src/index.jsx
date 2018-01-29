@@ -6,7 +6,6 @@ import $ from 'jquery';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
-import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,17 +20,27 @@ class App extends React.Component {
   }
 
   connectFirebase () {
-    // axios.get('/firebaseConfig').then((response) => {
-    //   firebase.initializeApp(response.data);
-    // })
-    firebase.initializeApp({
-    apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
-    authDomain: "friendly-af05e.firebaseapp.com",
-    databaseURL: "https://friendly-af05e.firebaseio.com",
-    projectId: "friendly-af05e",
-    storageBucket: "friendly-af05e.appspot.com",
-    messagingSenderId: "122713429777"
-  });
+    const config = {
+      apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
+      authDomain: "friendly-af05e.firebaseapp.com",
+      databaseURL: "https://friendly-af05e.firebaseio.com",
+      projectId: "friendly-af05e",
+      storageBucket: "friendly-af05e.appspot.com",
+      messagingSenderId: "122713429777"
+    };
+    firebase.initializeApp(config);
+  }
+
+  createNewRoom (roomId) {
+    //after create an event, get the eventId as roomId to create a new room
+    let dbConnection = firebase.database().ref('/rooms');
+    roomId.messages = [];
+    dbConnection.push(roomId);
+  }
+
+  deleteRoom (roomId) {
+    // when event expired, delete the chatroom as well, if so desired
+    firebase.database().ref('/rooms/' + roomId).remove();
   }
 
   render () {

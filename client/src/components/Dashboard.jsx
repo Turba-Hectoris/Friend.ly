@@ -8,7 +8,7 @@ class Dashboard extends React.Component {
     this.state = {
       username: 'Jackie',
       events: [],
-      select_event_id: 1
+      select_event_id: 2
     }
     // firebase.auth().signInAnonymously().catch(function(error) {
     //   console.error('Error signing on to firebase!', error.message);

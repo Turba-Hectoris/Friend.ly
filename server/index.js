@@ -6,16 +6,6 @@ const app = express();
 const bcrypt = require('bcrypt');
 const db = require('../db/index.js');
 
-// ** Firebase Initialize ** //
-
-const config = require('../config');
-
-app.get('/firebaseConfig', (req, res) => {
-  res.json(config.FIREBASE_CONFIG);
-});
-
-// ************************** //
-
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/../client/dist'));
 app.post('/', function(req, res) {
