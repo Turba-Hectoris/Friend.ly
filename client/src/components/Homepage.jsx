@@ -30,7 +30,6 @@ class Homepage extends React.Component {
     return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
 
     };
-
     $(window).scroll(function() {
        if ($('.demoImage1').isOnScreen() == true) {
          // alert("removing orange");

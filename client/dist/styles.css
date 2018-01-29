@@ -248,18 +248,71 @@ p {
     margin-left: 0%;
   }
 }
-/* PROFILE STYLING */
 
-.profile-container {
+/*****************************************************************/
+                       /* Profile CSS */
+/*****************************************************************/
+.profile_container {
+  padding-top: 7vh;
+  margin: 0;
+  background-color:rgb(8, 218, 60);
+  height: 93vh;
+}
+
+.profile > div{
+  padding: 0;
+}
+
+.profile {
   display: grid;
-  grid-auto-columns: 50% 50%;
-  grid-auto-rows: 33% 33% 33%;
+  grid-template-columns: fit-content(30vw) 40vw 30vw;
+  grid-template-rows: fit-content(29vh) auto auto;
+  width: 100vw;
+  height: 93vh;
 }
 
-.profile-image {
- max-height: 100%;
- max-width: 100%;
+#chartdiv {
+  width: 40vw;
+  height: 35vh;
 }
+.profile_image img {
+  width: 75%;
+  height: auto;
+  border-radius: 50%; 
+}
+
+.profile_data {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  background-color: yellow;
+}
+
+.profile_image {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  background-color: pink;
+}
+
+.profile_bio {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  background-color: lightgreen;
+  text-align: center;
+}
+
+.profile_events {
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  background-color: rgb(255, 0, 234);
+}
+
+.profile_friends {
+  grid-column: 1 / 4;
+  grid-row: 3 / 4;
+  background-color: rgb(76, 0, 255);
+}
+
+
 /*****************************************************************/
                        /* Dashboard CSS */
 /*****************************************************************/
@@ -351,11 +404,12 @@ p {
   height: 93vh;
 }
 
-.db_detail {
-  grid-area: db_detail;
-}
+/*****************************************************************/
+                       /* Dashboard Responsive CSS */
+/*****************************************************************/
 
 @media only screen and (max-width: 900px) {
+  /*DASHBOARD @ 900px*/
   .dashboard {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -386,7 +440,9 @@ p {
   }
 }
 
+
 @media only screen and (max-width: 500px) {
+  /*DASHBOARD @ 500px*/
   .dashboard {
     display: grid;
     grid-template-columns: 1fr;
@@ -417,5 +473,159 @@ p {
     display: grid;
     width: 100vw;
     height: 93vh;
+  }
+}
+
+/*****************************************************************/
+                       /* Profile Responsive CSS */
+/*****************************************************************/
+
+@media only screen and (max-width: 1024px) {
+  .profile {
+    display: grid;
+    grid-template-columns: fit-content(40vw) 30vw 30vw;
+    grid-template-rows: fit-content(17vh) 30vh auto;
+    width: 100vw;
+  }
+  
+  #chartdiv {
+    width: 70vw;
+    height: 37vh;
+  }
+  .profile_image img {
+    width: 75%;
+    height: auto;
+    border-radius: 50%; 
+  }
+  
+  .profile_data {
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+    background-color: yellow;
+  }
+  
+  .profile_image {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: pink;
+  }
+  
+  .profile_bio {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    background-color: lightgreen;
+    text-align: center;
+  }
+  
+  .profile_events {
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+    background-color: rgb(255, 0, 234);
+  }
+  
+  .profile_friends {
+    grid-column: 3 / 4;
+    grid-row: 1 / 4;
+    background-color: rgb(76, 0, 255);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .profile {
+    display: grid;
+    grid-template-columns: 40vw 30vw 30vw;
+    grid-template-rows: fit-content(20vh) 35vh auto;
+    width: 100vw;
+  }
+  
+  #chartdiv {
+    width: 74vw;
+    height: 40vh;
+  }
+  .profile_image img {
+    width: 75%;
+    height: auto;
+    border-radius: 50%; 
+  }
+  
+  .profile_data {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    background-color: yellow;
+  }
+  
+  .profile_image {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: pink;
+  }
+  
+  .profile_bio {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+    background-color: lightgreen;
+    text-align: center;
+  }
+  
+  .profile_events {
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+    background-color: rgb(255, 0, 234);
+  }
+  
+  .profile_friends {
+    grid-column: 3 / 4;
+    grid-row: 2 / 4;
+    background-color: rgb(76, 0, 255);
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .profile {
+    display: grid;
+    grid-template-columns: fit-content(40vw) 30vw 30vw;
+    grid-template-rows: fit-content(17vh) 30vh 10vh auto;
+    width: 100vw;
+  }
+  
+  #chartdiv {
+    width: 100vw;
+    height: 35vh;
+  }
+  .profile_image img {
+    width: 75%;
+    height: auto;
+    border-radius: 50%; 
+  }
+  
+  .profile_data {
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+    background-color: yellow;
+  }
+  
+  .profile_image {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: pink;
+  }
+  
+  .profile_bio {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+    background-color: lightgreen;
+    text-align: center;
+  }
+  
+  .profile_events {
+    grid-column: 1 / 4;
+    grid-row: 4 / 5;
+    background-color: rgb(255, 0, 234);
+  }
+  
+  .profile_friends {
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
+    background-color: rgb(76, 0, 255);
   }
 }
