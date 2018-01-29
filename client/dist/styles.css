@@ -10,7 +10,7 @@ body {
   margin:0;
   width:100%;
   height:100%;
-  overflow-y:scroll;
+  /*overflow-y:scroll;*/
   /*overflow-x:hidden;*/
   background-color:#eee;
 }
@@ -333,16 +333,27 @@ p {
 }
 .db_chatroom {
   grid-column: 1 / 2;
-  grid-row: 2 / 17;
-  background-color: darkgreen;
+  grid-row: 2 / 21;
+  background-color: grey;
   text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(19, 1fr);
+  height: 86.22vh;
+}
+
+.db_messages {
+  background-color: purple;
+  text-align: center;
+  grid-column: 1 / 2;
+  grid-row: 1 / 18;
 }
 
 .db_typing {
-  grid-column: 1 / 2;
-  grid-row: 17 / 21;
-  background-color: lightgreen;
+  background-color: darkgreen;
   text-align: center;
+  grid-column: 1 / 2;
+  grid-row: 18 / 20;
 }
 
 .db_panel_3 {
@@ -352,7 +363,7 @@ p {
 }
 
 .db_detail {
-  grid-area: db_detail;
+
 }
 
 @media only screen and (max-width: 900px) {

@@ -9,10 +9,10 @@ import Homepage from './Homepage.jsx';
 import Dashboard from './Dashboard.jsx';
 
 const Main = (props) => (
-  <div>
+  <div style={{height: '100%'}}>
     <Switch>
       <Route exact path="/" render={() => {
-        return props.isLogin? <Dashboard /> 
+        return props.isLogin? <Dashboard userInfo={props.userInfo}/> 
         : <Homepage />
         }
       }/>
@@ -20,6 +20,7 @@ const Main = (props) => (
       <Route path="/search" component={Search}/>
       <Route path="/profile" component={Profile}/>
       <Route path="/login" component={Login}/>
+      <Route path="/logout" component={Homepage}/>
     </Switch>
   </div>
 )
