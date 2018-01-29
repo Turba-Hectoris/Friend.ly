@@ -1,5 +1,4 @@
 import React from 'react';
-import Chart from './Chart.jsx';
 import AmChart from './AmChart.jsx';
 
 
