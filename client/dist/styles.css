@@ -266,7 +266,7 @@ p {
 .profile {
   display: grid;
   grid-template-columns: fit-content(30vw) 40vw 30vw;
-  grid-template-rows: fit-content(29vh) 29vh 29vh;
+  grid-template-rows: fit-content(29vh) auto auto;
   width: 100vw;
   height: 93vh;
 }
@@ -298,7 +298,6 @@ p {
   grid-row: 1 / 2;
   background-color: lightgreen;
   text-align: center;
-  font-size: 3vw 3vh;
 }
 
 .profile_events {
@@ -485,9 +484,8 @@ p {
   .profile {
     display: grid;
     grid-template-columns: fit-content(40vw) 30vw 30vw;
-    grid-template-rows: fit-content(17vh) 29vh 29vh;
+    grid-template-rows: fit-content(17vh) 30vh auto;
     width: 100vw;
-    height: 86vh;
   }
   
   #chartdiv {
@@ -517,7 +515,6 @@ p {
     grid-row: 1 / 2;
     background-color: lightgreen;
     text-align: center;
-    font-size: 3vw 3vh;
   }
   
   .profile_events {
@@ -537,9 +534,8 @@ p {
   .profile {
     display: grid;
     grid-template-columns: 40vw 30vw 30vw;
-    grid-template-rows: fit-content(20vh) 32vh 35vh;
+    grid-template-rows: fit-content(20vh) 35vh auto;
     width: 100vw;
-    height: 86vh;
   }
   
   #chartdiv {
@@ -569,7 +565,6 @@ p {
     grid-row: 1 / 2;
     background-color: lightgreen;
     text-align: center;
-    font-size: 3vw 3vh;
   }
   
   .profile_events {
@@ -589,9 +584,8 @@ p {
   .profile {
     display: grid;
     grid-template-columns: fit-content(40vw) 30vw 30vw;
-    grid-template-rows: fit-content(17vh) 32vh 10vh 31vh;
+    grid-template-rows: fit-content(17vh) 30vh 10vh auto;
     width: 100vw;
-    height: 86vh;
   }
   
   #chartdiv {
@@ -621,7 +615,6 @@ p {
     grid-row: 1 / 2;
     background-color: lightgreen;
     text-align: center;
-    font-size: 3vw 3vh;
   }
   
   .profile_events {
