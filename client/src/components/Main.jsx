@@ -9,7 +9,7 @@ import Homepage from './Homepage.jsx';
 import Dashboard from './Dashboard.jsx';
 
 const Main = (props) => (
-  <div>
+  <div style={{height:'100%'}}>
     <Switch>
       <Route exact path="/" render={() => {
         return props.isLogin? <Dashboard /> 
