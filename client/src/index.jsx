@@ -15,6 +15,12 @@ class App extends React.Component {
       isLogin: false,
       userData: userProfileDummyData
     }
+    this.toggleLogin = this.toggleLogin.bind(this)
+  }
+  toggleLogin () {
+    this.setState({
+      isLogin: !this.state.isLogin
+    })
   }
 
   componentDidMount() {
@@ -56,7 +62,7 @@ class App extends React.Component {
   render () {
     return (
       <div style={{height:'100%'}}>
-        <Header isLogin={this.state.isLogin}/>
+        <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin}/>
         <Main isLogin={this.state.isLogin} userData={this.state.userData}/>
         {
         //Don't modify unless you're aaron
