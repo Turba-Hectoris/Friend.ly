@@ -309,10 +309,10 @@ p {
 
 .profile {
   display: grid;
-  grid-template-columns: fit-content(30vw) 40vw 30vw;
+  height: 93vh;
+  grid-template-columns: 30vw 40vw 30vw;
   grid-template-rows: fit-content(29vh) auto auto;
   width: 100vw;
-  height: 93vh;
 }
 
 #chartdiv {
@@ -320,6 +320,12 @@ p {
   height: 35vh;
 }
 .profile_image > img {
+  width: 75%;
+  height: auto;
+  border-radius: 50%; 
+}
+
+.profile_event > img {
   width: 75%;
   height: auto;
   border-radius: 50%; 
@@ -367,12 +373,10 @@ p {
 }
 
 .profile_event {
-  /* flex-grow: 1; */
   background-color: rgb(252, 248, 248);
 }
 
 .profile_friend {
-  /* flex-grow: 1; */
   background-color: rgb(245, 245, 245);
 }
 
