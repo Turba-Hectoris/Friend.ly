@@ -1,11 +1,8 @@
 import React from 'react';
-import AmChart from './AmChart.jsx';
+import UserChart from './UserChart.jsx';
+import UserFriend from './UserFriend.jsx';
+import UserEvent from './UserEvent.jsx';
 
-
-const columns = [
-  ['My Numbers', 30, 200, 100, 400, 150, 250],
-  ['Your Numbers', 50, 20, 10, 40, 15, 25]
-];
 
 class Profile extends React.Component {
   constructor(props) {
@@ -17,18 +14,30 @@ class Profile extends React.Component {
       <div className="profile_container">
         <div className="profile">
           <div className="profile_data">
-            {/* <Chart columns={columns}/> */}
-            <AmChart />
+            <UserChart catagories={this.props.userData[0].catagories}/>
           </div>
           <div className="profile_image"> 
+            {this.props.userData[0].username}
             <img src="stock-user-profile.jpg" alt=""/>
+            {this.props.userData[0].gender + ' '}
+            {this.props.userData[0].email}
           </div>
           <div className="profile_bio">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati placeat quam quo nisi beatae harum officiis nostrum reiciendis repudiandae labore molestias deserunt ratione, ut voluptates numquam dicta. Minima, assumenda. Magni!
+            { this.props.userData[0].bio}
           </div>
           <div className="profile_events">
+            <div className="profile_events_container">
+              {
+                this.props.userData[0].events.map(event => <UserEvent key={event.eventId}/>)
+              }
+            </div>
           </div>
           <div className="profile_friends">
+            <div className="profile_friends_container">
+            {
+              this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId}/>)
+            }
+            </div>
           </div>
         </div>  
       </div>
