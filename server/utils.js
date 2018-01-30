@@ -6,10 +6,11 @@ module.exports = {
 			next();
 		}
 	},
-	createSession: (req, res, newUser) => {
+	createSession: (req, res, userID) => {
 		return req.session.regenerate( () => {
-			req.session.id = id;
+			req.session.userID = userID;
 			res.redirect('/main');
 		});
 	}
 }
+
