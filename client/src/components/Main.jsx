@@ -9,10 +9,10 @@ import Homepage from './Homepage.jsx';
 import Dashboard from './Dashboard.jsx';
 
 const Main = (props) => (
-  <div>
+  <div style={{height: '100%'}}>
     <Switch>
       <Route exact path="/" render={() => {
-        return props.isLogin? <Dashboard /> 
+        return props.isLogin? <Dashboard userInfo={props.userInfo}/> 
         : <Homepage />
         }
       }/>
@@ -23,6 +23,7 @@ const Main = (props) => (
       https://reacttraining.com/react-router/web/api/Route/render-func */}
       <Route path="/profile" render={() => <Profile userData={props.userData}/> }/>
       <Route path="/login" component={Login}/>
+      <Route path="/logout" component={Homepage}/>
     </Switch>
   </div>
 )
