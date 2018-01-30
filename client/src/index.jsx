@@ -6,12 +6,22 @@ import $ from 'jquery';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
+import userProfileDummyData from '../../userProfileDummyData.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogin: false
+      isLogin: false,
+      userData: userProfileDummyData
+    }
+  }
+
+  componentDidMount() {
+    if(this.state.isLogin) {
+      axios.get('/userData').then((results) => {
+
+      })
     }
   }
 
@@ -19,7 +29,7 @@ class App extends React.Component {
     return (
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin}/>
-        <Main isLogin={this.state.isLogin}/>
+        <Main isLogin={this.state.isLogin} userData={this.state.userData}/>
         {
         //Don't modify unless you're aaron
       /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>
