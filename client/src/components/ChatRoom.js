@@ -36,13 +36,13 @@ class ChatRoom extends React.Component {
 
   withdrawMessage (message, index) {
     const now = new Date().getTime();
-    const inOneMinute = (now - message.timestamp) < 60000 ? true : false;
+    const inOneMinute = (now - message.timestamp) <= 60000;
     const intention = window.confirm('Are you sure you want to withdraw this message?');
-    console.log(inOneMinute);
-    if( intention && inOneMinute) {
-      const messageRef = firebase.database().ref('/rooms/' + this.props.roomId + '/messages/' + message.key)
-      messageRef.set(null)
-      .then((data) => {
+    const authorized = this.props.username === message.username;
+
+    if( intention && inOneMinute && authorized) {
+      const messageRef = this.state.ref.child(message.key);
+      messageRef.set(null).then((data) => {
         const messagesAfter = this.state.messages.slice(0);
         messagesAfter.splice(index, 1);
         this.setState({
