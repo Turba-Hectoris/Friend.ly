@@ -73,7 +73,7 @@ class Header extends React.Component {
     <header className="nav">
         <span className="logo" style={{marginLeft:'10%'}}><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
-        <ul>
+        <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
         {' '}
         <li><Link to="/profile" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
