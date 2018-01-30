@@ -18,7 +18,10 @@ const Main = (props) => (
       }/>
       <Route path="/signup" component={Signup}/>
       <Route path="/search" component={Search}/>
-      <Route path="/profile" component={Profile}/>
+      {/* Documentation:
+      Modified by Derrick as per documentation:
+      https://reacttraining.com/react-router/web/api/Route/render-func */}
+      <Route path="/profile" render={() => <Profile userData={props.userData}/> }/>
       <Route path="/login" component={Login}/>
     </Switch>
   </div>
