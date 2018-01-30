@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 //------------deleteOne--------------//
-import ChatRoom from './ChatRoom.js';
+
 import Chatroom from './Chatroom.jsx';
 import axios from 'axios'
 
@@ -17,6 +17,7 @@ class Dashboard extends React.Component {
     }
     this.handleClick = this.handleClick.bind(this)
   }
+  
   handleClick (div, item) {
       // div.target.style.backgroundColor = 'red'
     console.log(item)
@@ -25,8 +26,8 @@ class Dashboard extends React.Component {
       roomName: item.eventName,
       select_event_id: item.item.eventID
     }))
-    // console.log(item)
   }
+
   componentWillMount() {
     axios.get('/profile/events', {params: {userID: this.props.userData}})
     .then((res) => {
@@ -37,9 +38,7 @@ class Dashboard extends React.Component {
       })
     })
   }
-  componentDidMount() {
 
-  }
   render () {
     return (
       <div className="db_container">

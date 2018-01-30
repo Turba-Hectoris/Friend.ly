@@ -16,6 +16,7 @@ class Chatroom extends React.Component {
 
   //This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
+
   componentWillReceiveProps(nextProps) {
     this.setState(previousState => ({
       messages: [],
@@ -27,6 +28,7 @@ class Chatroom extends React.Component {
     });
     })
   }
+
   componentDidMount() {
     $('.db_typingText').html('Type a message...')
     $('.db_typingText').on('focus', () => {
