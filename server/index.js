@@ -45,21 +45,17 @@ app.post('/login', (req, res) => {
 	db.Users.findOne({where: {username: username}})
 	.then((user) => {
 		if (!user) {
-			res.send('no user with that name found!')
+			res.redirect(301, '/login')
 		} else {
 			user.comparePassword(req.body.password, (isMatch) => {
 				if (!isMatch) {
-					res.redirect(301, 'login')
+					res.redirect(301, '/login')
 				} else {
 					res.send('right password!')
 				}
 			})
 		}
 	})
-})
-
-app.get('/login', (req, res) => {
-	res.send('poopies')
 })
 
 app.listen(1337, function() {
