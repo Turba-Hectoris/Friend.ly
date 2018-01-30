@@ -69,7 +69,7 @@ module.exports = [{
       status: 'active',
       creatorid: 3,
       date: new Date(),
-      capacity: 2,
+      capacity: 2, 
       imgLink: 'eventImg.png',
     },
     {

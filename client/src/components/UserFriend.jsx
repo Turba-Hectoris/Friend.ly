@@ -5,7 +5,9 @@ const UserFriend = (props) => {
     <div className="profile_friend">
       <div className="profile_image">
         <img className="" src="stock-user-profile.jpg" alt=""/>
-      </div>  
+      </div> 
+      <hr/>
+      {props.friend.username + '\n' + props.friend.email + '\n' + props.friend.gender} 
     </div>
   );
 }
