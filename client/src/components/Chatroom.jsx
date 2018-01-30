@@ -12,10 +12,12 @@ class Chatroom extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
+
   }
 
   //This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
+
   componentDidMount() {
     $('.db_typingText').html('Type a message...')
     $('.db_typingText').on('focus', () => {
@@ -69,7 +71,9 @@ class Chatroom extends React.Component {
   handleNewMessage (newMessage, key) {
     newMessage.createdAt = new Date(newMessage.timestamp).toLocaleTimeString();
     newMessage.key = key;
-    this.setState({messages: [...this.state.messages, newMessage]})
+    this.setState({messages: [...this.state.messages, newMessage]}, () => {
+      $('.db_chatroom').scrollTop($('.db_chatroom')[0].scrollHeight)
+    })
   }
   render() {
     return (<div className="db_panel_2">

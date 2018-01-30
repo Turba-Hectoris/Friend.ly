@@ -276,6 +276,9 @@ p {
     font-size: 40px;
 
 }
+.item > p {
+  margin: auto;
+}
 .item > img {
   height: 250px;
   margin: 12px 0;
@@ -782,9 +785,9 @@ p {
     height: 93vh;
   }
   .db_events > ul > li {
-  overflow: hidden;
-  text-align:left;
-}
+    overflow: hidden;
+    text-align:left;
+  }
 }
 
 /*****************************************************************/

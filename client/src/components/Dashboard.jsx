@@ -7,36 +7,21 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'Aaron',
+      username: 'Jackie',
       events : [ 'Hiking in the mountains', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
       select_event_id: 2,
       currentRoom: 0
     }
-      select_event_id: 2
-    }
-    ///////////////////////////
-    ///////BROKEN//////////////
-    ///////////////////////////
-    // firebase.auth().signInAnonymously().catch(function(error) {
-    //   console.error('Error signing on to firebase!', error.message);
-    // });
-    
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //   if (user) {
-    //     // console.log('User signed in', user);
-    //     var isAnonymous = user.isAnonymous;
-    //     var uid = user.uid;
-    //   }
-    // });
-    //   this.handleClick = this.handleClick.bind(this)
-    // // }
-    // handleClick (div, item) {
-    //   // div.target.style.backgroundColor = 'red'
-    //   this.setState({
-    //     currentRoom: item
-    //   })
-    //}
-    //////////////////////////
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick (div, item) {
+    // div.target.style.backgroundColor = 'red'
+    this.setState({
+      currentRoom: item
+    })
+  }
 
   render () {
     return (
