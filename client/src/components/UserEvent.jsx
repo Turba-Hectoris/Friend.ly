@@ -3,7 +3,9 @@ import React from 'react';
 const UserEvent = (props) => {
   return (
     <div className="profile_event">
-      {/* <img src="stock-user-profile.jpg" alt=""/> */}
+      <img src="event-pic.jpg" alt=""/>
+      <hr/>
+      {props.event.eventname + '\n' + props.event.status + '\n' + props.event.date} 
     </div>
   );
 }

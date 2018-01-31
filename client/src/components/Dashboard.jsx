@@ -14,6 +14,9 @@ class Dashboard extends React.Component {
     }
       select_event_id: 2
     }
+    ///////////////////////////
+    ///////BROKEN//////////////
+    ///////////////////////////
     // firebase.auth().signInAnonymously().catch(function(error) {
     //   console.error('Error signing on to firebase!', error.message);
     // });
@@ -25,14 +28,15 @@ class Dashboard extends React.Component {
     //     var uid = user.uid;
     //   }
     // });
-    this.handleClick = this.handleClick.bind(this)
-  }
-  handleClick (div, item) {
-    // div.target.style.backgroundColor = 'red'
-    this.setState({
-      currentRoom: item
-    })
-  }
+    //   this.handleClick = this.handleClick.bind(this)
+    // // }
+    // handleClick (div, item) {
+    //   // div.target.style.backgroundColor = 'red'
+    //   this.setState({
+    //     currentRoom: item
+    //   })
+    //}
+    //////////////////////////
 
   render () {
     return (
