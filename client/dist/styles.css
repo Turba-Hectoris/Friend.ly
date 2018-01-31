@@ -244,6 +244,7 @@ p {
   font-weight:300;
   width:80%;
   margin:auto;
+  display: inline-block;
 }
 
 .container {
@@ -274,7 +275,9 @@ p {
     font-family: 'Rubik', sans-serif;
     font-weight: 300;
     font-size: 40px;
-
+}
+.item > p {
+  margin: auto;
 }
 .item > img {
   height: 250px;

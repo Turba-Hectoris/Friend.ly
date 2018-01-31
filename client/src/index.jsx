@@ -24,7 +24,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //Use Bills route to decorate userData here
+    if(this.state.isLogin) {
+      // axios.get('/userData').then((results) => {
+
+      // })
+    }
   }
 
   componentWillMount () {
@@ -38,7 +42,6 @@ class App extends React.Component {
       }
     })
   }
-
   connectFirebase () {
     const config = {
       apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
