@@ -2,7 +2,6 @@ import React from 'react'
 import $ from 'jquery'
 
 class Chatroom extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -12,6 +11,7 @@ class Chatroom extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
+    // console.log('gahh')
   }
 
   //This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
@@ -44,13 +44,23 @@ class Chatroom extends React.Component {
         this.handleSubmit()
       }
     })
-
+    // this.state.ref.once('value', snap => {
+    //   snap.forEach((child) => {
+    //     this.handleNewMessage(child.val(), child.key)
+    //   })
+    // })
     this.state.ref.on('child_added', 
       snapshot => {
+        // console.log('ass')
         this.handleNewMessage(snapshot.val(), snapshot.key)
-      });
+    });
   }
   handleSubmit() {
+      //   this.state.ref.on('child_added', 
+      // snapshot => {
+      //   // console.log('ass')
+      //   this.handleNewMessage(snapshot.val(), snapshot.key)
+      // });
     if (this.state.input.length) {
       this.state.ref.push({
         username: this.props.username,
@@ -69,15 +79,20 @@ class Chatroom extends React.Component {
   handleNewMessage (newMessage, key) {
     newMessage.createdAt = new Date(newMessage.timestamp).toLocaleTimeString();
     newMessage.key = key;
-    this.setState({messages: [...this.state.messages, newMessage]})
+    this.setState(prevState => ({
+      messages: [...prevState.messages, newMessage]
+    }), () => {
+      $('.db_chatroom').scrollTop($('.db_chatroom')[0].scrollHeight)
+    })
   }
   render() {
-    return (<div className="db_panel_2">
+    return (<div className="db_panel_2" key={2}>
             <div className="db_info">
               <span style={{padding:'0', margin:'auto'}}>{this.props.roomName}</span>
             </div>
             <div className="db_chatroom">
               {/*<h2>{'Chatroom ' + this.props.currentRoom}</h2>*/}
+              <h3>{'This is the beginning of your chat history with ' + this.props.roomName }</h3>
               <ul style={{listStyle: 'none', margin: '10px', paddingLeft:'0', fontSize: '16px'}}>
                 {this.state.messages.map((item, idx) => {
                   return <ChatroomMessage sentByUser={item.username === this.props.username} message={item} key={idx}/>
