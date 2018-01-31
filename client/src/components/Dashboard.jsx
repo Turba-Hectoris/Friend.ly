@@ -21,7 +21,6 @@ class Dashboard extends React.Component {
     //     var uid = user.uid;
     //   }
     // });
-    }
     this.handleClick = this.handleClick.bind(this)
   }
 

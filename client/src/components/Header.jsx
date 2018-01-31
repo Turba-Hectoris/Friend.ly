@@ -9,7 +9,8 @@ class Header extends React.Component {
         this.state = {
             showModal: false,
             loading: false,
-            error: null
+            error: null,
+            redirect: false
         };
     } 
 
@@ -27,13 +28,19 @@ class Header extends React.Component {
   }
 
   onLogin() {
-    let username = document.querySelector('#username').value
-    let password = document.querySelector('#password').value
+    let username = document.querySelector('#loginUsername').value
+    let password = document.querySelector('#loginPassword').value
     axios.post('/login', {
         username: username,
         password: password
-    }).then(() => {console.log('hi')})
-  }
+    }).then((response) => {
+        if (response.data === 'ok') {
+            console.log('go to your profile')
+        } else {
+        console.log('bad login')    
+        }
+        // location.replace(location.href + 'profile')})
+    })}
   
   onLoginSuccess(method, response) {
     console.log(response)
@@ -41,12 +48,21 @@ class Header extends React.Component {
   }
 
   onLoginFail(method, response) {
-    console.log('hi')
-    console.log(response)
     console.log('logging failed with ' + method);
     this.setState({
       error: response
     })
+  }
+
+  onRegister() {
+    let email = document.querySelector('#registerEmail').value
+    let username = document.querySelector('#registerUsername').value
+    let password = document.querySelector('#registerPassword').value
+    axios.post('/signup', {
+        email: email,
+        username: username,
+        password: password
+    }).then((response) => {console.log(history)})
   }
 
   startLoading() {
@@ -80,10 +96,10 @@ class Header extends React.Component {
         {' '}
         <li>
 
-        <Link to="/"
+        <Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}
           onClick={() => this.openModal()}
         >
-          Open Modal
+          Login
         </Link>
 
         <ReactModalLogin
@@ -105,19 +121,40 @@ class Header extends React.Component {
           form = {{
             onLogin: this.onLogin.bind(this),
             loginBtn: {
-                label: 'login'
+                label: 'Login'
             },
             loginInputs: [
             {
-                id: 'username',
+                id: 'loginUsername',
                 type: 'text',
                 placeholder: 'username'
             },
             {
-                id: 'password',
-                type: 'text',
+                id: 'loginPassword',
+                type: 'password',
                 placeholder: 'password'
             } 
+            ],
+            onRegister: this.onRegister.bind(this),
+            registerBtn: {
+                label: 'Register'
+            },
+            registerInputs: [
+            {
+                id: 'registerEmail',
+                type: 'text',
+                placeholder: 'email'
+            },
+            {
+                id: 'registerUsername',
+                type: 'text',
+                placeholder: 'username'
+            },
+            {
+                id: 'registerPassword',
+                type: 'password',
+                placeholder: 'password'
+            }
             ]
           }}
         /></li>

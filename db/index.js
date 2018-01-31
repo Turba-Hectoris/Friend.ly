@@ -35,43 +35,43 @@ const Users = sequelize.define('users', {
 	}
 })
 
-// const Events = sequelize.define('events', {
-// 	eventID: {
-// 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
-// 	},
-// 	eventName: {
-// 		type: Sequelize.STRING
-// 	},
-// 	status: {
-// 		type: Sequelize.STRING
-// 	},
-// 	creatorID: {
-// 		type: Sequelize.INTEGER
-// 	},
-// 	date: {
-// 		type: Sequelize.DATE
-// 	},
-// 	capacity: {
-// 		type: Sequelize.INTEGER
-// 	},
-// 	imgLink: {
-// 		type: Sequelize.STRING
-// 	}
+const Events = sequelize.define('events', {
+	eventID: {
+		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
+	},
+	eventName: {
+		type: Sequelize.STRING
+	},
+	status: {
+		type: Sequelize.STRING
+	},
+	creatorID: {
+		type: Sequelize.INTEGER
+	},
+	date: {
+		type: Sequelize.DATE
+	},
+	capacity: {
+		type: Sequelize.INTEGER
+	},
+	imgLink: {
+		type: Sequelize.STRING
+	}
 
-// })
+})
 
-// const UserEvents = sequelize.define('userEvents', {
-// 	eventID: {
-// 		type: Sequelize.INTEGER, 
-// 	},
-// 	userID: {
-// 		type: Sequelize.INTEGER
-// 	}
-// })
+const UserEvents = sequelize.define('userEvents', {
+	eventID: {
+		type: Sequelize.INTEGER, 
+	},
+	userID: {
+		type: Sequelize.INTEGER
+	}
+})
 
-// Users.sync({force: false})
-// Events.sync({force: false})
-// UserEvents.sync({force: false})
+Users.sync({force: false})
+Events.sync({force: false})
+UserEvents.sync({force: false})
 
 Users.prototype.comparePassword = function (pwAttempt, callback) {
 	bcrypt.compare(pwAttempt, this.passHash, (err, isMatch) => {
@@ -80,9 +80,9 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 }
 
 
-// module.exports = {
-// 	sequelize: sequelize,
-// 	Users: Users,
-// 	Events: Events,
-// 	UserEvents: UserEvents
-// }
+module.exports = {
+	sequelize: sequelize,
+	Users: Users,
+	Events: Events,
+	UserEvents: UserEvents
+}

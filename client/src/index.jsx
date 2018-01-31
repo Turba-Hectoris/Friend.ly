@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 import $ from 'jquery';
-
+import axios from 'axios';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
@@ -26,13 +26,20 @@ class App extends React.Component {
   componentDidMount() {
     if(this.state.isLogin) {
       axios.get('/userData').then((results) => {
-
       })
     }
   }
 
   componentWillMount () {
     this.connectFirebase()
+    axios.get('/checkLogin').then((results) => {
+      if (results.data) {
+        console.log(results.data)
+        this.setState({isLogin: true})
+      } else {
+        console.log('not validated')
+      }
+    })
   }
 
   connectFirebase () {
