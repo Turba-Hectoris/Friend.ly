@@ -21,6 +21,10 @@ class Dashboard extends React.Component {
     })
   }
 
+  componentWillMount() {
+    
+  }
+
   render () {
     return (
       <div className="db_container">

@@ -25,16 +25,15 @@ class App extends React.Component {
 
   componentDidMount() {
     if(this.state.isLogin) {
-      axios.get('/userData').then((results) => {
+      // axios.get('/userData').then((results) => {
 
-      })
+      // })
     }
   }
 
   componentWillMount () {
     this.connectFirebase()
   }
-
   connectFirebase () {
     const config = {
       apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
