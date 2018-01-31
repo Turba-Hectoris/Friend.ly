@@ -11,6 +11,7 @@ const util = require('./utils.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
+// app.get('/', (req, res) => {console.log('hi'); res.sendFile(path.join(__dirname, '../client/dist/index.html'))})
 
 app.use(session({
 	secret: 'friends are the best',
@@ -18,18 +19,22 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.post('/', function(req, res) {
-  
+app.get('/checkLogin', function(req, res) {
+  if (req.session.userID) {
+  	console.log(req.session.userID)
+  	res.send(JSON.stringify(req.session.userID))
+  } else {
+  	console.log('no data')
+  	res.send('no data')
+  }
 })
-
-app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../client/dist/index.html')))
 
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
 	db.Users.findOne({where: {username: username}}).then( async (result) => {
 		if (!result) {
 			var password = await bcrypt.hash(req.body.password, 4)
-			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email, gender: req.body.gender}})
+			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
 			.spread((user, created) => {
 				res.redirect(301, '/login')	
 			})
@@ -40,7 +45,7 @@ app.post('/signup', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-	var username = req.body.username;
+	var username = req.body.username
 	var password = req.body.password
 	db.Users.findOne({where: {username: username}})
 	.then((user) => {
@@ -51,12 +56,23 @@ app.post('/login', (req, res) => {
 				if (!isMatch) {
 					res.redirect(301, '/login')
 				} else {
-					res.send('right password!')
+					let userID = user.dataValues.userID
+					util.createSession(req, res, userID)
+					console.log(req.session)
 				}
 			})
 		}
 	})
 })
+
+app.get('/profile', util.checkUser, (req, res) => {
+	let userID = req.session.userID
+	db.Users.findOne({where: {userID: userID}}).then((user) => {
+		console.log(user)
+	})
+})
+
+
 
 app.listen(1337, function() {
   console.log('listening on port 1337!');

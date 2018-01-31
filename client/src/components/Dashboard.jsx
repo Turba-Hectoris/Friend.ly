@@ -12,6 +12,19 @@ class Dashboard extends React.Component {
       select_event_id: 2,
       currentRoom: 0
     }
+      select_event_id: 2
+    }
+    // firebase.auth().signInAnonymously().catch(function(error) {
+    //   console.error('Error signing on to firebase!', error.message);
+    // });
+    
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //   if (user) {
+    //     // console.log('User signed in', user);
+    //     var isAnonymous = user.isAnonymous;
+    //     var uid = user.uid;
+    //   }
+    // });
     this.handleClick = this.handleClick.bind(this)
   }
   handleClick (div, item) {
