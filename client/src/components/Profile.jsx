@@ -17,7 +17,6 @@ class Profile extends React.Component {
             <UserChart catagories={this.props.userData[0].catagories}/>
           </div>
           <div className="profile_image">
-            {this.props.userData[0].username} 
             <img src="stock-user-profile.jpg" alt=""/>
           </div>
           <div className="profile_bio">
@@ -26,6 +25,9 @@ class Profile extends React.Component {
             {this.props.userData[0].username + '\n' +
             this.props.userData[0].gender + '\n' +
             this.props.userData[0].email}
+          </div>
+          <div className="profile_username">
+            <p> {this.props.userData[0].username} </p>
           </div>
           <div className="profile_events">
             <div className="profile_events_container">
