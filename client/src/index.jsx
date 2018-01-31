@@ -12,14 +12,15 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogin: true,
-      userData: userProfileDummyData
+      isLogin: false,
+      userId: ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
-  toggleLogin () {
+  toggleLogin (userId) {
     this.setState({
-      isLogin: !this.state.isLogin
+      isLogin: !this.state.isLogin,
+      userId: userId
     })
   }
 
@@ -36,6 +37,7 @@ class App extends React.Component {
     axios.get('/checkLogin').then((results) => {
       if (results.data) {
         console.log(results.data)
+        //we can use toggleLogin() here?
         this.setState({isLogin: true})
       } else {
         console.log('not validated')
@@ -72,7 +74,7 @@ class App extends React.Component {
     return (
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin}/>
-        <Main isLogin={this.state.isLogin} userData={this.state.userData}/>
+        <Main isLogin={this.state.isLogin} userId={this.state.userId}/>
         {
         //Don't modify unless you're aaron
       /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>

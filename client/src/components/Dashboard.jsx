@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+//------------deleteOne--------------//
 import ChatRoom from './ChatRoom.js';
 import Chatroom from './Chatroom.jsx'
 

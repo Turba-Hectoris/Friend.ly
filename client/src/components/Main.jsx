@@ -16,14 +16,15 @@ const Main = (props) => (
         : <Homepage />
         }
       }/>
-      <Route path="/signup" component={Signup}/>
+      {/* <Route path="/signup" component={Signup}/> */}
       <Route path="/search" component={Search}/>
       {/* Documentation:
       Modified by Derrick as per documentation:
       https://reacttraining.com/react-router/web/api/Route/render-func */}
-      <Route path="/profile" render={() => <Profile userData={props.userData}/> }/>
-      <Route path="/login" component={Login}/>
-      <Route path="/logout" component={Homepage}/>
+      <Route path="/profile" render={ () => <Profile /> }/>
+      {/* <Route path={`/profile/${props.userId}`} render={ () => <Profile /> }/> */}
+      {/* <Route path="/login" component={Login}/> */}
+      {/* <Route path="/logout" component={Homepage}/> */}
     </Switch>
   </div>
 )

@@ -11,7 +11,7 @@ module.exports = {
 	createSession: (req, res, userID) => {
 		return req.session.regenerate( () => {
 			req.session.userID = userID;
-			res.send('ok')
+			res.status(200).send(['ok', userID])
 		});
 	}
 }

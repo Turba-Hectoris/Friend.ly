@@ -7,45 +7,56 @@ import UserEvent from './UserEvent.jsx';
 class Profile extends React.Component {
   constructor(props) {
     super(props)
+    this.handleFriendClicked = this.handleFriendClicked.bind(this);
+  }
+
+  handleFriendClicked() {
+    console.log(window.location.href)
   }
 
   render() {
     return (
-      <div className="profile_container">
-        <div className="profile">
-          <div className="profile_data">
-            <UserChart catagories={this.props.userData[0].catagories}/>
-          </div>
-          <div className="profile_image">
-            <img src="stock-user-profile.jpg" alt=""/>
-          </div>
-          <div className="profile_bio">
-            { this.props.userData[0].bio}
-            <hr/>
-            {this.props.userData[0].username + '\n' +
-            this.props.userData[0].gender + '\n' +
-            this.props.userData[0].email}
-          </div>
-          <div className="profile_username">
-            <p> {this.props.userData[0].username} </p>
-          </div>
-          <div className="profile_events">
-            <div className="profile_events_container">
-              {
-                this.props.userData[0].events.map(event => <UserEvent key={event.eventId} event={event}/>)
-              }
-            </div>
-          </div>
-          <div className="profile_friends">
-            <div className="profile_friends_container">
-            {
-              this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId} friend={friend}/>)
-            }
-            </div>
-          </div>
-        </div>  
+      <div>
+              <h1>Profile</h1>
+        <button onSubmit={this.handleFriendClicked}  ></button>
       </div>
-    );
+    )
+  //   return (
+  //     <div className="profile_container">
+  //       <div className="profile">
+  //         <div className="profile_data">
+  //           <UserChart catagories={this.props.userData[0].catagories}/>
+  //         </div>
+  //         <div className="profile_image">
+  //           <img src="stock-user-profile.jpg" alt=""/>
+  //         </div>
+  //         <div className="profile_bio">
+  //           { this.props.userData[0].bio}
+  //           <hr/>
+  //           {this.props.userData[0].username + '\n' +
+  //           this.props.userData[0].gender + '\n' +
+  //           this.props.userData[0].email}
+  //         </div>
+  //         <div className="profile_username">
+  //           <p> {this.props.userData[0].username} </p>
+  //         </div>
+  //         <div className="profile_events">
+  //           <div className="profile_events_container">
+  //             {
+  //               this.props.userData[0].events.map(event => <UserEvent key={event.eventId} event={event}/>)
+  //             }
+  //           </div>
+  //         </div>
+  //         <div className="profile_friends">
+  //           <div className="profile_friends_container">
+  //           {
+  //             this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId} friend={friend}/>)
+  //           }
+  //           </div>
+  //         </div>
+  //       </div>  
+  //     </div>
+  //   );
   }
 }
 
