@@ -16,26 +16,30 @@ class Profile extends React.Component {
           <div className="profile_data">
             <UserChart catagories={this.props.userData[0].catagories}/>
           </div>
-          <div className="profile_image"> 
-            {this.props.userData[0].username}
+          <div className="profile_image">
             <img src="stock-user-profile.jpg" alt=""/>
-            {this.props.userData[0].gender + ' '}
-            {this.props.userData[0].email}
           </div>
           <div className="profile_bio">
             { this.props.userData[0].bio}
+            <hr/>
+            {this.props.userData[0].username + '\n' +
+            this.props.userData[0].gender + '\n' +
+            this.props.userData[0].email}
+          </div>
+          <div className="profile_username">
+            <p> {this.props.userData[0].username} </p>
           </div>
           <div className="profile_events">
             <div className="profile_events_container">
               {
-                this.props.userData[0].events.map(event => <UserEvent key={event.eventId}/>)
+                this.props.userData[0].events.map(event => <UserEvent key={event.eventId} event={event}/>)
               }
             </div>
           </div>
           <div className="profile_friends">
             <div className="profile_friends_container">
             {
-              this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId}/>)
+              this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId} friend={friend}/>)
             }
             </div>
           </div>

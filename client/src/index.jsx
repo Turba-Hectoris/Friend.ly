@@ -24,10 +24,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if(this.state.isLogin) {
-      axios.get('/userData').then((results) => {
-      })
-    }
+    //Use Bills route to decorate userData here
   }
 
   componentWillMount () {
@@ -65,6 +62,8 @@ class App extends React.Component {
     // when event expired, delete the chatroom as well, if so desired
     firebase.database().ref('/rooms/' + roomId).remove();
   }
+
+  
 
   render () {
     return (

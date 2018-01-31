@@ -13,7 +13,7 @@ class userChart extends React.Component {
 
   makeGraph(){
     var chart = AmCharts.makeChart( "chartdiv", {
-      "type": "pie",
+      "type": "serial",
       "theme": "light",
       "dataProvider": this.props.catagories,
       "valueField": "value",
