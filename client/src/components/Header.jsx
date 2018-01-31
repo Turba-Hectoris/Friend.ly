@@ -71,7 +71,10 @@ class Header extends React.Component {
     render() {
         return (
     <header className="nav">
-        <span className="logo" style={{marginLeft:'10%'}}><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
+    {/* //////
+    ///////Removed inline styling here cause it overwrites mobile veiw styling
+    //////Derrick */}
+        <span className="logo" ><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
         <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
