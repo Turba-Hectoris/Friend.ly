@@ -68,98 +68,104 @@ class CreateEvent extends React.Component{
 	constructor(props) {
     super(props)
     this.state = {
-      newEvent: {}
+      submittedValues: {}
     }
   }
 
 
-    errorValidator( values ){
-      const validateEventName = ( eventName ) => {
-        return !eventName ? 'Please name your event' : null;
-      };
-      const validateEventDesc = ( eventDesc ) => {
-        return !eventDesc ? 'Event description required.' : null;
-      };
-      const validateGender = ( gender ) => {
-        return !gender ? 'Gender is required.' : null;
-      };
-      const validateBio = ( bio ) => {
-        return !bio ? 'Bio is required.' : null;
-      };
-      const validateAuthorize = ( authorize ) => {
-        return !authorize ? 'Please check authorize.' : null;
-      };
-      const validateStatus = ( category ) => {
-        return !category ? 'Please choose an event category.' : null;
-      };
-      return {
-        eventName: validateEventName( values.eventName ),
-        eventDesc: validateEventDesc( values.eventDesc ),
-        gender: validateGender( values.gender ),
-        bio: validateBio( values.bio ),
-        authorize: validateAuthorize( values.authorize ),
-        category: validateStatus( values.category )
-      };
-    }
+    // errorValidator( values ){
+    //   const validateEventName = ( eventName ) => {
+    //     return !eventName ? 'Please name your event' : null;
+    //   };
+    //   const validateEventDesc = ( eventDesc ) => {
+    //     return !eventDesc ? 'Event description required.' : null;
+    //   };
+    //   const validateGender = ( gender ) => {
+    //     return !gender ? 'Gender is required.' : null;
+    //   };
+    //   const validateBio = ( bio ) => {
+    //     return !bio ? 'Bio is required.' : null;
+    //   };
+    //   const validateAuthorize = ( authorize ) => {
+    //     return !authorize ? 'Please check authorize.' : null;
+    //   };
+    //   const validateStatus = ( category ) => {
+    //     return !category ? 'Please choose an event category.' : null;
+    //   };
+    //   return {
+    //     eventName: validateEventName( values.eventName ),
+    //     eventDesc: validateEventDesc( values.eventDesc ),
+    //     gender: validateGender( values.gender ),
+    //     bio: validateBio( values.bio ),
+    //     authorize: validateAuthorize( values.authorize ),
+    //     category: validateStatus( values.category )
+    //   };
+    // }
 
-    warningValidator( values ) {
-      const validateEventName = ( eventName ) => {
-        return eventName && eventName.length < 2 ? 'Event name must be longer than 2 characters.' : null;
-      };
-      const validateEventDesc = ( eventDesc ) => {
-        return eventDesc && eventDesc.length < 40 ? 'Event description must be at least 40 characters long.' : null;
-      };
-      const validateBio = ( bio ) => {
-        return bio && bio.replace(/s+/g, ' ').trim().split(' ').length < 5 ? 'Bio should have more than 5 words.' : null;
-      };
-      return {
-        eventName: validateEventName( values.eventName ),
-        eventDesc: validateEventDesc( values.eventDesc ),
-        gender: null,
-        bio: validateBio( values.bio ),
-        authorize: null,
-        category: null
-      };
-    }
+    // warningValidator( values ) {
+    //   const validateEventName = ( eventName ) => {
+    //     return eventName && eventName.length < 2 ? 'Event name must be longer than 2 characters.' : null;
+    //   };
+    //   const validateEventDesc = ( eventDesc ) => {
+    //     return eventDesc && eventDesc.length < 40 ? 'Event description must be at least 40 characters long.' : null;
+    //   };
+    //   const validateBio = ( bio ) => {
+    //     return bio && bio.replace(/s+/g, ' ').trim().split(' ').length < 5 ? 'Bio should have more than 5 words.' : null;
+    //   };
+    //   return {
+    //     eventName: validateEventName( values.eventName ),
+    //     eventDesc: validateEventDesc( values.eventDesc ),
+    //     gender: null,
+    //     bio: validateBio( values.bio ),
+    //     authorize: null,
+    //     category: null
+    //   };
+    // }
 
-    successValidator( values, errors ) {
-      const validateEventName = ( ) => {
-        return !errors.eventName ? 'Nice name!' : null;
-      };
-      const validateEventDesc = ( ) => {
-        return !errors.eventDesc ? 'Sounds like a great time!' : null;
-      };
-      const validateGender = ( ) => {
-        return !errors.gender ? 'Thanks for entering your gender.' : null;
-      };
-      const validateBio = ( ) => {
-        return !errors.bio ? 'Cool Bio!' : null;
-      };
-      const validateAuthorize = ( ) => {
-        return !errors.authorize ? 'You are now authorized.' : null;
-      };
-      const validateStatus = ( ) => {
-        return !errors.category ? null : null;
-      };
-      return {
-        eventName: validateEventName( values.eventName ),
-        eventDesc: validateEventDesc( values.eventDesc ),
-        gender: validateGender( values.gender ),
-        bio: validateBio( values.bio ),
-        authorize: validateAuthorize( values.authorize ),
-        category: validateStatus( values.category )
-      };
-    }
+    // successValidator( values, errors ) {
+    //   const validateEventName = ( ) => {
+    //     return !errors.eventName ? 'Nice name!' : null;
+    //   };
+    //   const validateEventDesc = ( ) => {
+    //     return !errors.eventDesc ? 'Sounds like a great time!' : null;
+    //   };
+    //   const validateGender = ( ) => {
+    //     return !errors.gender ? 'Thanks for entering your gender.' : null;
+    //   };
+    //   const validateBio = ( ) => {
+    //     return !errors.bio ? 'Cool Bio!' : null;
+    //   };
+    //   const validateAuthorize = ( ) => {
+    //     return !errors.authorize ? 'You are now authorized.' : null;
+    //   };
+    //   const validateStatus = ( ) => {
+    //     return !errors.category ? null : null;
+    //   };
+    //   return {
+    //     eventName: validateEventName( values.eventName ),
+    //     eventDesc: validateEventDesc( values.eventDesc ),
+    //     gender: validateGender( values.gender ),
+    //     bio: validateBio( values.bio ),
+    //     authorize: validateAuthorize( values.authorize ),
+    //     category: validateStatus( values.category )
+    //   };
+    // }
 
 
   render() {
 
   	return(    
   		<Form
-      validateError={this.errorValidator}
-      validateWarning={this.warningValidator}
-      validateSuccess={this.successValidator}
-      onSubmit={submittedValues => this.setState( { submittedValues } )}>
+      // validateError={this.errorValidator}
+      // validateWarning={this.warningValidator}
+      // validateSuccess={this.successValidator}
+      onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {axios.post('/createEvent', {
+      	eventName: this.state.submittedValues.eventName,
+      	eventDesc: this.state.submittedValues.eventDesc,
+      	capacity: this.state.submittedValues.capacity,
+      	category: this.state.submittedValues.category
+      	})})
+      .then((response) => {console.log(response)})}>
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form2">
           <label htmlFor="eventName">Event name</label>

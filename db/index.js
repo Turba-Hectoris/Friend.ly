@@ -56,6 +56,12 @@ const Events = sequelize.define('events', {
 	},
 	imgLink: {
 		type: Sequelize.STRING
+	},
+	category: {
+		type: Sequelize.STRING
+	},
+	eventDesc: {
+		type: Sequelize.STRING
 	}
 
 })

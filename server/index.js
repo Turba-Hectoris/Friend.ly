@@ -76,7 +76,9 @@ app.post('/createEvent', (req, res) => {
 	let eventName = req.body.eventName;
 	let capacity = req.body.capacity;
 	let creatorID = req.body.creatorID;
-	db.Events.findCreateFind({where: {eventName: eventName, capacity: capacity, creatorID: creatorID}}).spread((event, created) => {
+	let category = req.body.category;
+	let eventDesc = req.body.eventDesc;
+	db.Events.findCreateFind({where: {eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID}}).spread((event, created) => {
 		res.send(event.dataValues)
 	})
 })
