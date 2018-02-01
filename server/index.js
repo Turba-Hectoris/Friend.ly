@@ -20,9 +20,10 @@ app.use(session({
 
 
 app.get('/checkLogin', function(req, res) {
+	console.log('session: ', req.session)
   if (req.session.userID) {
   	console.log('something', req.session.userID)
-  	res.send(JSON.stringify(req.session.userID))
+  	res.send({userId: req.session.userID})
   } else {
 		console.log('no data')
 		//Conditional rendering depends on/ 
@@ -79,19 +80,29 @@ app.post('/login', (req, res) => {
 // 	})
 // })
 
-app.get('/profile/:userId', (req, res) => {
-	let userID = req.params.id;
+app.get('/profile/data/:userId', (req, res) => {
+	let userID = req.params.userId;
+	console.log('FROM FONTEND: ...', userID)
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
-		res.send(200, user);
+		let userClientSideData = {
+			userID: user.dataValues.userID,
+			username: user.dataValues.username,
+			categories: user.dataValues.catagories,
+			bio: user.dataValues.bio,
+			email: user.dataValues.email,
+			gender: user.dataValues.gender,
+			createdAt: user.dataValues.createdAt,
+			updatedAt: user.dataValues.updatedAt,
+		};
+
+		res.status(200).send(userClientSideData);
 	})
 })
 
 ///////////////////////////////
 //// Don't delete dis brada////
 ///////////////////////////////
-app.get('/*', (req, res) => { res.sendFile(path.join(__dirname, '../client/dist/index.html'))})
-
-
+app.use('/*', express.static(__dirname + '/../client/dist'));
 
 app.listen(1337, function() {
   console.log('listening on port 1337!');

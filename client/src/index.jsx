@@ -38,7 +38,7 @@ class App extends React.Component {
       if (results.data) {
         console.log(results.data)
         //we can use toggleLogin() here?
-        this.setState({isLogin: true})
+        this.setState({isLogin: true, userId: results.data.userId})
       } else {
         console.log('not validated')
       }
