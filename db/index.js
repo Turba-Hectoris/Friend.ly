@@ -43,7 +43,7 @@ const Events = sequelize.define('events', {
 		type: Sequelize.STRING
 	},
 	status: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING, defaultValue: 'active'
 	},
 	creatorID: {
 		type: Sequelize.INTEGER
@@ -55,6 +55,12 @@ const Events = sequelize.define('events', {
 		type: Sequelize.INTEGER
 	},
 	imgLink: {
+		type: Sequelize.STRING
+	},
+	category: {
+		type: Sequelize.STRING
+	},
+	eventDesc: {
 		type: Sequelize.STRING
 	}
 
