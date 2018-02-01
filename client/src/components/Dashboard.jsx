@@ -12,7 +12,7 @@ class Dashboard extends React.Component {
       select_event_id: 2,
       currentRoom: 0
     }
-      select_event_id: 2
+      this.handleClick = this.handleClick.bind(this)
     }
     ///////////////////////////
     ///////BROKEN//////////////
@@ -28,14 +28,14 @@ class Dashboard extends React.Component {
     //     var uid = user.uid;
     //   }
     // });
-    //   this.handleClick = this.handleClick.bind(this)
-    // // }
-    // handleClick (div, item) {
-    //   // div.target.style.backgroundColor = 'red'
-    //   this.setState({
-    //     currentRoom: item
-    //   })
-    //}
+      
+    // }
+    handleClick (div, item) {
+      // div.target.style.backgroundColor = 'red'
+      this.setState({
+        currentRoom: item
+      })
+    }
     //////////////////////////
 
   render () {

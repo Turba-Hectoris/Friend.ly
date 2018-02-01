@@ -11,7 +11,7 @@ const util = require('./utils.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
-// app.get('/', (req, res) => {console.log('hi'); res.sendFile(path.join(__dirname, '../client/dist/index.html'))})
+app.get('/*', (req, res) => {console.log('hi'); res.sendFile(path.join(__dirname, '../client/dist/index.html'))})
 
 app.use(session({
 	secret: 'friends are the best',
@@ -72,7 +72,14 @@ app.get('/profile', util.checkUser, (req, res) => {
 	})
 })
 
-
+app.post('/createEvent', (req, res) => {
+	let eventName = req.body.eventName;
+	let capacity = req.body.capacity;
+	let creatorID = req.body.creatorID;
+	db.Events.findCreateFind({where: {eventName: eventName, capacity: capacity, creatorID: creatorID}}).spread((event, created) => {
+		res.send(event.dataValues)
+	})
+})
 
 app.listen(1337, function() {
   console.log('listening on port 1337!');

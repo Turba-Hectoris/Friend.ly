@@ -43,7 +43,7 @@ const Events = sequelize.define('events', {
 		type: Sequelize.STRING
 	},
 	status: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING, defaultValue: 'active'
 	},
 	creatorID: {
 		type: Sequelize.INTEGER
