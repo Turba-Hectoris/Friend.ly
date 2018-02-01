@@ -10,11 +10,12 @@ class Header extends React.Component {
             showModal: false,
             loading: false,
             error: null,
-            redirect: false
+            redirect: false,
+
         };
     } 
 
-      openModal() {
+  openModal() {
     this.setState({
       showModal: true,
     });
@@ -34,8 +35,12 @@ class Header extends React.Component {
         username: username,
         password: password
     }).then((response) => {
-        if (response.data === 'ok') {
+        console.log(response.data)
+        if (response.data[0] === 'ok') {
             console.log('go to your profile')
+            this.props.toggleLogin(response.data[1])
+            //attach user-id recieved to url for router 
+            //Can we use ToggleLogIn here then re-render index.jsx?
         } else {
         console.log('bad login')    
         }
@@ -95,14 +100,15 @@ class Header extends React.Component {
         <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
         {' '}
-        <li><Link to="/profile" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        <li><Link to="/profile/1" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
         {' '}
         <li>
 
         <Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}
           onClick={() => this.openModal()}
         >
-          Login
+        {/*DELETED EXTRA LOGIN HERE*/}
+          login
         </Link>
 
         <ReactModalLogin
@@ -162,13 +168,18 @@ class Header extends React.Component {
           }}
         /></li>
 
-
+        
         {/*<li><Link to="/signup">Signup</Link></li>
         {' '}*/}
-        {
-          this.props.isLogin? (<li><Link to="/logout" style={{color: '#ffffff', textDecoration: 'none'}}>Logout</Link></li>) 
-          : (<li><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Login</Link></li>)
-        }    
+        {/* 
+        //////////////////////////////////
+        //We don't need dis anymor brada//
+        //////////////////////////////////
+          {
+            this.props.isLogin? (<li><Link to="/logout" style={{color: '#ffffff', textDecoration: 'none'}}>Logout</Link></li>) 
+            : (<li><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Login</Link></li>)
+          }     
+        */}
         </ul>  
         </header>
     )
