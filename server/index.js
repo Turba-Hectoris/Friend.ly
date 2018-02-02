@@ -11,8 +11,6 @@ const util = require('./utils.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
-app.use('/checkLogin', util.checkUser)
-
 
 app.use(session({
 	secret: 'friends are the best',
@@ -21,6 +19,9 @@ app.use(session({
 }));
 
 
+app.get('/checklogin', util.checkUser, (req, res) => {
+	res.end();
+})
 
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
@@ -29,7 +30,7 @@ app.post('/signup', (req, res) => {
 			var password = await bcrypt.hash(req.body.password, 4)
 			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
 			.spread((user, created) => {
-				res.status(200).send('New memeber created');
+				res.status(200).send({userID: userID, username: username});
 			})
 		} else {
 			res.status(200).send('Already a memeber');

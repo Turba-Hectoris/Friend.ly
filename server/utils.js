@@ -1,13 +1,17 @@
 module.exports = {
 	checkUser: (req, res, next) => {
-		({userId, username} = req.session)
-		res.status(200).send({userid: userId, username: username});
+		if(req.session){
+			let userID, username;
+			({userID, username} = req.session)
+			res.status(200).send({userID, username});
+		}
 		next();
 	},
 	createSession: (req, res, userID, username) => {
 		return req.session.regenerate( () => {
-			({userId, username} = req.session)
-			res.send({userID: userID, username: username});
+			req.session.userID = userID;
+			req.session.username = username;
+			res.status(200).send({userID, username});
 		});
 	}
 }
