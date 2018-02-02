@@ -13,6 +13,7 @@ class Header extends React.Component {
             redirect: false,
 
         };
+        this.closeModal = this.closeModal.bind(this)
     } 
 
   openModal() {
@@ -35,14 +36,12 @@ class Header extends React.Component {
         username: username,
         password: password
     }).then((response) => {
-        console.log(response.data)
-        if (response.data[0] === 'ok') {
-            console.log('go to your profile')
-            this.props.toggleLogin(response.data[1])
-            //attach user-id recieved to url for router 
-            //Can we use ToggleLogIn here then re-render index.jsx?
+        if (response.data) {
+          console.log(response.data.userID)
+          this.closeModal()
+          this.props.toggleLogin(response.data.userID, response.data.username)
         } else {
-        console.log('bad login')    
+          console.log('bad login')    
         }
         // location.replace(location.href + 'profile')})
     })}

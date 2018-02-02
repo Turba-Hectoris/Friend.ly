@@ -65,7 +65,8 @@ app.post('/login', (req, res) => {
 					// res.redirect(301, '/login')
 				} else {
 					let userID = user.dataValues.userID
-					util.createSession(req, res, userID)
+          // res.userID = userID
+					util.createSession(req, res, userID, username)
 				}
 			})
 		}
@@ -112,6 +113,15 @@ app.post('/createEvent', (req, res) => {
 	db.Events.findCreateFind({where: {eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID}}).spread((event, created) => {
 		res.send(event.dataValues)
 	})
+})
+
+app.get('/profile/events', (req, res) => {
+  let userID = req.query.userID
+  console.log(userID)
+  db.Events.findAll({where: {creatorID: userID }}).then((events) => {
+    res.send(events)
+  })
+  // res.end()
 })
 
 app.use('/*', express.static(__dirname + '/../client/dist'));
