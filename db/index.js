@@ -93,6 +93,8 @@ Events.sync({force: false})
 
 UserEvents.sync({force: false})
 
+Friendships.sync({force: false})
+
 
 
 Users.prototype.comparePassword = function (pwAttempt, callback) {
@@ -107,5 +109,6 @@ module.exports = {
 	Users: Users,
 	Events: Events,
 	UserEvents: UserEvents,
-	Op: Op
+	Op: Op,
+	Friendships: Friendships
 }
