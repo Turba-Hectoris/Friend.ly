@@ -36,6 +36,16 @@ const Users = sequelize.define('users', {
 	}
 })
 
+const Friendships = sequelize.define('friendships', {
+	userID: {
+		type: Sequelize.INTEGER, 
+	},
+	friendID: {
+		type: Sequelize.INTEGER
+	}
+})
+
+
 const Events = sequelize.define('events', {
 	eventID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
