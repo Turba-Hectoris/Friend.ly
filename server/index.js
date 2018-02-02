@@ -110,7 +110,22 @@ app.post('/createEvent', (req, res) => {
 	let creatorID = req.body.creatorID;
 	let category = req.body.category;
 	let eventDesc = req.body.eventDesc;
-	db.Events.findCreateFind({where: {eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID}}).spread((event, created) => {
+	let date = new Date();
+	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg"
+	db.Events.findCreateFind({where: {imgLink: imgLink, date: date, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID}}).spread((event, created) => {
+		db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userEvent, created) => {
+			res.send(event.dataValues)
+		})
+	})
+})
+
+app.post('/createUser', (req, res) => {
+	let username = req.body.username;
+	let bio = req.body.bio;
+	let email = req.body.email;
+	let gender = req.body.gender;
+	let profileImg = "https://i.annihil.us/u/prod/marvel//universe3zx/images/f/f5/IronMan_Head.jpg"
+	db.Events.findCreateFind({where: {profile: profileImg, username: username, bio: bio, email: email, gender: gender}}).spread((event, created) => {
 		res.send(event.dataValues)
 	})
 })
