@@ -31,13 +31,6 @@ class App extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   axios.get('/checklogin').then((results) => {
-  //     ({userId, username} = results.data);
-  //     this.toggleLogin(userId, username);
-  //   })
-  // }
-
   componentWillMount () {
     this.connectFirebase()
     axios.get('/checklogin').then((results) => {

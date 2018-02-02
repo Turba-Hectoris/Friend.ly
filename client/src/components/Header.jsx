@@ -105,7 +105,10 @@ class Header extends React.Component {
         <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
         {' '}
-        <li><Link to="/profile" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        { 
+          this.props.isLogin &&
+          <li><Link to={`/profile/${this.props.userData}`} style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        }
         {' '}
         {
           !this.props.isLogin &&

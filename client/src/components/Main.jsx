@@ -16,11 +16,8 @@ const Main = (props) => (
         : <Homepage />
         }
       }/>
-      <Route path="/search" component={Search}/>
-      <Route path="/createEvent" component={CreateEvent}/>
-      {/* Documentation:
-      Modified by Derrick as per documentation:
-      https://reacttraining.com/react-router/web/api/Route/render-func */}
+      <Route path="/search" render={ ({ match }) => <Search match={match}/> }/>
+      <Route path="/createEvent" render={ ({ match }) => <CreateEvent match={match}/> }/>
       <Route path="/profile/:id" render={ ({ match }) => <Profile match={match}/> }/>
     </Switch>
   </div>

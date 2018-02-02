@@ -28,7 +28,13 @@ app.post('/signup', (req, res) => {
 	db.Users.findOne({where: {username: username}}).then( async (result) => {
 		if (!result) {
 			var password = await bcrypt.hash(req.body.password, 4)
-			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
+			///Creating filler data and merging them with default with Object.assign
+			let fillerdata = {
+				bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error voluptatum ullam saepe. Fugit, ullam.",
+				gender: 'M'
+			}
+
+			db.Users.findCreateFind({where: Object.assign({username: username, passHash: password, email: req.body.email}, fillerdata)})
 			.spread((user, created) => {
 				res.status(200).send({userID: userID, username: username});
 			})
@@ -76,6 +82,11 @@ app.get('/profile/data/:userId', (req, res) => {
 	})
 })
 
+/////////////////////////////////////////////////////////////////
+/////Route creates a event and associate it with a UserEvents////
+/////                                                        ////
+/////////////////////////////////////////////////////////////////
+
 app.post('/createEvent', (req, res) => {
 	let eventName = req.body.eventName;
 	let capacity = req.body.capacity;
@@ -85,8 +96,8 @@ app.post('/createEvent', (req, res) => {
 	let date = new Date();
 	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg"
 	db.Events.findCreateFind({where: {imgLink: imgLink, date: date, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID}}).spread((event, created) => {
-		db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userEvent, created) => {
-			res.send(event.dataValues)
+		db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
+			res.send(userevent.dataValues)
 		})
 	})
 })
@@ -101,6 +112,10 @@ app.post('/createUser', (req, res) => {
 		res.send(event.dataValues)
 	})
 })
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
 
 app.get('/profile/events', (req, res) => {
   let userID = req.query.userID
