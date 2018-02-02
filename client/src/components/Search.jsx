@@ -23,7 +23,7 @@ class Search extends React.Component {
   }
 
   handleTermChange (e) {
-    this.setState({term: e.target.value}, () => console.log(this.state.term));
+    this.setState({term: e.target.value});
   }
 
   handleSubmit () {
@@ -40,7 +40,7 @@ class Search extends React.Component {
   }
 
   getEvents () {
-    axios.get('/events', {eventName: this.state.term})
+    axios.get('/events', {params: {term: this.state.term}})
     .then((response) => {
       console.log('response data from getEvents: ', response.data);
       this.setState({events: response.data});
