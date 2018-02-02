@@ -36,6 +36,16 @@ const Users = sequelize.define('users', {
 	}
 })
 
+const Friendships = sequelize.define('friendships', {
+	userID: {
+		type: Sequelize.INTEGER, 
+	},
+	friendID: {
+		type: Sequelize.INTEGER
+	}
+})
+
+
 const Events = sequelize.define('events', {
 	eventID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
@@ -83,6 +93,8 @@ Events.sync({force: false})
 
 UserEvents.sync({force: false})
 
+Friendships.sync({force: false})
+
 
 
 Users.prototype.comparePassword = function (pwAttempt, callback) {
@@ -97,5 +109,6 @@ module.exports = {
 	Users: Users,
 	Events: Events,
 	UserEvents: UserEvents,
-	Op: Op
+	Op: Op,
+	Friendships: Friendships
 }

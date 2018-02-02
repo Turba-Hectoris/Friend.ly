@@ -75,7 +75,8 @@ class Header extends React.Component {
     }).then((response) => {
       let userID, username;
       ({userID, username} = response.data)
-      this.props.toggleLogin({userID, username})    
+      //this was passing a single object before refactor
+      this.props.toggleLogin(userID, username)    
     })
   }
 

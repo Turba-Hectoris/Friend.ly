@@ -40,13 +40,14 @@ class Profile extends React.Component {
         <div className="profile_container">
           <div className="profile">
             <div className="profile_data">
-              {/* <UserChart catagories={this.props.userData[0].catagories}/> */}
+            {/* catagories={this.props.userData.catagories} */}
+              <UserChart />
             </div>
             <div className="profile_image">
-              <img src="stock-user-profile.jpg" alt=""/>
+              <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
             </div>
             <div className="profile_bio">
-              {/* { this.state.userData.bio} */}
+              { this.state.userData.bio}
               <hr/>
               {
                 this.state.userData.gender + '\n' +

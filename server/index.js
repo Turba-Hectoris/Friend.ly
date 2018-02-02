@@ -71,6 +71,7 @@ app.post('/login', (req, res) => {
 })
 
 
+
 app.get('/profile/data/:userId', (req, res) => {
 	let userID = req.params.userId;
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
