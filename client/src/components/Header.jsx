@@ -37,13 +37,10 @@ class Header extends React.Component {
         password: password
     }).then((response) => {
         if (response.data) {
-          console.log(response.data.userID)
-          this.closeModal()
-          this.props.toggleLogin(response.data.userID, response.data.username)
-        } else {
-          console.log('bad login')    
+            
+            this.closeModal()
+            this.props.toggleLogin(response.data.userID, response.data.username)
         }
-        // location.replace(location.href + 'profile')})
     })}
   
   onLoginSuccess(method, response) {
@@ -91,23 +88,19 @@ class Header extends React.Component {
     render() {
         return (
     <header className="nav">
-    {/* //////
-    ///////Removed inline styling here cause it overwrites mobile veiw styling
-    //////Derrick */}
         <span className="logo" ><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
         <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
         {' '}
-        <li><Link to="/profile/1" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        <li><Link to="/profile" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
         {' '}
         <li>
 
         <Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}
           onClick={() => this.openModal()}
         >
-        {/*DELETED EXTRA LOGIN HERE*/}
-          login
+          Login
         </Link>
 
         <ReactModalLogin

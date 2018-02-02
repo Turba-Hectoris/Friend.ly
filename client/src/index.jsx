@@ -17,8 +17,8 @@ class App extends React.Component {
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
+
   toggleLogin(userID, username) {
-    console.log(userID)
     if (!userID) {
       this.setState({
         isLogin:false
@@ -43,15 +43,11 @@ class App extends React.Component {
   componentWillMount () {
     this.connectFirebase()
     axios.get('/checkLogin').then((results) => {
-      if (results.data) {
-        console.log(results.data)
-        //we can use toggleLogin() here?
-        this.setState({isLogin: true, userData: results.data.userId})
-      } else {
-        console.log('not validated')
-      }
+      ({userId, username} = results.data);
+      this.toggleLogin(userId, username);
     })
   }
+  
   connectFirebase () {
     const config = {
       apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",

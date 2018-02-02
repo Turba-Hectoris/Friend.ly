@@ -11,6 +11,8 @@ const util = require('./utils.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
+app.use('/checkLogin', util.checkUser)
+
 
 app.use(session({
 	secret: 'friends are the best',
@@ -19,21 +21,6 @@ app.use(session({
 }));
 
 
-app.get('/checkLogin', function(req, res) {
-	console.log('session: ', req.session)
-  if (req.session.userID) {
-  	console.log('something', req.session.userID)
-  	res.send({userId: req.session.userID})
-  } else {
-		console.log('no data')
-		//Conditional rendering depends on/ 
-		//axios request from front-end/////
-		//to be a falsey value/////////////
-		///// REFACTOR ////////////////////
-		//res.send('no data') => res.end()/
-  	res.end()
-  }
-})
 
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
@@ -56,16 +43,13 @@ app.post('/login', (req, res) => {
 	db.Users.findOne({where: {username: username}})
 	.then((user) => {
 		if (!user) {
-			res.status(200).send('member not found');
-			// res.redirect(301, '/login')
+			res.status(200).send({response: 'member not found'});
 		} else {
 			user.comparePassword(req.body.password, (isMatch) => {
 				if (!isMatch) {
-					res.send(200, 'wrong password')
-					// res.redirect(301, '/login')
+					res.status(200).send({response: 'invalid password'})
 				} else {
 					let userID = user.dataValues.userID
-          // res.userID = userID
 					util.createSession(req, res, userID, username)
 				}
 			})
@@ -73,17 +57,8 @@ app.post('/login', (req, res) => {
 	})
 })
 
-
-// app.get('/profile', util.checkUser, (req, res) => {
-// 	let userID = req.session.userID
-// 	db.Users.findOne({where: {userID: userID}}).then((user) => {
-// 		console.log(user)
-// 	})
-// })
-
 app.get('/profile/data/:userId', (req, res) => {
 	let userID = req.params.userId;
-	console.log('FROM FONTEND: ...', userID)
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
 		let userClientSideData = {
 			userID: user.dataValues.userID,
@@ -99,10 +74,6 @@ app.get('/profile/data/:userId', (req, res) => {
 		res.status(200).send(userClientSideData);
 	})
 })
-
-///////////////////////////////
-//// Don't delete dis brada////
-///////////////////////////////
 
 app.post('/createEvent', (req, res) => {
 	let eventName = req.body.eventName;
