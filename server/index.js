@@ -29,8 +29,8 @@ app.post('/logout', util.expireSession, (req, res) => {
 
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
-	db.Users.findOne({where: {username: username}}).then( async (result) => {
-		if (!result) {
+	db.Users.findOne({where: {username: username}}).then( async (foundUser) => {
+		if (!foundUser) {
 			var password = await bcrypt.hash(req.body.password, 4)
 			///Creating filler data and merging them with default with Object.assign
 			let fillerdata = {
@@ -40,10 +40,12 @@ app.post('/signup', (req, res) => {
 
 			db.Users.findCreateFind({where: Object.assign({username: username, passHash: password, email: req.body.email}, fillerdata)})
 			.spread((user, created) => {
-				res.status(200).send({userID: userID, username: username});
+				({userID, username} = user.dataValues)
+				res.status(200).send({userID, username});
 			})
 		} else {
-			res.status(200).send('Already a memeber');
+			({userID, username} = foundUser.dataValues)
+			res.status(200).send({response: 'Already a memeber', userID, username});
 		}
 	})
 })
