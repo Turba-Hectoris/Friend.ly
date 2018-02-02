@@ -73,6 +73,7 @@ class Header extends React.Component {
         username: username,
         password: password
     }).then((response) => {
+      let userID, username;
       ({userID, username} = response.data)
       this.props.toggleLogin({userID, username})    
     })
