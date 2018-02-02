@@ -37,7 +37,6 @@ class Header extends React.Component {
         password: password
     }).then((response) => {
         if (response.data) {
-          console.log(response.data.userID)
           this.closeModal()
           this.props.toggleLogin(response.data.userID, response.data.username)
         } else {
@@ -66,8 +65,13 @@ class Header extends React.Component {
         email: email,
         username: username,
         password: password
-    }).then((response) => {console.log(history)})
-  }
+    }).then((response) => {if (response.data) {
+     this.closeModal();
+     this.props.toggleLogin(response.data.userID, response.data.username)
+    } else {
+      console.log('no go')
+      }})
+    }
 
   startLoading() {
     this.setState({

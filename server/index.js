@@ -37,12 +37,14 @@ app.get('/checkLogin', function(req, res) {
 
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
+	var origPass = req.body.password
 	db.Users.findOne({where: {username: username}}).then( async (result) => {
 		if (!result) {
 			var password = await bcrypt.hash(req.body.password, 4)
 			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
 			.spread((user, created) => {
-				res.status(200).send('New memeber created');
+				util.createSession(req, res, user.dataValues.userID, username)
+				// res.status(200).send({username: username, password: req.body.password});
 			})
 		} else {
 			res.status(200).send('Already a memeber');
