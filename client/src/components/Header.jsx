@@ -14,6 +14,7 @@ class Header extends React.Component {
 
         };
         this.closeModal = this.closeModal.bind(this)
+        this.onLogOut = this.onLogOut.bind(this)
     } 
 
   openModal() {
@@ -32,19 +33,24 @@ class Header extends React.Component {
   onLogin() {
     let username = document.querySelector('#loginUsername').value
     let password = document.querySelector('#loginPassword').value
-    axios.post('/login', {
-        username: username,
-        password: password
-    }).then((response) => {
-        if (response.data) {
-          console.log(response.data.userID)
+    axios.post('/login', { username, password }).then((response) => {
+      let userID, username;
+      ({userID, username} = response.data)
+      if (userID) {
           this.closeModal()
-          this.props.toggleLogin(response.data.userID, response.data.username)
-        } else {
-          console.log('bad login')    
-        }
-        // location.replace(location.href + 'profile')})
-    })}
+          this.props.toggleLogin(userID, username)
+      }
+    })
+  }
+
+
+  onLogOut() {
+    axios.post('/logout', {userID: this.props.userData}).then((response) => {   
+      if (response.data) {
+          this.props.toggleLogin(null, null)
+      }
+    })
+  }
   
   onLoginSuccess(method, response) {
     console.log(response)
@@ -66,7 +72,10 @@ class Header extends React.Component {
         email: email,
         username: username,
         password: password
-    }).then((response) => {console.log(history)})
+    }).then((response) => {
+      ({userID, username} = response.data)
+      this.props.toggleLogin({userID, username})    
+    })
   }
 
   startLoading() {
@@ -91,94 +100,86 @@ class Header extends React.Component {
     render() {
         return (
     <header className="nav">
-    {/* //////
-    ///////Removed inline styling here cause it overwrites mobile veiw styling
-    //////Derrick */}
         <span className="logo" ><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
         <ul id="nav">
         <li><Link to="/search" style={{color: '#ffffff', textDecoration: 'none'}}>Search</Link></li>
         {' '}
-        <li><Link to="/profile/1" style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        { 
+          this.props.isLogin &&
+          <li><Link to={`/profile/${this.props.userData}`} style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+        }
         {' '}
-        <li>
+        {
+          !this.props.isLogin &&
+          <li>
+            <Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}
+              onClick={() => this.openModal()}
+            >
+            Login
+          </Link>
 
-        <Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}
-          onClick={() => this.openModal()}
-        >
-        {/*DELETED EXTRA LOGIN HERE*/}
-          login
-        </Link>
-
-        <ReactModalLogin
-          visible={this.state.showModal}
-          onCloseModal={this.closeModal.bind(this)}
-          loading={this.state.loading}
-          error={this.state.error}
-          tabs={{
-            onChange: this.onTabsChange.bind(this)
-          }}
-          loginError={{
-            label: "Couldn't sign in, please try again."
-          }}
-          registerError={{
-            label: "Couldn't sign up, please try again."
-          }}
-          startLoading={this.startLoading.bind(this)}
-          finishLoading={this.finishLoading.bind(this)}
-          form = {{
-            onLogin: this.onLogin.bind(this),
-            loginBtn: {
-                label: 'Login'
-            },
-            loginInputs: [
-            {
-                id: 'loginUsername',
-                type: 'text',
-                placeholder: 'username'
-            },
-            {
-                id: 'loginPassword',
-                type: 'password',
-                placeholder: 'password'
-            } 
-            ],
-            onRegister: this.onRegister.bind(this),
-            registerBtn: {
-                label: 'Register'
-            },
-            registerInputs: [
-            {
-                id: 'registerEmail',
-                type: 'text',
-                placeholder: 'email'
-            },
-            {
-                id: 'registerUsername',
-                type: 'text',
-                placeholder: 'username'
-            },
-            {
-                id: 'registerPassword',
-                type: 'password',
-                placeholder: 'password'
-            }
-            ]
-          }}
-        /></li>
-
-        
-        {/*<li><Link to="/signup">Signup</Link></li>
-        {' '}*/}
-        {/* 
-        //////////////////////////////////
-        //We don't need dis anymor brada//
-        //////////////////////////////////
-          {
-            this.props.isLogin? (<li><Link to="/logout" style={{color: '#ffffff', textDecoration: 'none'}}>Logout</Link></li>) 
-            : (<li><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Login</Link></li>)
-          }     
-        */}
+          <ReactModalLogin
+            visible={this.state.showModal}
+            onCloseModal={this.closeModal.bind(this)}
+            loading={this.state.loading}
+            error={this.state.error}
+            tabs={{
+              onChange: this.onTabsChange.bind(this)
+            }}
+            loginError={{
+              label: "Couldn't sign in, please try again."
+            }}
+            registerError={{
+              label: "Couldn't sign up, please try again."
+            }}
+            startLoading={this.startLoading.bind(this)}
+            finishLoading={this.finishLoading.bind(this)}
+            form = {{
+              onLogin: this.onLogin.bind(this),
+              loginBtn: {
+                  label: 'Login'
+              },
+              loginInputs: [
+              {
+                  id: 'loginUsername',
+                  type: 'text',
+                  placeholder: 'username'
+              },
+              {
+                  id: 'loginPassword',
+                  type: 'password',
+                  placeholder: 'password'
+              } 
+              ],
+              onRegister: this.onRegister.bind(this),
+              registerBtn: {
+                  label: 'Register'
+              },
+              registerInputs: [
+              {
+                  id: 'registerEmail',
+                  type: 'text',
+                  placeholder: 'email'
+              },
+              {
+                  id: 'registerUsername',
+                  type: 'text',
+                  placeholder: 'username'
+              },
+              {
+                  id: 'registerPassword',
+                  type: 'password',
+                  placeholder: 'password'
+              }
+              ]
+            }}
+          /></li>
+        }
+        {
+          this.props.isLogin &&
+          (<li><Link to="/" onClick={this.onLogOut} style={{color: '#ffffff', textDecoration: 'none'}}>Logout</Link></li>) 
+        }     
         </ul>  
         </header>
     )

@@ -17,8 +17,8 @@ class App extends React.Component {
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
+
   toggleLogin(userID, username) {
-    console.log(userID)
     if (!userID) {
       this.setState({
         isLogin:false
@@ -26,32 +26,24 @@ class App extends React.Component {
     } else {
       this.setState({
         isLogin:true,
-        userData: userID, 
-        username: username
+        userData: userID
       })
-    }
-  }
-
-  componentDidMount() {
-    if(this.state.isLogin) {
-      // axios.get('/userData').then((results) => {
-
-      // })
     }
   }
 
   componentWillMount () {
     this.connectFirebase()
-    axios.get('/checkLogin').then((results) => {
-      if (results.data) {
-        console.log(results.data)
-        //we can use toggleLogin() here?
-        this.setState({isLogin: true, userData: results.data.userId})
+    axios.get('/checklogin').then((results) => {
+      if(results.data.userID) {
+        let userID, username;
+        ({userID, username} = results.data);
+        this.toggleLogin(userID, username);
       } else {
-        console.log('not validated')
+        this.toggleLogin(null, null);
       }
     })
   }
+
   connectFirebase () {
     const config = {
       apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
@@ -81,7 +73,7 @@ class App extends React.Component {
   render () {
     return (
       <div style={{height:'100%'}}>
-        <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin}/>
+        <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin} userData={this.state.userData}/>
         <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username}/>
         {
         //Don't modify unless you're aaron

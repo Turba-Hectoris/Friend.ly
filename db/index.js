@@ -66,7 +66,7 @@ const Events = sequelize.define('events', {
 
 })
 
-const UserEvents = sequelize.define('userEvents', {
+const UserEvents = sequelize.define('userevents', {
 	eventID: {
 		type: Sequelize.INTEGER, 
 	},
@@ -75,9 +75,14 @@ const UserEvents = sequelize.define('userEvents', {
 	}
 })
 
+
 Users.sync({force: false})
+
 Events.sync({force: false})
+
 UserEvents.sync({force: false})
+
+
 
 Users.prototype.comparePassword = function (pwAttempt, callback) {
 	bcrypt.compare(pwAttempt, this.passHash, (err, isMatch) => {

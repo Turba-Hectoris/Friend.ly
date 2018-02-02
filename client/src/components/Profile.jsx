@@ -77,14 +77,5 @@ class Profile extends React.Component {
   }
 }
 
-//changed: from export @ class... 
 export default Profile;
 
-/**
- * 1) Profile Photo
- *  a) User can update profile
- * 2) serve up active events 
- * 3) Catagories of Interest
- *  a) User can edit/update their catagories
- * 4) visual analytics of past events participated in 
- */

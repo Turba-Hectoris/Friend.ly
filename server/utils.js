@@ -1,22 +1,18 @@
 module.exports = {
 	checkUser: (req, res, next) => {
-		if(!req.session.userID) {
-			console.log('not logged in')
-			res.status(200).send('truthy');
-		} else {
-			// console.log(req.session.userID)
-			next();
+		if(req.session){
+			let userID, username;
+			({userID, username} = req.session)
+			res.status(200).send({userID, username});
 		}
+		next();
 	},
 	createSession: (req, res, userID, username) => {
 		return req.session.regenerate( () => {
 			req.session.userID = userID;
-			res.send({userID: userID, username: username})
+			req.session.username = username;
+			res.status(200).send({userID, username});
 		});
-	},
-	customStatic: (req, res) => {
-		express.static(__dirname + '/../client/dist')
-		next()
 	}
 }
 
