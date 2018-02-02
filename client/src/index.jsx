@@ -13,15 +13,23 @@ class App extends React.Component {
     super(props)
     this.state = {
       isLogin: false,
-      userId: ''
+      userData: ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
-  toggleLogin (userId) {
-    this.setState({
-      isLogin: !this.state.isLogin,
-      userId: userId
-    })
+  toggleLogin(userID, username) {
+    console.log(userID)
+    if (!userID) {
+      this.setState({
+        isLogin:false
+      })
+    } else {
+      this.setState({
+        isLogin:true,
+        userData: userID, 
+        username: username
+      })
+    }
   }
 
   componentDidMount() {
@@ -38,7 +46,7 @@ class App extends React.Component {
       if (results.data) {
         console.log(results.data)
         //we can use toggleLogin() here?
-        this.setState({isLogin: true, userId: results.data.userId})
+        this.setState({isLogin: true, userData: results.data.userId})
       } else {
         console.log('not validated')
       }
@@ -74,7 +82,7 @@ class App extends React.Component {
     return (
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin}/>
-        <Main isLogin={this.state.isLogin} userId={this.state.userId}/>
+        <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username}/>
         {
         //Don't modify unless you're aaron
       /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>

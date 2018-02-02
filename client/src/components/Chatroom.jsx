@@ -7,15 +7,26 @@ class Chatroom extends React.Component {
     this.state = {
       input: '',
       messages: [],
-      ref: firebase.database().ref('/rooms/' + this.props.roomId + '/messages/')
+      ref: firebase.database().ref('/rooms/' + 0 + '/messages/')
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
-    // console.log('gahh')
+    this.temp = null
   }
 
   //This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
+  componentWillReceiveProps(nextProps) {
+    this.setState(previousState => ({
+      messages: [],
+      ref: firebase.database().ref('/rooms/' + nextProps.roomId + '/messages/')
+    }), () => {   
+    this.temp = this.state.ref.on('child_added', 
+      snapshot => {
+        this.handleNewMessage(snapshot.val(), snapshot.key)
+    });
+    })
+  }
   componentDidMount() {
     $('.db_typingText').html('Type a message...')
     $('.db_typingText').on('focus', () => {
@@ -44,23 +55,8 @@ class Chatroom extends React.Component {
         this.handleSubmit()
       }
     })
-    // this.state.ref.once('value', snap => {
-    //   snap.forEach((child) => {
-    //     this.handleNewMessage(child.val(), child.key)
-    //   })
-    // })
-    this.state.ref.on('child_added', 
-      snapshot => {
-        // console.log('ass')
-        this.handleNewMessage(snapshot.val(), snapshot.key)
-    });
   }
   handleSubmit() {
-      //   this.state.ref.on('child_added', 
-      // snapshot => {
-      //   // console.log('ass')
-      //   this.handleNewMessage(snapshot.val(), snapshot.key)
-      // });
     if (this.state.input.length) {
       this.state.ref.push({
         username: this.props.username,
@@ -73,7 +69,6 @@ class Chatroom extends React.Component {
       $('.db_chatroom').scrollTop($('.db_chatroom')[0].scrollHeight)
     })
      $('.db_typingText').html('')  
-    // $('.db_typingText').html('Type a message...')  
     }
   }
   handleNewMessage (newMessage, key) {
