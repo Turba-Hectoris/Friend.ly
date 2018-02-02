@@ -133,8 +133,39 @@ app.get('/profile/events', (req, res) => {
   // res.end()
 })
 
+app.get('/events', (req, res) => {
+  let term = req.query.term
+  db.Events.findAll({where: {eventName: {
+  	[db.Op.iLike]: '%' + term + '%'
+  }}}).then((events) => {
+    res.send(events)
+  })
+})
+
 app.use('/*', express.static(__dirname + '/../client/dist'));
 
 app.listen(1337, function() {
   console.log('listening on port 1337!');
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
