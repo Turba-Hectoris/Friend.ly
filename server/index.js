@@ -20,9 +20,11 @@ app.use(session({
 
 
 app.get('/checklogin', util.checkUser, (req, res) => {
+	res.end()
 })
 
-app.get('/logout', util.expireSession, (req, res) => {
+app.post('/logout', util.expireSession, (req, res) => {
+	res.end()
 })
 
 app.post('/signup', (req, res) => {
@@ -59,7 +61,7 @@ app.post('/login', (req, res) => {
 					res.status(200).send({response: 'invalid password'})
 				} else {
 					let userID = user.dataValues.userID
-					util.createSession(req, res, userID, username)
+					util.createSession(req, res, userID)
 				}
 			})
 		}

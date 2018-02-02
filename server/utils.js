@@ -7,18 +7,21 @@ module.exports = {
 		}
 		next();
 	},
-	createSession: (req, res, userID, username) => {
+	createSession: (req, res, userID) => {
+		let username;
+		({username} = req.body)
 		req.session.regenerate( () => {
 			req.session.userID = userID;
 			req.session.username = username;
 			res.status(200).send({userID, username});
 		});
 	},
-	expireSession: (req, res, userID) => {
+	expireSession: (req, res) => {
+		let userID;
+		({userID} = req.body)
 		req.session.destroy((err) => {
 			res.status(200).send({userID});
 		});
-		next();
 	}
 }
 
