@@ -57,8 +57,10 @@ app.post('/login', (req, res) => {
 					res.redirect(301, '/login')
 				} else {
 					let userID = user.dataValues.userID
-					util.createSession(req, res, userID)
-					console.log(req.session)
+          // res.userID = userID
+					util.createSession(req, res, userID, username)
+					// console.log(req.session)
+          // res.send({userID: userID})
 				}
 			})
 		}
@@ -68,8 +70,17 @@ app.post('/login', (req, res) => {
 app.get('/profile', util.checkUser, (req, res) => {
 	let userID = req.session.userID
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
-		console.log(user)
+		// console.log(user)
 	})
+})
+
+app.get('/profile/events', (req, res) => {
+  let userID = req.query.userID
+  console.log(userID)
+  db.Events.findAll({where: {creatorID: userID }}).then((events) => {
+    res.send(events)
+  })
+  // res.end()
 })
 
 

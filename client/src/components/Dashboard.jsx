@@ -1,47 +1,44 @@
 import React from 'react';
 import $ from 'jquery';
 import ChatRoom from './ChatRoom.js';
-import Chatroom from './Chatroom.jsx'
+import Chatroom from './Chatroom.jsx';
+import axios from 'axios'
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'Aaron',
-      events : [ 'Hiking in the mountains', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 'Making memes', 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
-      select_event_id: 2,
-      currentRoom: 0
+      username: this.props.username,
+      events : [{roomName: 'Loading...'}],
+      select_event_id: 0,
+      currentRoom: 0,
+      roomName: 'asd'
     }
-      select_event_id: 2
-    }
-    ///////////////////////////
-    ///////BROKEN//////////////
-    ///////////////////////////
-    // firebase.auth().signInAnonymously().catch(function(error) {
-    //   console.error('Error signing on to firebase!', error.message);
-    // });
-    
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //   if (user) {
-    //     // console.log('User signed in', user);
-    //     var isAnonymous = user.isAnonymous;
-    //     var uid = user.uid;
-    //   }
-    // });
-    //   this.handleClick = this.handleClick.bind(this)
-    // // }
-    // handleClick (div, item) {
-    //   // div.target.style.backgroundColor = 'red'
-    //   this.setState({
-    //     currentRoom: item
-    //   })
-    //}
-    //////////////////////////
-
-  componentWillMount() {
-    
+    this.handleClick = this.handleClick.bind(this)
   }
+  handleClick (div, item) {
+      // div.target.style.backgroundColor = 'red'
+    console.log(item)
+    this.setState( prevState => ({
+      currentRoom: item.roomNumber,
+      roomName: item.eventName,
+      select_event_id: item.item.eventID
+    }))
+    // console.log(item)
+  }
+  componentWillMount() {
+    axios.get('/profile/events', {params: {userID: this.props.userData}})
+    .then((res) => {
+      console.log(res.data)
+      this.setState({
+        events: res.data,
+        select_event_id: res.data[0].eventID
+      })
+    })
+  }
+  componentDidMount() {
 
+  }
   render () {
     return (
       <div className="db_container">
@@ -61,7 +58,7 @@ class Dashboard extends React.Component {
             </div>
           </div>
 
-          <Chatroom roomId={this.state.select_event_id} currentRoom={this.state.currentRoom} roomName={this.state.events[this.state.currentRoom]} username={this.state.username}/>
+          <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
           <div className="db_panel_3">
             <div className="db_detail">
@@ -77,8 +74,8 @@ class Dashboard extends React.Component {
 }
 
 const EventListItem = (props) => (
-  props.selected ? (<li style={{backgroundColor: 'rgba(136, 136, 136, .25)'}}><div className="eventListItem" onClick={(e) => props.handleClick(e, props.roomNumber)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item}</span></div></li>)
-  : (<li><div className="eventListItem" onClick={(e) => props.handleClick(e, props.roomNumber)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item}</span></div></li>)
+  props.selected ? (<li style={{backgroundColor: 'rgba(136, 136, 136, .25)'}}><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
+  : (<li><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
 )
 
 export default Dashboard

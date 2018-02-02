@@ -12,15 +12,25 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogin: true,
-      userData: userProfileDummyData
+      isLogin: false,
+      userData: userProfileDummyData,
+      username: null
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
-  toggleLogin () {
-    this.setState({
-      isLogin: !this.state.isLogin
-    })
+  toggleLogin(userID, username) {
+    console.log(userID)
+    if (!userID) {
+      this.setState({
+        isLogin:false
+      })
+    } else {
+      this.setState({
+        isLogin:true,
+        userData: userID, 
+        username: username
+      })
+    }
   }
 
   componentDidMount() {
@@ -36,7 +46,7 @@ class App extends React.Component {
     axios.get('/checkLogin').then((results) => {
       if (results.data) {
         console.log(results.data)
-        this.setState({isLogin: true})
+        // this.setState({isLogin: true})
       } else {
         console.log('not validated')
       }
@@ -72,7 +82,7 @@ class App extends React.Component {
     return (
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin}/>
-        <Main isLogin={this.state.isLogin} userData={this.state.userData}/>
+        <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username}/>
         {
         //Don't modify unless you're aaron
       /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>

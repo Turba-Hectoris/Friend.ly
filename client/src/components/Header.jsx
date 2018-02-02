@@ -12,6 +12,7 @@ class Header extends React.Component {
             error: null,
             redirect: false
         };
+        this.closeModal = this.closeModal.bind(this)
     } 
 
       openModal() {
@@ -34,10 +35,12 @@ class Header extends React.Component {
         username: username,
         password: password
     }).then((response) => {
-        if (response.data === 'ok') {
-            console.log('go to your profile')
+        if (response.data) {
+          console.log(response.data.userID)
+          this.closeModal()
+          this.props.toggleLogin(response.data.userID, response.data.username)
         } else {
-        console.log('bad login')    
+          console.log('bad login')    
         }
         // location.replace(location.href + 'profile')})
     })}
