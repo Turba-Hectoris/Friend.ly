@@ -17,7 +17,7 @@ const Main = (props) => (
         }
       }/>
       <Route path="/search" render={ ({ match }) => <Search match={match}/> }/>
-      <Route path="/createEvent" render={ ({ match }) => <CreateEvent match={match}/> }/>
+      <Route path="/createEvent" render={ ({ match }) => <CreateEvent userID={props.userData} match={match}/> }/>
       <Route path="/profile/:id" render={ ({ match }) => <Profile match={match}/> }/>
     </Switch>
   </div>

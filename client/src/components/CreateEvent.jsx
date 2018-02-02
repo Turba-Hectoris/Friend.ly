@@ -72,6 +72,9 @@ class CreateEvent extends React.Component{
     }
   }
 
+  componentDidMount() {
+    console.log(this.props)
+  }
 
     // errorValidator( values ){
     //   const validateEventName = ( eventName ) => {
@@ -163,7 +166,8 @@ class CreateEvent extends React.Component{
       	eventName: this.state.submittedValues.eventName,
       	eventDesc: this.state.submittedValues.eventDesc,
       	capacity: this.state.submittedValues.capacity,
-      	category: this.state.submittedValues.category
+      	category: this.state.submittedValues.category,
+        creatorID: this.props.userID
       	})})
       .then((response) => {console.log(response)})}>
       { formApi => (
@@ -176,8 +180,6 @@ class CreateEvent extends React.Component{
           <StyledSelect field="capacity" id="capacity" options={capacity} />
           <label htmlFor="category" className="d-block">Event category</label>
           <StyledSelect field="category" id="category" options={categories} />
-          <label htmlFor="bio">Bio</label>
-          <StyledTextArea field="bio" id="bio" />
           <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
           <button type="submit" className="mb-4 btn btn-primary">Submit</button>
         </form>

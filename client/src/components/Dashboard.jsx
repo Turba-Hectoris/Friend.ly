@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 //------------deleteOne--------------//
-
+import {Link} from 'react-router-dom';
 import Chatroom from './Chatroom.jsx';
 import axios from 'axios'
 
@@ -54,7 +54,9 @@ class Dashboard extends React.Component {
               </ul>      
             </div>
             <div className="db_create">    
-                <h3 style={{padding:'0',margin:'auto'}}>Create Event</h3>
+                <h3 style={{margin: "auto"}}>
+                <Link to="/createEvent" style={{padding:'0',margin:'auto',color:"#fff"}}>Create Event</Link>
+                </h3>
             </div>
           </div>
 
