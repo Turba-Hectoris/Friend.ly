@@ -5,7 +5,7 @@ const UserEvent = (props) => {
     <div className="profile_event">
       <img src="event-pic.jpg" alt=""/>
       <hr/>
-      {props.event.eventname + '\n' + props.event.status + '\n' + props.event.date} 
+      {props.event.eventName + '\n' + props.event.status + '\n' + props.event.date} 
     </div>
   );
 }
