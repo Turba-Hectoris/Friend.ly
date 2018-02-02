@@ -8,11 +8,17 @@ module.exports = {
 		next();
 	},
 	createSession: (req, res, userID, username) => {
-		return req.session.regenerate( () => {
+		req.session.regenerate( () => {
 			req.session.userID = userID;
 			req.session.username = username;
 			res.status(200).send({userID, username});
 		});
+	},
+	expireSession: (req, res, userID) => {
+		req.session.destroy((err) => {
+			res.status(200).send({userID});
+		});
+		next();
 	}
 }
 

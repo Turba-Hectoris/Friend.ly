@@ -20,7 +20,9 @@ app.use(session({
 
 
 app.get('/checklogin', util.checkUser, (req, res) => {
-	res.end();
+})
+
+app.get('/logout', util.expireSession, (req, res) => {
 })
 
 app.post('/signup', (req, res) => {
@@ -63,6 +65,7 @@ app.post('/login', (req, res) => {
 		}
 	})
 })
+
 
 app.get('/profile/data/:userId', (req, res) => {
 	let userID = req.params.userId;
