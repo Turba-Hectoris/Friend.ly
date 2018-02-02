@@ -109,6 +109,9 @@ module.exports = {
 	Users: Users,
 	Events: Events,
 	UserEvents: UserEvents,
+<<<<<<< HEAD
 	Op: Op,
+=======
+>>>>>>> ProfileMVPv1 cont.
 	Friendships: Friendships
 }
