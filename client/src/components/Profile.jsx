@@ -10,7 +10,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userData: [] 
+      userData: '' 
     }
     // this.handleFriendClicked = this.handleFriendClicked.bind(this);
     this.getUserData = this.getUserData.bind(this)
@@ -59,16 +59,16 @@ class Profile extends React.Component {
             </div>
             <div className="profile_events">
               <div className="profile_events_container">
-                {/* {
-                  this.state.userData.events.map(event => <UserEvent key={event.eventId} event={event}/>)
-                } */}
+                {
+                  this.state.userData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
+                }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
-              {/* {
-                this.props.userData[0].friends.map(friend => <UserFriend key={friend.userId} friend={friend}/>)
-              } */}
+              {
+                this.state.userData.friends.map(friend => <UserFriend  friend={friend}/>)
+              }
               </div>
             </div>
           </div>  

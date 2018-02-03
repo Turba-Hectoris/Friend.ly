@@ -72,8 +72,8 @@ app.post('/login', (req, res) => {
 
 
 
-app.get('/profile/data/:userId', (req, res) => {
-	let userID = req.params.userId;
+app.get('/profile/data/:userID', (req, res) => {
+	let userID = req.params.userID;
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
 		let userClientSideData = {
 			userID: user.dataValues.userID,
@@ -85,8 +85,35 @@ app.get('/profile/data/:userId', (req, res) => {
 			createdAt: user.dataValues.createdAt,
 			updatedAt: user.dataValues.updatedAt,
 		};
+			//FRIENDS ---Refactor to join tables
+			db.Friendships.findAll({where: {userID: userID}}).then((friends) => {
+				let friendsData = [];
 
-		res.status(200).send(userClientSideData);
+				friendsData = friends.map(({ friendID }) => {
+					return db.Users.findOne({where: {userID: friendID}})
+				})
+
+				Promise.all(friendsData)
+				.then((results) => {
+					//inserted friends HERE
+					userClientSideData.friends = results;
+
+						//EVENTS ---Refactor to join tables
+						db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
+							let eventsData = [];
+
+							eventsData = events.map(({ eventID }) => {
+								return db.Events.findOne({where: {eventID: eventID}})
+							})
+
+							Promise.all(eventsData)
+							.then((results) => {
+								userClientSideData.events = results;
+								res.status(200).send(userClientSideData);
+							})
+						})
+				})
+			})
 	})
 })
 

@@ -95,13 +95,30 @@ UserEvents.sync({force: false})
 
 Friendships.sync({force: false})
 
-
-
 Users.prototype.comparePassword = function (pwAttempt, callback) {
 	bcrypt.compare(pwAttempt, this.passHash, (err, isMatch) => {
 		callback(isMatch)
 	})
 }
+
+Friendships.sync({force: true}).then(() => {
+	Friendships.bulkCreate([
+		{userID: 6, friendID: 1},
+		{userID: 6, friendID: 3},
+		{userID: 6, friendID: 5}
+	])
+})
+
+UserEvents.sync({force: true}).then(() => {
+	UserEvents.bulkCreate([
+		{userID: 6, eventID: 3},
+		{userID: 6, eventID: 4},
+		{userID: 6, eventID: 5},
+		{userID: 6, eventID: 6},
+		{userID: 6, eventID: 7},
+		{userID: 6, eventID: 8},
+	])
+})
 
 
 module.exports = {
