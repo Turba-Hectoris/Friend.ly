@@ -1,85 +1,214 @@
 module.exports = [{
-  userId: 1,
-  username: 'Derrick',
-  catagories: [
-    {
-      "activities": "Outdoors",
-      "value": 30
-    }, {
-      "activities": "Nightlife",
-      "value": 20
-    }, {
-      "activities": "Movies",
-      "value": 65
-    }, {
-      "activities": "Board Games",
-      "value": 39
-    }, {
-      "activities": "Dancing",
-      "value": 19
-    }, {
-      "activities": "Sports",
-      "value": 10
+  bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+  createdAt: "2018-02-02T19:28:47.966Z",
+  email: "aaron@aaron.com",
+  events: [{
+    capacity: 
+    222,
+    category:
+    null,
+    createdAt:
+    "2018-02-02T19:30:18.076Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T19:30:17.815Z",
+    eventDesc:
+    "i wanna climb a bunch of rocks!",
+    eventID:
+    3,
+    eventName:
+    "rock climbing",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T19:30:18.076Z",
     }
-  ],
-  bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt numquam, fugit assumenda qui a, iste debitis perferendis eligendi earum officia laborum et ad recusandae excepturi, accusamus dignissimos voluptatum. Provident, deleniti.",
-  email: "derrickytheodore@cool.com",
-  gender: 'M',
-  friends: [
+    ,
     {
-      userId: 2,
-      username: 'Aaron',
-      bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt numquam, fugit assumenda qui a, iste debitis perferendis eligendi earum officia laborum et ad recusandae excepturi, accusamus dignissimos voluptatum. Provident, deleniti.",
-      email: "derrickytheodore@cool.com",
-      gender: 'M',
-      
+    capacity:
+    3,
+    category:
+    null,
+    createdAt:
+    "2018-02-02T19:30:49.386Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T19:30:49.019Z",
+    eventDesc:
+    "Rock on broda!",
+    eventID:
+    4,
+    eventName:
+    "air guitar",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T19:30:49.386Z",
     },
     {
-      userId: 3,
-      username: 'Jackie',
-      bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt numquam, fugit assumenda qui a, iste debitis perferendis eligendi earum officia laborum et ad recusandae excepturi, accusamus dignissimos voluptatum. Provident, deleniti.",
-      email: "derrickytheodore@cool.com",
-      gender: 'M',
+    capacity:
+    4,
+    category:
+    null,
+    createdAt:
+    "2018-02-02T19:31:07.856Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T19:31:07.621Z",
+    eventDesc:
+    "I'm sick and tired of these damn monkeys on this damn plane!!",
+    eventID:
+    5,
+    eventName:
+    "wild monkey taming",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T19:31:07.856Z",
     },
     {
-      userId: 4,
-      username: 'Billy',
-      bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt numquam, fugit assumenda qui a, iste debitis perferendis eligendi earum officia laborum et ad recusandae excepturi, accusamus dignissimos voluptatum. Provident, deleniti.",
-      email: "derrickytheodore@cool.com",
-      gender: 'M',
-      
-    }
-  ],
-  ///////////////////////////////
-  //Add a catagory to events???//
-  ///////////////////////////////
-  events: [
-    {
-      eventId: 0,
-      eventname: 'Aaron\'s Birthday',
-      status: 'active',
-      creatorid: 1,
-      date: new Date(),
-      capacity: 4,
-      imgLink: 'eventImg.png',
+    capacity:
+    4,
+    category:
+    null,
+    createdAt:
+    "2018-02-02T19:31:23.295Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T19:31:23.049Z",
+    eventDesc:
+    "JK let's go to peter dillon's",
+    eventID:
+    6,
+    eventName:
+    "bible study",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T19:31:23.295Z",
     },
     {
-      eventId: 3,
-      eventname: 'Hike Everest',
-      status: 'active',
-      creatorid: 3,
-      date: new Date(),
-      capacity: 2, 
-      imgLink: 'eventImg.png',
+    capacity:
+    1,
+    category:
+    null,
+    createdAt:
+    "2018-02-02T19:31:37.735Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T19:31:37.705Z",
+    eventDesc:
+    "dancing on my own by robyn",
+    eventID:
+    7,
+    eventName:
+    "impromptu dance party",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T19:31:37.735Z",
     },
     {
-      eventId: 5,
-      eventname: 'Peter Dillons',
-      status: 'active',
-      creatorid: 2,
-      date: new Date(),
-      capacity: 4,
-      imgLink: 'eventImg.png',
+    capacity:
+    2,
+    category:
+    "food",
+    createdAt:
+    "2018-02-02T20:02:14.492Z",
+    creatorID:
+    6,
+    date:
+    "2018-02-02T20:02:14.443Z",
+    eventDesc:
+    "time for the biggest party of them all",
+    eventID:
+    8,
+    eventName:
+    "big bad party",
+    imgLink:
+    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+    status:
+    "active",
+    updatedAt:
+    "2018-02-02T20:02:14.492Z",
+    }],
+    friends: [{
+    bio: 
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+    categories:
+    null,
+    createdAt:
+    "2018-02-02T15:05:48.874Z",
+    email:
+    "jackie@test.com",
+    gender:
+    "M",
+    passHash:
+    "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+    updatedAt:
+    "2018-02-02T15:05:48.874Z",
+    userID:
+    1,
+    username:
+    "jackie",
     },
-  ]
+    {
+    bio:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+    categories:
+    null,
+    createdAt:
+    "2018-02-02T16:20:41.432Z",
+    email:
+    "dad@daddi.com",
+    gender:
+    "M",
+    passHash:
+    "$2a$04$h5la5c6mwCVh7FlCp9zSG.JRHHwizqS3dQzcGTmke5luiZkq7eaSa",
+    updatedAt:
+    "2018-02-02T16:20:41.432Z",
+    userID:
+    3,
+    username:
+    "sam"
+    },
+    {
+    bio:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+    categories:
+    null,
+    createdAt:
+    "2018-02-02T18:43:15.221Z",
+    email:
+    "email",
+    gender:
+    "M",
+    passHash:
+    "$2a$04$RjiJgvhW9vn8nUcvasZN7.hjW4N/E19kkKLe3NS9HAnJV4pWY1L22",
+    updatedAt:
+    "2018-02-02T18:43:15.221Z",
+    userID:
+    5,
+    username:
+    "jim",
+    }],
+  gender: "M",
+  updatedAt: "2018-02-02T19:28:47.966Z",
+  userID: 6,
+  username: "aaron"
 }]
