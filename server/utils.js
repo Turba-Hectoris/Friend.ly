@@ -16,12 +16,13 @@ module.exports = {
 			res.status(200).send({userID, username});
 		});
 	},
-	expireSession: (req, res) => {
+	expireSession: (req, res, next) => {
 		let userID;
 		({userID} = req.body)
 		req.session.destroy((err) => {
-			res.status(200).send({userID});
+			res.status(200).send({"response_message": `${userID} session destroyed`});
 		});
+		next();
 	}
 }
 
