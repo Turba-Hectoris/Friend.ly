@@ -25,12 +25,24 @@ class Profile extends React.Component {
   }
 
   handleFriendClicked(id) {
-    this.setState({clickTarget: id})
+    getUserData(id)
   }
 
   componentDidMount() {
     this.getUserData(this.props.match.params.id)
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextState.clickTarget !== this.state.clickTarget
+  // }
+
+  // componentWillUpdate() {
+  //   this.getUserData(this.props.match.params.id)
+  // }
+
+  // componentDidUpdate() {
+  //   this.getUserData(this.props.match.params.id)
+  // }
 
   render() {
       if(!this.state.userData) {
