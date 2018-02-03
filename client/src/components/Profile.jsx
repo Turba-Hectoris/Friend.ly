@@ -1,7 +1,5 @@
 import React from 'react';
-import UserChart from './UserChart.jsx';
-import UserFriend from './UserFriend.jsx';
-import UserEvent from './UserEvent.jsx';
+import { UserChart, UserFriend, UserEvent } from './ProfileComponents/templates.jsx';
 import axios from 'axios';
 
 ///////////////////////////////////////////////////////////

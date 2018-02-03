@@ -332,9 +332,10 @@ p {
   height: 35vh;
 }
 .profile_image > img {
-  margin: 0 20% 0 20%;
-  height: 100%;
-  border-radius: 50%;
+    margin: 0 20% 0 20%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid rgb(21, 116, 205);
 }
 
 .profile_username {
@@ -356,10 +357,18 @@ p {
   border-radius: 50%; 
 }
 
+.profile_event {
+}
+
+.profile_friend {
+}
+
 .profile_friend > a > img {
   width: 50%;
   height: auto;
-  border-radius: 50%; 
+  border-radius: 50%;
+  border: 5px solid rgba(21, 116, 205, .2);
+ 
 }
 
 .profile_data {
@@ -399,21 +408,6 @@ p {
   flex-direction: row;
 }
 
-.profile_event {
-}
-
-.profile_friend {
-}
-
-/* .profile_friend_image  {
-  margin: 0 20% 0 20%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.profile_friend_image > img {
-  height: 100%;
-} */
 
 /*****************************************************************/
                        /* Search CSS */
