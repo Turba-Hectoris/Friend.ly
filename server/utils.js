@@ -5,7 +5,6 @@ module.exports = {
 			({userID, username} = req.session)
 			res.status(200).send({userID, username});
 		}
-		next();
 	},
 	createSession: (req, res, userID) => {
 		let username;

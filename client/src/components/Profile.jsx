@@ -10,9 +10,10 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userData: '' 
+      userData: '',
+      clickTarget: '' 
     }
-    // this.handleFriendClicked = this.handleFriendClicked.bind(this);
+    this.handleFriendClicked = this.handleFriendClicked.bind(this);
     this.getUserData = this.getUserData.bind(this)
   }
   
@@ -23,10 +24,25 @@ class Profile extends React.Component {
     })
   }
 
+  handleFriendClicked(id) {
+    getUserData(id)
+  }
+
   componentDidMount() {
     this.getUserData(this.props.match.params.id)
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextState.clickTarget !== this.state.clickTarget
+  // }
+
+  // componentWillUpdate() {
+  //   this.getUserData(this.props.match.params.id)
+  // }
+
+  // componentDidUpdate() {
+  //   this.getUserData(this.props.match.params.id)
+  // }
 
   render() {
       if(!this.state.userData) {
@@ -41,7 +57,7 @@ class Profile extends React.Component {
           <div className="profile">
             <div className="profile_data">
             {/* catagories={this.props.userData.catagories} */}
-              <UserChart />
+              {/* <UserChart /> */}
             </div>
             <div className="profile_image">
               <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
@@ -60,14 +76,14 @@ class Profile extends React.Component {
             <div className="profile_events">
               <div className="profile_events_container">
                 {
-                  this.state.userData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
+                  Boolean(this.state.userData.events.length) && this.state.userData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
                 }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
               {
-                this.state.userData.friends.map(friend => <UserFriend  friend={friend}/>)
+                Boolean(this.state.userData.friends.length) && this.state.userData.friends.map(friend => <UserFriend handleFriendClicked={this.handleFriendClicked} key={friend.userID} friend={friend}/>)
               }
               </div>
             </div>
