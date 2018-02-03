@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 const UserFriend = (props) => {
   return (
     <div className="profile_friend">
-      <Link onClick={props.handleFriendClicked} to={`/profile/${props.friend.userID}`}>
+      <Link onClick={() => {props.handleFriendClicked(props.friend.userID)}} to={`/profile/${props.friend.userID}`}>
         <img className="" src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
       </Link>
         <hr/>
