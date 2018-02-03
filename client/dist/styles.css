@@ -356,6 +356,12 @@ p {
   border-radius: 50%; 
 }
 
+.profile_friend > a > img {
+  width: 50%;
+  height: auto;
+  border-radius: 50%; 
+}
+
 .profile_data {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -379,8 +385,6 @@ p {
 }
 
 .profile_friends {
-  display: flex;
-  flex-direction: row;
   grid-column: 1 / 4;
   grid-row: 4 / 5;
 }
@@ -400,6 +404,16 @@ p {
 
 .profile_friend {
 }
+
+/* .profile_friend_image  {
+  margin: 0 20% 0 20%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile_friend_image > img {
+  height: 100%;
+} */
 
 /*****************************************************************/
                        /* Search CSS */
