@@ -18,7 +18,6 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-
 app.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
 })
@@ -69,8 +68,6 @@ app.post('/login', (req, res) => {
 		}
 	})
 })
-
-
 
 app.get('/profile/data/:userID', (req, res) => {
 	let userID = req.params.userID;

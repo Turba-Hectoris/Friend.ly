@@ -1,54 +1,42 @@
 import React from 'react';
-import UserChart from './UserChart.jsx';
-import UserFriend from './UserFriend.jsx';
-import UserEvent from './UserEvent.jsx';
 import axios from 'axios';
+import { UserChart, UserFriend, UserEvent, ImageEditIcon } from './ProfileComponents/components.jsx';
 
+const sha1Encrypt = require('sha1');
+
+
+///////////////////////////////////////////////////////////
+////////////DUMMY DATA FOR NO INTERNET ACCESS//////////////
+import  dummyData from '../../../userProfileDummyData.js';
+///////////////////////////////////////////////////////////
 
 
 class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userData: '',
-      clickTarget: '' 
+      userDisplayedData: dummyData[0]
     }
-    this.handleFriendClicked = this.handleFriendClicked.bind(this);
-    this.getUserData = this.getUserData.bind(this)
+    this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
+    this.uploadImageFile = this.uploadImageFile.bind(this)
   }
   
-  getUserData(user_id) {
+  componentDidMount() {
+    this.getUserDisplayedData(this.props.match.params.id)
+  }  
+
+  getUserDisplayedData(user_id) {
     axios.get(`/profile/data/${user_id}`)
     .then((results) => {
-      this.setState({userData: results.data})
+      this.setState({userDisplayedData: results.data})
     })
   }
 
-  handleFriendClicked(id) {
-    getUserData(id)
-  }
-
-  componentDidMount() {
-    this.getUserData(this.props.match.params.id)
-  }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return nextState.clickTarget !== this.state.clickTarget
-  // }
-
-  // componentWillUpdate() {
-  //   this.getUserData(this.props.match.params.id)
-  // }
-
-  // componentDidUpdate() {
-  //   this.getUserData(this.props.match.params.id)
-  // }
-
   render() {
-      if(!this.state.userData) {
+      if(!this.state.userDisplayedData) {
         return(
           <div className="profile_container">
-            <img src="https://hiretual.com/assets/img/loading.gif" alt=""/>
+            <img className="profile_loading" src="https://hiretual.com/assets/img/loading.gif" alt=""/>
           </div> 
         ) 
       } else {
@@ -56,34 +44,34 @@ class Profile extends React.Component {
         <div className="profile_container">
           <div className="profile">
             <div className="profile_data">
-            {/* catagories={this.props.userData.catagories} */}
-              {/* <UserChart /> */}
+              <UserChart catagories={this.state.userDisplayedData.catagories}/>
             </div>
             <div className="profile_image">
               <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
             </div>
+              <ImageEditIcon />
             <div className="profile_bio">
-              { this.state.userData.bio}
+              { this.state.userDisplayedData.bio}
               <hr/>
               {
-                this.state.userData.gender + '\n' +
-                this.state.userData.email
+                this.state.userDisplayedData.gender + '\n' +
+                this.state.userDisplayedData.email
               }
             </div>
             <div className="profile_username">
-              <p> {this.state.userData.username} </p>
+              <p> {this.state.userDisplayedData.username} </p>
             </div>
             <div className="profile_events">
               <div className="profile_events_container">
                 {
-                  Boolean(this.state.userData.events.length) && this.state.userData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
+                  Boolean(this.state.userDisplayedData.events.length) && this.state.userDisplayedData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
                 }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
               {
-                Boolean(this.state.userData.friends.length) && this.state.userData.friends.map(friend => <UserFriend handleFriendClicked={this.handleFriendClicked} key={friend.userID} friend={friend}/>)
+                Boolean(this.state.userDisplayedData.friends.length) && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend}/>)
               }
               </div>
             </div>

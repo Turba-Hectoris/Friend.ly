@@ -1,8 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import $ from 'jquery';
+import { CloudinaryContext, Image, Transformation, Video } from 'cloudinary-react';
+import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../../config.js';
+import cloudinary from 'cloudinary-core';
+
+const cloud_name = cloudinary_cloud_name;
+const url = `https://api.cloudinary.com/v1_1${cloudName}/image/upload`;
+const timestamp = Date.now()/1000;
+const upload_preset = cloudinary_cloud_upload_presets;
+const cloudinaryCore = new cloudinary.Cloudinary({
+    cloud_name,
+    api_key: cloudinary_API,
+    api_secret: cloudinary_SECRET,
+    upload_preset,
+});
 
 
-class userChart extends React.Component {
+
+export class UserChart extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -92,4 +110,45 @@ class userChart extends React.Component {
   }
 }
 
-export default userChart;
+export const UserFriend = (props) => {
+	return (
+			<div className="profile_friend">
+			<Link onClick={() => {props. getUserDisplayedData(props.friend.userID)}} to={`/profile/${props.friend.userID}`}>
+					<img className="" src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
+			</Link>
+					<hr/>
+			{props.friend.username + '\n' + props.friend.email + '\n' + props.friend.gender} 
+			</div>
+	);
+}
+
+export const UserEvent = (props) => {
+  return (
+    <div className="profile_event">
+      <img src="https://d.wildapricot.net/images/newsblog/bigstock-events-7444309.jpg" alt=""/>
+      <hr/>
+      {props.event.eventName + '\n' + props.event.status + '\n' + props.event.date} 
+    </div>
+  );
+}
+
+export class ImageEditIcon extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+
+	onDrop(files) {
+        const image = files[0];
+	}
+
+	render() {
+		return (
+				// <img src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
+				<Dropzone onDrop={this.onDrop.bind(this)} >
+					<p>{"Drop in here"}</p>
+				</Dropzone >
+		)
+	}
+}
+
+
