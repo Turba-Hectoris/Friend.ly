@@ -17,9 +17,13 @@ class Profile extends React.Component {
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
   }
   
-  componentDidMount() {
-    this.getUserDisplayedData(this.props.match.params.id)
-  }  
+  componentWillReceiveProps(nextProps) {
+    if(this.props.match.params.id !== nextProps.match.params.id) {
+      this.getUserDisplayedData(nextProps.match.params.id)
+    } else {
+      this.getUserDisplayedData(this.props.match.params.id)
+    }
+  }
 
   getUserDisplayedData(user_id) {
     axios.get(`/profile/data/${user_id}`)
@@ -43,7 +47,7 @@ class Profile extends React.Component {
               <UserChart catagories={this.state.userDisplayedData.catagories}/>
             </div>
             <div className="profile_image">
-              <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
+                <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
             </div>
               {/* <ImageEditIcon /> */}
             <div className="profile_bio">
