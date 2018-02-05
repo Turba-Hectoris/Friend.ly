@@ -2,9 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { UserChart, UserFriend, UserEvent, ImageEditIcon } from './ProfileComponents/components.jsx';
 
-const sha1Encrypt = require('sha1');
-
-
 ///////////////////////////////////////////////////////////
 ////////////DUMMY DATA FOR NO INTERNET ACCESS//////////////
 import  dummyData from '../../../userProfileDummyData.js';
@@ -15,7 +12,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userDisplayedData: dummyData[0]
+      userDisplayedData: ''
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
   }
@@ -48,7 +45,7 @@ class Profile extends React.Component {
             <div className="profile_image">
               <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
             </div>
-              <ImageEditIcon />
+              {/* <ImageEditIcon /> */}
             <div className="profile_bio">
               { this.state.userDisplayedData.bio}
               <hr/>
@@ -63,15 +60,15 @@ class Profile extends React.Component {
             <div className="profile_events">
               <div className="profile_events_container">
                 {
-                  Boolean(this.state.userDisplayedData.events.length) && this.state.userDisplayedData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
+                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
                 }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
-              {
-                Boolean(this.state.userDisplayedData.friends.length) && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend}/>)
-              }
+                {
+                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend}/>)
+                }
               </div>
             </div>
           </div>  

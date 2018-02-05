@@ -163,7 +163,7 @@ module.exports = [{
     updatedAt:
     "2018-02-02T15:05:48.874Z",
     userID:
-    1,
+    11,
     username:
     "jackie",
     },
@@ -206,7 +206,107 @@ module.exports = [{
     5,
     username:
     "jim",
-    }],
+    },
+    {
+      bio: 
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+      categories:
+      null,
+      createdAt:
+      "2018-02-02T15:05:48.874Z",
+      email:
+      "jackie@test.com",
+      gender:
+      "M",
+      passHash:
+      "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+      updatedAt:
+      "2018-02-02T15:05:48.874Z",
+      userID:
+      1,
+      username:
+      "jackie",
+      },
+      {
+        bio: 
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+        categories:
+        null,
+        createdAt:
+        "2018-02-02T15:05:48.874Z",
+        email:
+        "jackie@test.com",
+        gender:
+        "M",
+        passHash:
+        "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+        updatedAt:
+        "2018-02-02T15:05:48.874Z",
+        userID:
+        7,
+        username:
+        "jackie",
+        },
+        {
+          bio: 
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+          categories:
+          null,
+          createdAt:
+          "2018-02-02T15:05:48.874Z",
+          email:
+          "jackie@test.com",
+          gender:
+          "M",
+          passHash:
+          "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+          updatedAt:
+          "2018-02-02T15:05:48.874Z",
+          userID:
+          8,
+          username:
+          "jackie",
+          },
+          {
+            bio: 
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+            categories:
+            null,
+            createdAt:
+            "2018-02-02T15:05:48.874Z",
+            email:
+            "jackie@test.com",
+            gender:
+            "M",
+            passHash:
+            "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+            updatedAt:
+            "2018-02-02T15:05:48.874Z",
+            userID:
+            9,
+            username:
+            "jackie",
+            },
+            {
+              bio: 
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
+              categories:
+              null,
+              createdAt:
+              "2018-02-02T15:05:48.874Z",
+              email:
+              "jackie@test.com",
+              gender:
+              "M",
+              passHash:
+              "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
+              updatedAt:
+              "2018-02-02T15:05:48.874Z",
+              userID:
+              10,
+              username:
+              "jackie",
+              }],
   gender: "M",
   updatedAt: "2018-02-02T19:28:47.966Z",
   userID: 6,

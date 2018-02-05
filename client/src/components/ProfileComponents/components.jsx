@@ -7,6 +7,7 @@ import { CloudinaryContext, Image, Transformation, Video } from 'cloudinary-reac
 import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../../config.js';
 import cloudinary from 'cloudinary-core';
 
+const sha1Encrypt = require('sha1');
 const cloud_name = cloudinary_cloud_name;
 const url = `https://api.cloudinary.com/v1_1${cloud_name}/image/upload`;
 const timestamp = Date.now()/1000;
@@ -23,6 +24,7 @@ const cloudinaryCore = new cloudinary.Cloudinary({
 export class UserChart extends React.Component {
   constructor(props) {
     super(props)
+    this.makeGraph.bind(this);
   }
 
   componentDidMount() {
