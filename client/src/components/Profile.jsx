@@ -51,12 +51,15 @@ class Profile extends React.Component {
             </div>
               {/* <ImageEditIcon /> */}
             <div className="profile_bio">
+              <p>
               { this.state.userDisplayedData.bio}
+              </p>
               <hr/>
-              {
-                this.state.userDisplayedData.gender + '\n' +
-                this.state.userDisplayedData.email
-              }
+              <p>
+                {
+                  `${this.state.userDisplayedData.gender}${'\n'}${this.state.userDisplayedData.email}`
+                }
+              </p>
             </div>
             <div className="profile_username">
               <p> {this.state.userDisplayedData.username} </p>
