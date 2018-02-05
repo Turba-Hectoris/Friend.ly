@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-//------------deleteOne--------------//
 import {Link} from 'react-router-dom';
 import Chatroom from './Chatroom.jsx';
 import axios from 'axios'
