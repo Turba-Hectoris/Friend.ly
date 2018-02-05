@@ -8,7 +8,7 @@ import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cl
 import cloudinary from 'cloudinary-core';
 
 const cloud_name = cloudinary_cloud_name;
-const url = `https://api.cloudinary.com/v1_1${cloudName}/image/upload`;
+const url = `https://api.cloudinary.com/v1_1${cloud_name}/image/upload`;
 const timestamp = Date.now()/1000;
 const upload_preset = cloudinary_cloud_upload_presets;
 const cloudinaryCore = new cloudinary.Cloudinary({
