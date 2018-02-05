@@ -18,7 +18,6 @@ class Profile extends React.Component {
       userDisplayedData: dummyData[0]
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
-    this.uploadImageFile = this.uploadImageFile.bind(this)
   }
   
   componentDidMount() {
