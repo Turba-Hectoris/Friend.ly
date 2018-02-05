@@ -7,6 +7,7 @@ import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
 import userProfileDummyData from '../../userProfileDummyData.js';
+import {roomsRef} from '../../firebaseConfig.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class App extends React.Component {
     this.state = {
       isLogin: false,
       userData: '',
+      username: ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
@@ -22,18 +24,19 @@ class App extends React.Component {
     if (!userID) {
       this.setState({
         isLogin:false,
-        userData: ''
+        userData: '',
+        username: ''
       })
     } else {
       this.setState({
         isLogin:true,
-        userData: userID
+        userData: userID,
+        username: username
       })
     }
   }
 
   componentWillMount () {
-    this.connectFirebase()
     axios.get('/checklogin').then((results) => {
       if(results.data.userID) {
         let userID, username;
@@ -45,31 +48,16 @@ class App extends React.Component {
     })
   }
 
-  connectFirebase () {
-    const config = {
-      apiKey: "AIzaSyBMGuFn8bHzGvsh86e9gKaAN1-RGF15wko",
-      authDomain: "friendly-af05e.firebaseapp.com",
-      databaseURL: "https://friendly-af05e.firebaseio.com",
-      projectId: "friendly-af05e",
-      storageBucket: "friendly-af05e.appspot.com",
-      messagingSenderId: "122713429777"
-    };
-    firebase.initializeApp(config);
-  }
-
   createNewRoom (roomId) {
     //after create an event, get the eventId as roomId to create a new room
-    let dbConnection = firebase.database().ref('/rooms');
     roomId.messages = [];
-    dbConnection.push(roomId);
+    roomsRef.push(roomId);
   }
 
   deleteRoom (roomId) {
     // when event expired, delete the chatroom as well, if so desired
-    firebase.database().ref('/rooms/' + roomId).remove();
+    roomsRef.child(roomId).remove();
   }
-
-  
 
   render () {
     return (
