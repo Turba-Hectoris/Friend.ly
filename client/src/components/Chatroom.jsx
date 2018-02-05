@@ -1,5 +1,6 @@
-import React from 'react'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
+import {roomsRef, timestamp, rootRef} from '../../../firebaseConfig.js';
 
 class Chatroom extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class Chatroom extends React.Component {
     this.state = {
       input: '',
       messages: [],
-      ref: firebase.database().ref('/rooms/' + 0 + '/messages/')
+      ref: roomsRef.child('0').child('/messages/')
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
@@ -20,7 +21,7 @@ class Chatroom extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState(previousState => ({
       messages: [],
-      ref: firebase.database().ref('/rooms/' + nextProps.roomId + '/messages/')
+      ref: roomsRef.child(nextProps.roomId).child('/messages/')
     }), () => {   
     this.temp = this.state.ref.on('child_added', 
       snapshot => {
@@ -59,11 +60,12 @@ class Chatroom extends React.Component {
     })
   }
   handleSubmit() {
+    console.log(this.props.username, this.state.input, timestamp)
     if (this.state.input.length) {
       this.state.ref.push({
         username: this.props.username,
         message: this.state.input,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
+        timestamp: timestamp
       })
     this.setState({
       input: ''
