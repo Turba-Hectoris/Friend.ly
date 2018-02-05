@@ -14,7 +14,7 @@ class Chatroom extends React.Component {
     this.temp = null
   }
 
-  //This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
+  // This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
 
   componentWillReceiveProps(nextProps) {

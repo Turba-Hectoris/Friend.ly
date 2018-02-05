@@ -1,6 +1,9 @@
 import React from 'react';
-import { UserChart, UserFriend, UserEvent } from './ProfileComponents/templates.jsx';
 import axios from 'axios';
+import { UserChart, UserFriend, UserEvent, ImageEditIcon } from './ProfileComponents/components.jsx';
+
+const sha1Encrypt = require('sha1');
+
 
 ///////////////////////////////////////////////////////////
 ////////////DUMMY DATA FOR NO INTERNET ACCESS//////////////
@@ -12,25 +15,21 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userDisplayedData: ''
+      userDisplayedData: dummyData[0]
     }
-    this.handleFriendClicked = this.handleFriendClicked.bind(this);
-    this.getUserDisplayedData = this.getUserDisplayedData.bind(this)
+    this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
+    this.uploadImageFile = this.uploadImageFile.bind(this)
   }
   
+  componentDidMount() {
+    this.getUserDisplayedData(this.props.match.params.id)
+  }  
+
   getUserDisplayedData(user_id) {
     axios.get(`/profile/data/${user_id}`)
     .then((results) => {
       this.setState({userDisplayedData: results.data})
     })
-  }
-
-  handleFriendClicked(id) {
-    getUserDisplayedData(id)
-  }
-
-  componentDidMount() {
-    this.getUserDisplayedData(this.props.match.params.id)
   }
 
   render() {
@@ -45,12 +44,12 @@ class Profile extends React.Component {
         <div className="profile_container">
           <div className="profile">
             <div className="profile_data">
-            {/* catagories={this.props.userDisplayedData.catagories} */}
-              {/* <UserChart /> */}
+              <UserChart catagories={this.state.userDisplayedData.catagories}/>
             </div>
             <div className="profile_image">
               <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
             </div>
+              <ImageEditIcon />
             <div className="profile_bio">
               { this.state.userDisplayedData.bio}
               <hr/>
@@ -72,7 +71,7 @@ class Profile extends React.Component {
             <div className="profile_friends">
               <div className="profile_friends_container">
               {
-                Boolean(this.state.userDisplayedData.friends.length) && this.state.userDisplayedData.friends.map(friend => <UserFriend handleFriendClicked={this.handleFriendClicked} key={friend.userID} friend={friend}/>)
+                Boolean(this.state.userDisplayedData.friends.length) && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend}/>)
               }
               </div>
             </div>

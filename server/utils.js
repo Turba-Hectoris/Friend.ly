@@ -22,7 +22,6 @@ module.exports = {
 		req.session.destroy((err) => {
 			res.status(200).send({"response_message": `${userID} session destroyed`});
 		});
-		next();
 	}
 }
 

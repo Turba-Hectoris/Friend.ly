@@ -322,9 +322,10 @@ p {
 .profile {
   display: grid;
   height: 93vh;
+  width: 100vw;
   grid-template-columns: minmax(23vw, 24vw);
   grid-template-rows: 23vh 10vh 30vh 30vh;
-  width: 100vw;
+  padding: 3px;
 }
 
 #chartdiv {
@@ -336,6 +337,11 @@ p {
     height: 100%;
     border-radius: 50%;
     border: 5px solid rgb(21, 116, 205);
+}
+
+.profile_image > a > img {
+  width: 10%;
+  height: auto;
 }
 
 .profile_username {
