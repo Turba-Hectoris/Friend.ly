@@ -141,9 +141,10 @@ export class ImageEditIcon extends React.Component {
       // Push all the axios request promise into a single array
       const image = files[0];
       // Initial FormData
+      this.props
       const formData = new FormData();
       formData.append("file", image);
-      form.append('my_field', `${this.props.loggedInUser.userID}`);
+      formData.append('public_id', `${this.props.loggedInUserID}`);
       formData.append("tags", `Friend.ly, profile picture`);
       formData.append("upload_preset", cloudinary_cloud_upload_presets); // Replace the preset name with your own
       formData.append("api_key", cloudinary_API); // Replace API key with your own Cloudinary key
@@ -161,6 +162,7 @@ export class ImageEditIcon extends React.Component {
 	render() {
 		return (
       <Dropzone 
+        loggedInUserID={this.props.loggedInUserID}
         onDrop={this.handleDrop}
         style={{gridColumn: "1 / 2", gridRow: "1 / 2"}} 
       >

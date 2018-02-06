@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import $ from 'jquery';
 import { UserChart, UserFriend, UserEvent, ImageEditIcon } from './ProfileComponents/components.jsx';
-import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../../config.js';
+import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../config.js';
 import cloudinary from 'cloudinary-core';
 ///////////////////////////////////////////////////////////
 ////////////DUMMY DATA FOR NO INTERNET ACCESS//////////////
@@ -35,6 +36,10 @@ class Profile extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.getUserDisplayedData(this.props.match.params.id)    
+  }
+
   getUserDisplayedData(user_id) {
     axios.get(`/profile/data/${user_id}`)
     .then((results) => {
@@ -62,7 +67,7 @@ class Profile extends React.Component {
             </div>
             <div className="profile_image">
             {
-              this.state.edit ? <ImageEditIcon loggedInUser={this.props.loggedInUser}/> : cloudinary.imageTag('mmzvaba7ec84hfh7wu4j.png').toHtml()
+              this.state.edit ? <ImageEditIcon loggedInUserID={this.props.loggedInUserID}/> : <img src={`http://res.cloudinary.com/${cloudinary_cloud_name}/image/upload/v1517679389/${this.state.userDisplayedData.userID}.jpg`} />
             }
             </div>
             <div className="profile_bio">
