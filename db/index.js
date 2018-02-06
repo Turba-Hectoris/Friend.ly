@@ -59,7 +59,10 @@ const Events = sequelize.define('events', {
 	creatorID: {
 		type: Sequelize.INTEGER
 	},
-	date: {
+	startDate: {
+		type: Sequelize.DATE
+	},
+	endDate: {
 		type: Sequelize.DATE
 	},
 	capacity: {
