@@ -1,3 +1,4 @@
+import 'react-dates/initialize'; 
 import React from 'react';
 import axios from 'axios';
 import {
@@ -9,6 +10,7 @@ import {
     StyledSelect,
     StyledCheckbox
   } from 'react-form';
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 
     let categories = [
 	    {
@@ -167,7 +169,9 @@ class CreateEvent extends React.Component{
       	eventDesc: this.state.submittedValues.eventDesc,
       	capacity: this.state.submittedValues.capacity,
       	category: this.state.submittedValues.category,
-        creatorID: this.props.userID
+        creatorID: this.props.userID,
+        startDate: this.state.startDate,
+        endDate: this.state.endDate
       	})})
       .then((response) => {console.log(response)})}>
       { formApi => (
@@ -181,6 +185,18 @@ class CreateEvent extends React.Component{
           <label htmlFor="category" className="d-block">Event category</label>
           <StyledSelect field="category" id="category" options={categories} />
           <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
+          <DateRangePicker
+  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+  startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+  endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+  onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+/>
+
+
+
           <button type="submit" className="mb-4 btn btn-primary">Submit</button>
         </form>
       )}
