@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import $ from 'jquery';
-import { UserChart, UserFriend, UserEvent, ImageEditIcon } from './ProfileComponents/components.jsx';
+import { UserChart, UserFriend, UserEvent, ImageEditIcon, UserUpdateForm } from './ProfileComponents/components.jsx';
 import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../config.js';
 import cloudinary from 'cloudinary-core';
 ///////////////////////////////////////////////////////////
@@ -70,22 +70,28 @@ class Profile extends React.Component {
               this.state.edit ? <ImageEditIcon loggedInUserID={this.props.loggedInUserID}/> : <img src={`http://res.cloudinary.com/${cloudinary_cloud_name}/image/upload/v1517679389/${this.state.userDisplayedData.userID}.jpg`} />
             }
             </div>
-            <div className="profile_bio">
-              <p>
-                { 
-                  this.state.userDisplayedData.bio
-                }
-              </p>
-              <hr/>
-              <p>
-                {
-                  `${this.state.userDisplayedData.gender}${'\n'}${this.state.userDisplayedData.email}`
-                }
-              </p>
-            </div>
-            <div className="profile_username">
-              <p> {this.state.userDisplayedData.username} </p>
-            </div>
+            {
+            this.state.edit ? <UserUpdateForm />
+            :
+              <div className="profile_info_container">
+                <div className="profile_bio">
+                  <p>
+                    { 
+                      this.state.userDisplayedData.bio
+                    }
+                  </p>
+                  <hr/>
+                  <p>
+                    {
+                      `${this.state.userDisplayedData.gender}${'\n'}${this.state.userDisplayedData.email}`
+                    }
+                  </p>
+                </div>
+                <div className="profile_username">
+                  <p> {this.state.userDisplayedData.username} </p>
+                </div>
+              </div>
+            }
             <div className="profile_edit_button">
               <button onClick={this.handleEditClick} > {this.state.edit ? "Save" : "Edit Profile"} </button>
             </div>
