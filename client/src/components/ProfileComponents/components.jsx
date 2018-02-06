@@ -3,21 +3,18 @@ import { Link } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import $ from 'jquery';
-import { CloudinaryContext, Image, Transformation, Video } from 'cloudinary-react';
+// import { CloudinaryContext, Image, Transformation, Video } from 'cloudinary-react';
 import { cloudinary_API, cloudinary_SECRET, cloudinary_cloud_name, cloudinary_cloud_upload_presets } from '../../../../config.js';
-import cloudinary from 'cloudinary-core';
+import FormData from 'form-data';
+// import cloudinary from 'cloudinary-core';
 
 const sha1Encrypt = require('sha1');
-const cloud_name = cloudinary_cloud_name;
-const url = `https://api.cloudinary.com/v1_1${cloud_name}/image/upload`;
-const timestamp = Date.now()/1000;
-const upload_preset = cloudinary_cloud_upload_presets;
-const cloudinaryCore = new cloudinary.Cloudinary({
-    cloud_name,
-    api_key: cloudinary_API,
-    api_secret: cloudinary_SECRET,
-    upload_preset,
-});
+// const cloudinaryCore = new cloudinary.Cloudinary({
+//     cloud_name,
+//     api_key: cloudinary_API,
+//     api_secret: cloudinary_SECRET,
+//     upload_preset,
+// });
 
 
 
@@ -136,19 +133,38 @@ export const UserEvent = (props) => {
 
 export class ImageEditIcon extends React.Component {
 	constructor(props) {
-		super(props)
+    super(props)
+    this.handleDrop.bind(this);
 	}
-
-	onDrop(files) {
-        const image = files[0];
-	}
-
+    // get's called from react dropzone when file is dropped
+    handleDrop (files){
+      // Push all the axios request promise into a single array
+      const image = files[0];
+      // Initial FormData
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("tags", `codeinfuse, medium, gist`);
+      formData.append("upload_preset", cloudinary_cloud_upload_presets); // Replace the preset name with your own
+      formData.append("api_key", cloudinary_API); // Replace API key with your own Cloudinary key
+      formData.append("timestamp", (Date.now() / 1000) | 0);
+      
+      // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
+      return axios.post("https://api.cloudinary.com/v1_1/codeinfuse/image/upload", formData, {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      }).then(response => {
+        const data = response.data;
+        const fileURL = data.secure_url // You should store this URL for future references in your app
+        console.log(data);
+      })
+    }
 	render() {
 		return (
-				// <img src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
-				<Dropzone onDrop={this.onDrop.bind(this)} >
-					<p>{"Drop in here"}</p>
-				</Dropzone >
+      <Dropzone 
+        onDrop={this.handleDrop}
+        style={{gridColumn: "1 / 2", gridRow: "1 / 2"}} 
+      >
+        <img style={{width: "100%", height: "auto"}} src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
+      </Dropzone >
 		)
 	}
 }

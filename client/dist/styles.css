@@ -349,6 +349,15 @@ p {
   grid-row: 2 / 3;
 }
 
+.profile_edit_button {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.profile_edit_button > button {
+  border-radius: 2px;
+}
+
 .profile_username > p {
   font-size: 6vmax;
   text-align: center;
@@ -912,6 +921,10 @@ p {
 }
 
 @media only screen and (max-width: 500px) {
+  .profile_edit_button {
+    grid-column: 1 / 4;
+  } 
+
   .profile_data {
     grid-column: 1 / 4;
     grid-row: 3 / 4;

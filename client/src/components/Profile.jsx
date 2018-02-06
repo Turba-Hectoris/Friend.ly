@@ -12,9 +12,11 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userDisplayedData: ''
+      userDisplayedData: '',
+      edit: false
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
   }
   
   componentWillReceiveProps(nextProps) {
@@ -32,6 +34,10 @@ class Profile extends React.Component {
     })
   }
 
+  handleEditClick() {
+    this.setState({edit: !this.state.edit})
+  }
+
   render() {
       if(!this.state.userDisplayedData) {
         return(
@@ -47,12 +53,15 @@ class Profile extends React.Component {
               <UserChart catagories={this.state.userDisplayedData.catagories}/>
             </div>
             <div className="profile_image">
-                <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
+            {
+              this.state.edit ? <ImageEditIcon /> : <img src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
+            }
             </div>
-              {/* <ImageEditIcon /> */}
             <div className="profile_bio">
               <p>
-              { this.state.userDisplayedData.bio}
+                { 
+                  this.state.userDisplayedData.bio
+                }
               </p>
               <hr/>
               <p>
@@ -63,6 +72,9 @@ class Profile extends React.Component {
             </div>
             <div className="profile_username">
               <p> {this.state.userDisplayedData.username} </p>
+            </div>
+            <div className="profile_edit_button">
+              <button onClick={this.handleEditClick} > {this.state.edit ? "Save" : "Edit Profile"} </button>
             </div>
             <div className="profile_events">
               <div className="profile_events_container">
