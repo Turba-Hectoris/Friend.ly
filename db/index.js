@@ -106,12 +106,11 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 
 
 // UserEvents.bulkCreate([
+// 	{userID: 6, eventID: 1},
+// 	{userID: 6, eventID: 2},
 // 	{userID: 6, eventID: 3},
 // 	{userID: 6, eventID: 4},
 // 	{userID: 6, eventID: 5},
-// 	{userID: 6, eventID: 6},
-// 	{userID: 6, eventID: 7},
-// 	{userID: 6, eventID: 8},
 // ])
 
 // Friendships.bulkCreate([
