@@ -12,7 +12,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      userDisplayedData: '',
+      userDisplayedData: dummyData[0],
       edit: false
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);

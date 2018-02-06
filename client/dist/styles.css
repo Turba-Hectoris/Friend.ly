@@ -309,10 +309,12 @@ p {
                        /* Profile CSS */
 /*****************************************************************/
 .profile_container {
-  padding-top: 7vh;
+  padding-top: 8vh;
   margin: 0;
   background-color: #ffff;
-  height: 93vh;
+  height: 92%;
+  width: 100%;
+  display: block;
 }
 
 .profile > div{
@@ -321,11 +323,12 @@ p {
 
 .profile {
   display: grid;
-  height: 93vh;
-  width: 100vw;
-  grid-template-columns: 23vw 23vw auto;
-  grid-template-rows: 23vh 10vh 30vh 30vh;
-  padding: 3px;
+  height: 99%;
+  width: 99%;
+  grid-template-columns: 23% 23% 54%;
+  grid-template-rows: 28% 10% 30% 30%;
+  padding: 0;
+  margin: 1px;
 }
 
 #chartdiv {
@@ -375,17 +378,17 @@ p {
 .profile_event {
   background-color: #e74c3c;
   min-width: 400px;
-  min-height: 30vh;
+  /* min-height: 30vh;
   margin: 5px;
-  padding: 1%;
+  padding: 1%; */
   display: inherit;
 }
 
 .profile_friend {
   background-color: #e74c3c;
-  padding: 1%;
+  /* padding: 1%; */
   min-width: 200px;
-  margin: 5px;
+  /* margin: 5px; */
 }
 
 .profile_friend > a > img {
