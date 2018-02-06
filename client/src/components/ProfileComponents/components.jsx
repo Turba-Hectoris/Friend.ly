@@ -143,7 +143,8 @@ export class ImageEditIcon extends React.Component {
       // Initial FormData
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("tags", `codeinfuse, medium, gist`);
+      form.append('my_field', `${this.props.loggedInUser.userID}`);
+      formData.append("tags", `Friend.ly, profile picture`);
       formData.append("upload_preset", cloudinary_cloud_upload_presets); // Replace the preset name with your own
       formData.append("api_key", cloudinary_API); // Replace API key with your own Cloudinary key
       formData.append("timestamp", (Date.now() / 1000) | 0);
