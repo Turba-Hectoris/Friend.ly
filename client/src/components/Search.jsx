@@ -57,8 +57,10 @@ class Search extends React.Component {
             window.alert('You\'ve already been in this event');
           } else {
             axios.post('/userevents/add', {userID, eventID}).then((response) => {
-              console.log('response for add event to user: ', response.data);
-              this.setState({redirect: !this.state.redirect});
+              console.log('event added to user ', response.data);
+              // this.setState({redirect: true});
+              console.log('history is: ', this.props.history);
+               this.props.history.push('/');
             })
           }
         })
@@ -74,8 +76,7 @@ class Search extends React.Component {
     })
   }
 
-render() {
-    if(!this.state.redirect) {
+  render() {
       return (
         <div className="search_container">
           <div className="search">
@@ -96,10 +97,7 @@ render() {
           </div>
         </div>
       )
-    } else {
-      return <Dashboard userData={this.props.userID} usename={this.props.username}/>
     }
-  }
 }
 
 const ListItem = (props) => (
