@@ -7,7 +7,8 @@ class Chatroom extends React.Component {
     this.state = {
       input: '',
       messages: [],
-      ref: firebase.database().ref('/rooms/' + 0 + '/messages/')
+      ref: firebase.database().ref('/rooms/' + 0 + '/messages/'),
+      temp: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
@@ -18,18 +19,25 @@ class Chatroom extends React.Component {
   // ID to communicate with the firebase server. 
 
   componentWillReceiveProps(nextProps) {
+    this.state.ref.off()
     this.setState(previousState => ({
       messages: [],
-      ref: firebase.database().ref('/rooms/' + nextProps.roomId + '/messages/')
+      ref: firebase.database().ref('/rooms/' + nextProps.roomId + '/messages/'),
+      roomId: nextProps.roomId
     }), () => {   
-    this.temp = this.state.ref.on('child_added', 
+    this.state.ref.on('child_added', 
       snapshot => {
+        if(this.state.temp === 1) {
         this.handleNewMessage(snapshot.val(), snapshot.key)
+        }
     });
     })
   }
 
   componentDidMount() {
+    $('.db_typingText').on('keypress', (e) => {
+      return null
+    })
     $('.db_typingText').html('Type a message...')
     $('.db_typingText').on('focus', () => {
       let text = $('.db_typingText').html()
@@ -56,6 +64,9 @@ class Chatroom extends React.Component {
         e.preventDefault()
         this.handleSubmit()
       }
+    })
+    this.setState({
+      temp: 1
     })
   }
   handleSubmit() {

@@ -13,7 +13,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       isLogin: false,
-      userData: ''
+      userData: '',
+      username: ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
@@ -26,7 +27,8 @@ class App extends React.Component {
     } else {
       this.setState({
         isLogin:true,
-        userData: userID
+        userData: userID,
+        username: username
       })
     }
   }
