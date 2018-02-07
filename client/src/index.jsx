@@ -28,7 +28,7 @@ class App extends React.Component {
         username: 'aaron'
       })
     } else {
-      console.log(userID, username)
+      // console.log(userID, username)
       this.setState({
         isLogin:true,
         userData: userID,
