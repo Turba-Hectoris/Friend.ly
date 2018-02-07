@@ -115,8 +115,13 @@ export const UserFriend = (props) => {
 			<Link onClick={() => {props. getUserDisplayedData(props.friend.userID)}} to={`/profile/${props.friend.userID}`}>
 					<img className="" src="https://images.onlinelabels.com/images/clip-art/dagobert83/dagobert83_female_user_icon.png" alt=""/>
 			</Link>
-					<hr/>
-			{props.friend.username + '\n' + props.friend.email + '\n' + props.friend.gender} 
+      <div classname="profile_friend_info" >
+        <p className="profile_friend_username">{props.friend.username}</p>
+        <p className="profile_friend_email">{props.friend.email}</p>
+        <p className="profile_friend_gender">{props.friend.gender}</p>
+        <p className="profile_friend_bio">{props.friend.bio}</p>
+      </div>
+        <button onClick={() => {props.handleAddFriend(props.friend.userID)}} > Add Friend </button>
 			</div>
 	);
 }
@@ -124,9 +129,16 @@ export const UserFriend = (props) => {
 export const UserEvent = (props) => {
   return (
     <div className="profile_event">
-      <img src="https://d.wildapricot.net/images/newsblog/bigstock-events-7444309.jpg" alt=""/>
-      <hr/>
-      {props.event.eventName + '\n' + props.event.status + '\n' + props.event.date} 
+      <img src={`${props.event.imgLink}`} />
+      <div classname="profile_event_info" >
+        <p className="profile_event_name">{props.event.eventName}</p>
+        <p className="profile_event_status">{props.event.status}</p>
+        <p className="profile_event_creator">{props.event.creatorID}</p>
+        <p className="profile_event_date_range">{props.event.startDate} - {props.event.endDate}</p> 
+        <p className="profile_event_category">{props.event.category}</p>
+        <p className="profile_event_description">{props.event.eventDesc}</p>
+      </div>
+        <button onClick={() => {props.handleJoinEvent(props.event.eventID)}} > Join Event </button>  
     </div>
   );
 }
@@ -176,7 +188,7 @@ export class ImageEditIcon extends React.Component {
 export const UserUpdateForm = (props) => {
   return (
     <div>
-      <form id="profile_form" action={`/profile/update/${props.loggedInUserID}`} method="POST">
+      <form id="profile_form" action={`/profile_update/${props.loggedInUserID}`} method="POST">
         <label for="POST-bio">Bio:</label>
         <textarea name="bio" id="" cols="30" rows="10" placeholder="">
         </textarea>

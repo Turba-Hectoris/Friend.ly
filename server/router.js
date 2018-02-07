@@ -81,7 +81,20 @@ router.get('/profile/data/:userID', (req, res) => {
 				Promise.all(friendsData)
 				.then((results) => {
 					//inserted friends HERE
-					userClientSideData.friends = results;
+					const friend_array = results.reduce((friend_arr, friend) => {
+						let pull_data = 'username email gender bio userID'
+						let friend_object = {};
+
+						for(let attr in friend.dataValues) {
+							if(pull_data.includes(attr)) {
+								friend_object[attr] = friend.dataValues[attr]
+							}
+						}
+
+						return friend_arr.concat([friend_object]);
+					}, [])
+
+					userClientSideData.friends = friend_array;
 
 						//EVENTS ---Refactor to join tables
 						db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
@@ -102,28 +115,11 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
-// router.post('/profile/update/:userID', (req, res) => {
-// 	let userID = req.params.userID;
-// 	let data = {};
-// 	var index = 0;
-// 	for(var key in req.body) {
-// 		console.log(index)
-// 		if(req.body[key]){
-// 			data[index] = {[`${key}`]: req.body[key]}
-// 			index += 1;
-// 		}
-// 	}
-// 	// data[index += 1] = { where: { userID: userID }}
-// 	console.log(...Object.values(data))
-// 	db.Users.update({...Object.values(data)}, { where: { userID: userID }}).then((results) => res.end())
-// })
-
-router.post('/profile/update/:userID', (req, res) => {
+router.post('/profile_update/:userID', (req, res) => {
 	let userID = req.params.userID;
 	let data = {};
 	var index = 0;
 	for(var key in req.body) {
-		console.log(index)
 		if(req.body[key]){
 			data[index] = {[`${key}`]: req.body[key]}
 			index += 1;
@@ -134,13 +130,45 @@ router.post('/profile/update/:userID', (req, res) => {
 		where: { userID: userID }
 	})
 		.then(user => {
-			console.log(...Object.values(data))
 			return user.update(...Object.values(data))
 		})
-		.then(updatedOwner => {
-			res.json(updatedOwner);
-		});
+		.then(updatedUser => {
+			res.status(301).json(updatedUser.userID);
+		})
+		.catch(err => console.log(err))
 });
+
+router.post('/friendship_update', (req, res) => {
+	let friendID = req.body.friendID;
+	let userID = req.body.userID;
+
+	db.Friendships.findOne({where: {userID, friendID}}).then((foundFriendship) => {
+		if (!foundFriendship) {
+			db.Friendships.findCreateFind({where: {userID, friendID}})
+			.then((friendship) => {
+				res.status(200).send({response: friendship});
+			})
+		} else {
+			res.status(301).send({response: `Already friends ${foundFriendship}`});
+		}
+	})
+})
+
+router.post('/event_attendance_update', (req, res) => {
+	let eventID = req.body.eventID;
+	let userID = req.body.userID;
+
+	db.UserEvents.findOne({where: {userID, eventID}}).then((foundEvent) => {
+		if (!foundEvent) {
+			db.UserEvents.findCreateFind({where: {userID, eventID}})
+			.then((event) => {
+				res.status(200).send({response: event});
+			})
+		} else {
+			res.status(301).send({response: `Already attending ${foundEvent}`});
+		}
+	})
+})
 
 /////////////////////////////////////////////////////////////////
 /////Route creates a event and associate it with a UserEvents////
@@ -164,16 +192,20 @@ router.post('/createEvent', (req, res) => {
 	})
 })
 
-router.post('/createUser', (req, res) => {
-	let username = req.body.username;
-	let bio = req.body.bio;
-	let email = req.body.email;
-	let gender = req.body.gender;
-	let profileImg = "https://i.annihil.us/u/prod/marvel//universe3zx/images/f/f5/IronMan_Head.jpg"
-	db.Events.findCreateFind({where: {profile: profileImg, username: username, bio: bio, email: email, gender: gender}}).spread((event, created) => {
-		res.send(event.dataValues)
-	})
-})
+////////////////////////
+/// Used CREATE BULK ///
+//See index.js db file//
+//VvvvvvvvvvvvvvvvvvvV//
+// router.post('/createUser', (req, res) => {
+// 	let username = req.body.username;
+// 	let bio = req.body.bio;
+// 	let email = req.body.email;
+// 	let gender = req.body.gender;
+// 	let profileImg = "https://i.annihil.us/u/prod/marvel//universe3zx/images/f/f5/IronMan_Head.jpg"
+// 	db.Events.findCreateFind({where: {profile: profileImg, username: username, bio: bio, email: email, gender: gender}}).spread((event, created) => {
+// 		res.send(event.dataValues)
+// 	})
+// })
 
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -182,7 +214,7 @@ router.post('/createUser', (req, res) => {
 router.get('/profile/events', (req, res) => {
   let userID = req.query.userID
   console.log(userID)
-  db.Events.findAll({where: {creatorID: userID }}).then((events) => {
+  db.UserEvents.findAll({where: { userID: userID }}).then((events) => {
     res.send(events)
   })
   // res.end()
