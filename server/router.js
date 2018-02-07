@@ -4,8 +4,6 @@ const controller = require('../db/controllers.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
 
-
-
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
 })
@@ -148,13 +146,37 @@ router.get('/profile/events', (req, res) => {
   // res.end()
 })
 
-router.get('/events', (req, res) => {
-  let term = req.query.term
+/////////////// SEARCH COMPONENT REQUEST /////////////////////////
+
+router.get('/search/events', (req, res) => {
+  const term = req.query.term
   db.Events.findAll({where: {eventName: {
-  	[db.Op.iLike]: '%' + term + '%'
+    [db.Op.iLike]: '%' + term + '%'
   }}}).then((events) => {
     res.send(events)
   })
 })
+
+router.get('/userevents', (req, res) => {
+    const eventID = req.query.eventID;
+    const userID = req.query.userID;
+    console.log('eventID: ', eventID, ' userID: ',userID)
+    db.UserEvents.findOne({where: {eventID: eventID, userID: userID }}).then(event => {
+      console.log('event find for userevents: ', event);
+      res.send(event)
+    })
+})
+
+router.post('/userevents/add', (req, res) => {
+	const userID = req.body.userID;
+	const eventID = req.body.eventID;
+
+	db.UserEvents.create({userID, eventID}).then((userEvent) => {
+		console.log('this is added event to user: ', userEvent);
+		res.send(userEvent);
+	})
+})
+
+///////////////////////////////////////////////////////////////////
 
 module.exports = router;

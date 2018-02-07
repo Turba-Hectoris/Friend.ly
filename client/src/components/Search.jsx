@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Dashboard from './Dashboard.jsx';
 
 class Search extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class Search extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.getEvents = this.getEvents.bind(this);
+    this.handleEventJoin = this.handleEventJoin.bind(this);
   }
 
   handleTermChange (e) {
@@ -39,44 +41,74 @@ class Search extends React.Component {
     }
   }
 
+  handleEventJoin (event) {
+    const eventID = event.eventID;
+    console.log('event in handler: ', event)
+    const creatorID = event.creatorID;
+    const userID = this.props.userID;
+
+    if(this.props.isLogin) {
+      if(userID === creatorID) {window.alert('You\'ve already been in this event as a creator')} 
+      else {
+        axios.get('/userevents', {params: {eventID, userID}})
+        .then(response => {
+          console.log('response for get', response)
+          if(response.data) {
+            window.alert('You\'ve already been in this event');
+          } else {
+            axios.post('/userevents/add', {userID, eventID}).then((response) => {
+              console.log('response for add event to user: ', response.data);
+              this.setState({redirect: !this.state.redirect});
+            })
+          }
+        })
+      }
+    }
+  }
+
   getEvents () {
-    axios.get('/events', {params: {term: this.state.term}})
+    axios.get('/search/events', {params: {term: this.state.term}})
     .then((response) => {
       console.log('response data from getEvents: ', response.data);
       this.setState({events: response.data});
     })
   }
 
-  render() {
-    return (
-      <div className="search_container">
-        <div className="search">
-          <div className="search_bar">
-            <input value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
-            <button onClick={this.handleSubmit}>Search</button>
-          </div>
-          <div className="search_events">
-            <h4>Search result: {this.state.events.length} found</h4>
-            <br/>
-            <table>
-              <tbody>
-                <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td></tr>
-                  {this.state.events.map((event, index) => <ListItem key={index} event={event} />)}
-              </tbody>
-            </table>
+render() {
+    if(!this.state.redirect) {
+      return (
+        <div className="search_container">
+          <div className="search">
+            <div className="search_bar">
+              <input value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
+              <button onClick={this.handleSubmit}>Search</button>
+            </div>
+            <div className="search_events">
+              <h4>Search result: {this.state.events.length} found</h4>
+              <br/>
+              <table>
+                <tbody>
+                  <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td><td>Join</td></tr>
+                    {this.state.events.map((activity, index) => <ListItem key={index} event={activity} handleEventJoin={this.handleEventJoin}/>)}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return <Dashboard userData={this.props.userID} usename={this.props.username}/>
+    }
   }
 }
 
 const ListItem = (props) => (
   <tr>
-    <td>{props.event.eventName}</td>
+    <td>{props.event.eventID}</td>
     <td>{props.event.date}</td>
     <td>{props.event.description}</td>
     <td>{props.event.creator}</td>
+    <td><button onClick={() => props.handleEventJoin(props.event)}>Join</button></td>
   </tr>
 )
 
