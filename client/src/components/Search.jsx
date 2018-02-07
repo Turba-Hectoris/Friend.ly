@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Dashboard from './Dashboard.jsx';
 
 class Search extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class Search extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.getEvents = this.getEvents.bind(this);
+    this.handleEventJoin = this.handleEventJoin.bind(this);
   }
 
   handleTermChange (e) {
@@ -39,36 +41,64 @@ class Search extends React.Component {
     }
   }
 
+  handleEventJoin (event) {
+    console.log('event click to join: ', event)
+    const eventID = event.eventID;
+    const creatorID = event.creatorID;
+    const userID = this.props.userID;
+
+    if(this.props.isLogin) {
+      if(userID === creatorID) {
+        window.alert('You\'ve already been in this event as a creator')
+      } 
+      else {
+        axios.get('/userevents', {params: {eventID, userID}})
+        .then(response => {
+          if(response.data) {
+            window.alert('You\'ve already been in this event');
+          } else {
+            axios.post('/userevents/add', {userID, eventID}).then((response) => {
+              console.log('event added to user ', response.data);
+              this.props.history.push('/');
+            })
+          }
+        })
+      }
+    } else {
+      window.alert('Please log in at first');
+    }
+  }
+
   getEvents () {
-    axios.get('/events', {params: {term: this.state.term}})
+    axios.get('/search/events', {params: {term: this.state.term}})
     .then((response) => {
-      console.log('response data from getEvents: ', response.data);
+      console.log('events from search: ', response.data);
       this.setState({events: response.data});
     })
   }
 
   render() {
-    return (
-      <div className="search_container">
-        <div className="search">
-          <div className="search_bar">
-            <input value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
-            <button onClick={this.handleSubmit}>Search</button>
-          </div>
-          <div className="search_events">
-            <h4>Search result: {this.state.events.length} found</h4>
-            <br/>
-            <table>
-              <tbody>
-                <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td></tr>
-                  {this.state.events.map((event, index) => <ListItem key={index} event={event} />)}
-              </tbody>
-            </table>
+      return (
+        <div className="search_container">
+          <div className="search">
+            <div className="search_bar">
+              <input value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
+              <button onClick={this.handleSubmit}>Search</button>
+            </div>
+            <div className="search_events">
+              <h4>Search result: {this.state.events.length} found</h4>
+              <br/>
+              <table>
+                <tbody>
+                  <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td><td>Join</td></tr>
+                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 }
 
 const ListItem = (props) => (
@@ -77,6 +107,7 @@ const ListItem = (props) => (
     <td>{props.event.date}</td>
     <td>{props.event.description}</td>
     <td>{props.event.creator}</td>
+    <td><button onClick={() => props.handleEventJoin(props.event)}>Join</button></td>
   </tr>
 )
 

@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
   componentWillMount() {
     axios.get('/profile/events', {params: {userID: this.props.userData}})
     .then((res) => {
-      console.log(res.data)
+      console.log('events in dashboard: ', res.data)
       this.setState({
         events: res.data,
         select_event_id: res.data[0].eventID
