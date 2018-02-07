@@ -8,7 +8,8 @@ class Chatroom extends React.Component {
     this.state = {
       input: '',
       messages: [],
-      ref: roomsRef.child('0').child('/messages/')
+      ref: roomsRef.child('0').child('/messages/'),
+      temp: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
@@ -22,7 +23,7 @@ class Chatroom extends React.Component {
     this.state.ref.off()
     this.setState(previousState => ({
       messages: [],
-      ref: roomsRef.child(nextProps.roomId).child('/messages/')
+      ref: roomsRef.child(nextProps.roomId).child('/messages/'),
       roomId: nextProps.roomId
     }), () => {   
     this.state.ref.on('child_added', 
@@ -68,6 +69,7 @@ class Chatroom extends React.Component {
     this.setState({
       temp: 1
     })
+    // $('.db_detail_map').height($('.db_detail_map').width())
   }
   handleSubmit() {
     console.log(this.props.username, this.state.input, timestamp)

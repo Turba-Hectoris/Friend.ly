@@ -61,12 +61,7 @@ class Dashboard extends React.Component {
 
           <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
-          <div className="db_panel_3">
-            <div className="db_detail">
-
-              <h3>Event Detail--Box6</h3>
-            </div>
-          </div>
+          <EventDetails currentRoom={this.state.events[this.state.currentRoom]} />
 
       </div>
     </div>
@@ -77,6 +72,23 @@ class Dashboard extends React.Component {
 const EventListItem = (props) => (
   props.selected ? (<li style={{backgroundColor: 'rgba(136, 136, 136, .25)'}}><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
   : (<li><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
+)
+
+const EventDetails = (props) => (
+  <div className="db_panel_3">
+    <div className="db_detail">
+      <h1>Description:</h1>
+      <div className="db_detail_description">{props.currentRoom.eventDesc}</div>
+      <h1>Members:</h1>
+      <div className="db_detail_members">{props.currentRoom.capacity + ' maximum attendees'}</div>
+      <h1>Start Date:</h1>
+      <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
+      <h1>End Date:</h1>
+      <div className="db_detail_endDate">{new Date(props.currentRoom.endDate).toLocaleTimeString()}</div>
+
+      <div className="db_detail_map">Map goes here</div>
+    </div>
+  </div>
 )
 
 export default Dashboard
