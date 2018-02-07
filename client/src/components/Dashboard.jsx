@@ -3,6 +3,9 @@ import $ from 'jquery';
 import {Link} from 'react-router-dom';
 import Chatroom from './Chatroom.jsx';
 import axios from 'axios'
+import { GoogleMap, Marker } from "react-google-maps"
+import CreateMap from './CreateMap.jsx';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -12,14 +15,18 @@ class Dashboard extends React.Component {
       events : [{roomName: 'Loading...'}],
       select_event_id: 0,
       currentRoom: 0,
-      roomName: 'asd'
+      roomName: 'asd',
+      location: '',
+      locale: ''
     }
-    this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.setLocale = this.setLocale.bind(this);
   }
   
   handleClick (div, item) {
       // div.target.style.backgroundColor = 'red'
-    console.log(item)
+    // console.log(item)
     this.setState( prevState => ({
       currentRoom: item.roomNumber,
       roomName: item.eventName,
@@ -38,6 +45,17 @@ class Dashboard extends React.Component {
     })
   }
 
+handleLocationChange (location) {
+    this.setState({
+      location: location
+    });
+  }
+
+  setLocale(locale) {
+    this.setState({
+      locale: locale
+    })
+  }
   render () {
     return (
       <div className="db_container">
@@ -61,7 +79,7 @@ class Dashboard extends React.Component {
 
           <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
-          <EventDetails currentRoom={this.state.events[this.state.currentRoom]} />
+          <EventDetails currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale}/>
 
       </div>
     </div>
@@ -85,8 +103,7 @@ const EventDetails = (props) => (
       <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
       <h1>End Date:</h1>
       <div className="db_detail_endDate">{new Date(props.currentRoom.endDate).toLocaleTimeString()}</div>
-
-      <div className="db_detail_map">Map goes here</div>
+      <div className="db_detail_map"><CreateMap getEventCoordinate={props.handleLocationChange} setLocale={props.setLocale}/></div>
     </div>
   </div>
 )
