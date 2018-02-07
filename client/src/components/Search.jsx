@@ -42,36 +42,37 @@ class Search extends React.Component {
   }
 
   handleEventJoin (event) {
+    console.log('event click to join: ', event)
     const eventID = event.eventID;
-    console.log('event in handler: ', event)
     const creatorID = event.creatorID;
     const userID = this.props.userID;
 
     if(this.props.isLogin) {
-      if(userID === creatorID) {window.alert('You\'ve already been in this event as a creator')} 
+      if(userID === creatorID) {
+        window.alert('You\'ve already been in this event as a creator')
+      } 
       else {
         axios.get('/userevents', {params: {eventID, userID}})
         .then(response => {
-          console.log('response for get', response)
           if(response.data) {
             window.alert('You\'ve already been in this event');
           } else {
             axios.post('/userevents/add', {userID, eventID}).then((response) => {
               console.log('event added to user ', response.data);
-              // this.setState({redirect: true});
-              console.log('history is: ', this.props.history);
-               this.props.history.push('/');
+              this.props.history.push('/');
             })
           }
         })
       }
+    } else {
+      window.alert('Please log in at first');
     }
   }
 
   getEvents () {
     axios.get('/search/events', {params: {term: this.state.term}})
     .then((response) => {
-      console.log('response data from getEvents: ', response.data);
+      console.log('events from search: ', response.data);
       this.setState({events: response.data});
     })
   }
@@ -90,7 +91,7 @@ class Search extends React.Component {
               <table>
                 <tbody>
                   <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td><td>Join</td></tr>
-                    {this.state.events.map((activity, index) => <ListItem key={index} event={activity} handleEventJoin={this.handleEventJoin}/>)}
+                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
                 </tbody>
               </table>
             </div>
@@ -102,7 +103,7 @@ class Search extends React.Component {
 
 const ListItem = (props) => (
   <tr>
-    <td>{props.event.eventID}</td>
+    <td>{props.event.eventName}</td>
     <td>{props.event.date}</td>
     <td>{props.event.description}</td>
     <td>{props.event.creator}</td>
