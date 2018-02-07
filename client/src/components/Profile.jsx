@@ -36,6 +36,14 @@ class Profile extends React.Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if(this.state.edit === true && String(nextState.edit) === 'false') {
+      console.log('triggering')
+      document.getElementById("profile_form").submit()
+    }
+  }
+
+
   componentDidMount() {
     this.getUserDisplayedData(this.props.match.params.id)    
   }
@@ -71,7 +79,7 @@ class Profile extends React.Component {
             }
             </div>
             {
-            this.state.edit ? <UserUpdateForm />
+            this.state.edit ? <UserUpdateForm loggedInUserID={this.props.loggedInUserID}/>
             :
               <div className="profile_info_container">
                 <div className="profile_bio">

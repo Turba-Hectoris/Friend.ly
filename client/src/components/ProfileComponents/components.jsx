@@ -175,25 +175,24 @@ export class ImageEditIcon extends React.Component {
 
 export const UserUpdateForm = (props) => {
   return (
-    <div className="profile_form">
-      <form action="" method="POST">
+    <div>
+      <form id="profile_form" action={`/profile/update/${props.loggedInUserID}`} method="POST">
         <label for="POST-bio">Bio:</label>
         <textarea name="bio" id="" cols="30" rows="10" placeholder="">
         </textarea>
-        <label for="POST-username">Username:</label>
-        <input id="POST-username" type="text" name="username"/>
-        <label for="POST-email">e-mail:</label>
-        <input id="POST-email" type="text" name="email"/>
+        <label for="POST-username">Username:</label> <input id="POST-username" type="text" name="username"/>
+        <hr/>
+        <label for="POST-email">e-mail:</label> <input id="POST-email" type="text" name="email"/>
         <fieldset>
           <legend>Gender</legend>
           <input type="radio" id="genderChoice1"
-            name="gender" value="male"/>
+            name="gender" value="M"/>
           <label for="genderChoice1">Male</label>
           <input type="radio" id="genderChoice2"
-            name="gender" value="female"/>
+            name="gender" value="F"/>
           <label for="genderChoice2">Female</label>
+          <input type="submit" value=""/>
         </fieldset>
-        <button type="submit"></button>
       </form>
     </div>
   );

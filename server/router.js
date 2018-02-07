@@ -102,6 +102,46 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
+// router.post('/profile/update/:userID', (req, res) => {
+// 	let userID = req.params.userID;
+// 	let data = {};
+// 	var index = 0;
+// 	for(var key in req.body) {
+// 		console.log(index)
+// 		if(req.body[key]){
+// 			data[index] = {[`${key}`]: req.body[key]}
+// 			index += 1;
+// 		}
+// 	}
+// 	// data[index += 1] = { where: { userID: userID }}
+// 	console.log(...Object.values(data))
+// 	db.Users.update({...Object.values(data)}, { where: { userID: userID }}).then((results) => res.end())
+// })
+
+router.post('/profile/update/:userID', (req, res) => {
+	let userID = req.params.userID;
+	let data = {};
+	var index = 0;
+	for(var key in req.body) {
+		console.log(index)
+		if(req.body[key]){
+			data[index] = {[`${key}`]: req.body[key]}
+			index += 1;
+		}
+	}
+
+	db.Users.find({
+		where: { userID: userID }
+	})
+		.then(user => {
+			console.log(...Object.values(data))
+			return user.update(...Object.values(data))
+		})
+		.then(updatedOwner => {
+			res.json(updatedOwner);
+		});
+});
+
 /////////////////////////////////////////////////////////////////
 /////Route creates a event and associate it with a UserEvents////
 /////                                                        ////
