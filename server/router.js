@@ -129,13 +129,13 @@ router.post('/profile_update/:userID', (req, res) => {
 	db.Users.find({
 		where: { userID: userID }
 	})
-		.then(user => {
-			return user.update(...Object.values(data))
-		})
-		.then(updatedUser => {
-			res.status(301).json(updatedUser.userID);
-		})
-		.catch(err => console.log(err))
+	.then(user => {
+		return user.update(...Object.values(data))
+	})
+	.then(updatedUser => {
+		res.status(201).send(updatedUser.userID);
+	})
+	.catch(err => console.log(err))
 });
 
 router.post('/friendship_update', (req, res) => {
@@ -214,10 +214,19 @@ router.post('/createEvent', (req, res) => {
 router.get('/profile/events', (req, res) => {
   let userID = req.query.userID
   console.log(userID)
-  db.UserEvents.findAll({where: { userID: userID }}).then((events) => {
-    res.send(events)
-  })
-  // res.end()
+	db.UserEvents.findAll({where: { userID: userID }})
+	.then((events) => {
+		const allUserEvents = events.map((event) => {
+			return db.Events.findOne({where: {eventID: event.eventID}})
+		})
+		
+		Promise.all(allUserEvents)
+		.then((results) => {
+			res.status(200).send(results)
+		})
+		.catch(err => res.status(500).send(err))
+	})
+	.catch(err => res.status(500).send(err))
 })
 
 router.get('/events', (req, res) => {

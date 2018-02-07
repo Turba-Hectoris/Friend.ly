@@ -40,7 +40,7 @@ class Profile extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     if(this.state.edit === true && String(nextState.edit) === 'false') {
       document.getElementById("profile_form").submit()
-      document.getElementById("profile_form").onsubmit((e) => { e.preventDefault() })
+      $("#profile_form").on('submit', (e) => { e.preventDefault() })
     }
   }
 
@@ -63,7 +63,7 @@ class Profile extends React.Component {
   handleAddFriend(friendID) {
     axios.post('/friendship_update', {userID: this.props.loggedInUserID,friendID})
     .then((response) => {
-      
+
     })
     .catch(err => console.log(err));
   }
