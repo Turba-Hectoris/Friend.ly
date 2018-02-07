@@ -27,14 +27,15 @@ body {
 }
 ::-webkit-scrollbar {
     width: 5px;
+    background:transparent;
 }
 .homepage::-webkit-scrollbar {
     width: 10px;
 }
 
-
 ::-webkit-scrollbar-track {
     background: transparent; 
+    display: none;
     transition: background 1s ease-in;
     border-radius:1em;
 }
@@ -822,10 +823,74 @@ p {
                        /* Dashboard Responsive CSS */
 /*****************************************************************/
 .db_detail {
-  /*grid-area: db_detail;*/
-
   background-color: #fff;
+  padding-top:1em;
+  padding-bottom: 1em;
+  overflow-y: scroll;
+  display:flex;
+  flex-direction:column;
+}
 
+.db_detail_name {
+  text-align: center;
+  font-size: 24px;
+}
+.db_detail_description {
+  width: 90%;
+  margin:auto;
+  height: 20%;
+  font-size: 18px;
+  overflow-y:scroll;
+  border-bottom:1px solid #bdc3c7;
+  overflow-x:hidden;
+  word-break: break-word;
+}
+.db_detail > h1 {
+  text-align:left;
+  display: block;
+  padding-left: 5%;
+  font-size: 18px;
+}
+.db_detail_members {
+  overflow-x:hidden;
+  word-break: break-word;
+  font-size: 18px;
+  width: 90%;
+  margin:auto;
+  /*padding: 1em;*/
+    padding-top:1em;
+  padding-bottom: 1em;
+}
+.db_detail_startDate {
+  font-size: 20px;
+  color: #2ecc71;
+  width: 90%;
+  margin:auto;
+  /*padding: 1em;*/
+  padding-top:1em;
+  padding-bottom: 1em;
+}
+.db_detail_endDate {
+  font-size: 20px;
+  color: #e74c3c;
+  width: 90%;
+  margin:auto;
+  /*padding:1em;*/
+  padding-top:1em;
+  padding-bottom: 1em;
+}
+
+.db_detail_map {
+  width: 90%;
+  margin:auto;
+  background-color: lightgrey ;
+  /*height: ;*/
+  flex:1;
+}
+@media only screen and (max-height: 700px) {
+  .db_detail_map{
+    display: none;
+  }
 }
 @media only screen and (max-width: 900px) {
   /*DASHBOARD @ 900px*/
