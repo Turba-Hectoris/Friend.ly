@@ -16,7 +16,6 @@ const cloudinaryCore = new cloudinary.Cloudinary({
     upload_preset: cloudinary_cloud_upload_presets,
 });
 
-
 class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -26,6 +25,8 @@ class Profile extends React.Component {
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleAddFriend = this.handleAddFriend.bind(this);
+    this.handleJoinEvent = this.handleJoinEvent.bind(this);
   }
   
   componentWillReceiveProps(nextProps) {
@@ -35,6 +36,14 @@ class Profile extends React.Component {
       this.getUserDisplayedData(this.props.match.params.id)
     }
   }
+
+  componentWillUpdate(nextProps, nextState) {
+    if(this.state.edit === true && String(nextState.edit) === 'false') {
+      document.getElementById("profile_form").submit()
+      $("#profile_form").on('submit', (e) => { e.preventDefault() })
+    }
+  }
+
 
   componentDidMount() {
     this.getUserDisplayedData(this.props.match.params.id)    
@@ -49,6 +58,22 @@ class Profile extends React.Component {
 
   handleEditClick() {
     this.setState({edit: !this.state.edit})
+  }
+
+  handleAddFriend(friendID) {
+    axios.post('/friendship_update', {userID: this.props.loggedInUserID,friendID})
+    .then((response) => {
+
+    })
+    .catch(err => console.log(err));
+  }
+
+  handleJoinEvent(eventID) {
+    axios.post('/event_attendance_update', {userID: this.props.loggedInUserID, eventID})
+    .then((response) => {
+
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -71,7 +96,7 @@ class Profile extends React.Component {
             }
             </div>
             {
-            this.state.edit ? <UserUpdateForm />
+            this.state.edit ? <UserUpdateForm loggedInUserID={this.props.loggedInUserID}/>
             :
               <div className="profile_info_container">
                 <div className="profile_bio">
@@ -98,14 +123,14 @@ class Profile extends React.Component {
             <div className="profile_events">
               <div className="profile_events_container">
                 {
-                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent key={event.eventID} event={event}/>)
+                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent}/>)
                 }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
                 {
-                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend}/>)
+                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  getUserDisplayedData={this.getUserDisplayedData} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} />)
                 }
               </div>
             </div>
