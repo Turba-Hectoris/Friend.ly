@@ -1,7 +1,5 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import Login from './Login.jsx';
-import Signup from './Signup.jsx';
 import Search from './Search.jsx';
 import Profile from './Profile.jsx';
 import Homepage from './Homepage.jsx';

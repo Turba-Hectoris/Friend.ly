@@ -72,7 +72,6 @@ class Chatroom extends React.Component {
     // $('.db_detail_map').height($('.db_detail_map').width())
   }
   handleSubmit() {
-    console.log(this.props.username, this.state.input, timestamp)
     if (this.state.input.length) {
       this.state.ref.push({
         username: this.props.username,
