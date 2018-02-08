@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import Search from './Search.jsx';
 import Profile from './Profile.jsx';
 import Homepage from './Homepage.jsx';
