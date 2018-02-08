@@ -55,6 +55,25 @@ router.post('/login', (req, res) => {
 	})
 })
 
+router.get('/dashboard/events', (req, res) => {
+	let userID = req.query.userID;
+	console.log('userID: ', userID)
+		//EVENTS ---Refactor to join tables
+	db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
+		let eventsData = [];
+
+		eventsData = events.map(({ eventID }) => {
+			return db.Events.findOne({where: {eventID: eventID}})
+		})
+
+		Promise.all(eventsData)
+		.then((results) => {
+			console.log('events: ', results)
+			res.status(200).send(results);
+		})
+	})
+})
+
 router.get('/profile/data/:userID', (req, res) => {
 	let userID = req.params.userID;
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
