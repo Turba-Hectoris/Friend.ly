@@ -7,21 +7,19 @@ class Search extends React.Component {
     super(props)
     this.state = {
       term: '',
-      events: [{eventName: 'hiking',
-                date: '02-14-2018',
-                description: 'Anyone want to go hiking around that weekend in tristates?',
-                creator: 'jackie'}, 
-
-                {eventName: 'BBQ',
-                 date: '03-18-2018',
-                description: 'Advanced JS coding in downtown Manhattan',
-                creator: 'Aaron'}]
+      selectedOption: 'name',
+      events: []
     }
     this.handleTermChange = this.handleTermChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.getEvents = this.getEvents.bind(this);
     this.handleEventJoin = this.handleEventJoin.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
+  }
+
+  handleOptionChange (e) {  
+    this.setState({selectedOption: e.target.value}, () => console.log('searchBy ', this.state.selectedOption));
   }
 
   handleTermChange (e) {
@@ -52,27 +50,25 @@ class Search extends React.Component {
         window.alert('You\'ve already been in this event as a creator')
       } 
       else {
-        axios.get('/userevents', {params: {eventID, userID}})
+        axios.get('/search/userevents', {params: {eventID, userID}})
         .then(response => {
           if(response.data) {
             window.alert('You\'ve already been in this event');
           } else {
-            axios.post('/userevents/add', {userID, eventID}).then((response) => {
-              console.log('event added to user ', response.data);
+            axios.post('/search/userevents/add', {userID, eventID}).then((response) => {
               this.props.history.push('/');
             })
           }
         })
       }
     } else {
-      window.alert('Please log in at first');
+      window.alert('Please log in');
     }
   }
 
   getEvents () {
-    axios.get('/search/events', {params: {term: this.state.term}})
+    axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.searchBy}})
     .then((response) => {
-      console.log('events from search: ', response.data);
       this.setState({events: response.data});
     })
   }
@@ -82,8 +78,27 @@ class Search extends React.Component {
         <div className="search_container">
           <div className="search">
             <div className="search_bar">
-              <input value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
+              <input name="name" value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
               <button onClick={this.handleSubmit}>Search</button>
+
+              <form>
+                <label className="search_label">
+                  <input type="radio" name="search" value="name"  checked={this.state.selectedOption === 'name'} onChange={(e) => this.handleOptionChange(e)} />
+                  Name                 
+                </label>
+                <label className="search_label">
+                  <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
+                  Category                 
+                </label>       
+                <label className="search_label">
+                  <input type="radio" name="search" value="date" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
+                  Date                 
+                </label>
+                <label className="search_label">
+                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
+                  All                 
+                </label>
+            </form>
             </div>
             <div className="search_events">
               <h4>Search result: {this.state.events.length} found</h4>
