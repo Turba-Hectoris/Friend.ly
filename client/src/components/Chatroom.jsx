@@ -96,10 +96,20 @@ class Chatroom extends React.Component {
       $('.db_chatroom').scrollTop($('.db_chatroom')[0].scrollHeight)
     })
   }
+
+  handleChatSwap() {
+    $('.db_panel_2').css("z-index", "-1")
+  }
+  handleInfoSwap() {
+    $('.db_panel_2').css("z-index", "-1")
+    $('.db_panel_3').css("z-index", "2")
+  }
   render() {
     return (<div className="db_panel_2" key={2}>
             <div className="db_info">
+              <span className="db_chat_swap" onClick={ () => {this.handleChatSwap()}}>Events</span>
               <span style={{padding:'0', margin:'auto'}}>{this.props.roomName}</span>
+              <span className="db_info_swap" onClick={() => {this.handleInfoSwap()}}>Details</span>
             </div>
             <div className="db_chatroom">
               {/*<h2>{'Chatroom ' + this.props.currentRoom}</h2>*/}

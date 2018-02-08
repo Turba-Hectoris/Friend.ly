@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
       roomName: item.eventName,
       select_event_id: item.item.eventID
     }))
+    $('.db_panel_2').css("z-index", "1")
   }
 
   componentWillMount() {
@@ -95,6 +96,7 @@ const EventListItem = (props) => (
 const EventDetails = (props) => (
   <div className="db_panel_3">
     <div className="db_detail">
+    <span className="db_detail_swap" onClick={() => {$('.db_panel_3').css("z-index", "-2"); $('.db_panel_2').css("z-index", "2")}}>Back<hr/></span>
       <h1>Description:</h1>
       <div className="db_detail_description">{props.currentRoom.eventDesc}</div>
       <h1>Members:</h1>
