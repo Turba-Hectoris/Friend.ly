@@ -16,7 +16,6 @@ body {
   background-color:#eee;
 }
 
-
 #app {
   width: 100%;
   height: 100%;
@@ -308,6 +307,24 @@ p {
 /*****************************************************************/
                        /* Profile CSS */
 /*****************************************************************/
+.btn:hover {
+  opacity: .7;
+  transition: opacity 300ms linear;
+}
+
+.btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 0px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 50px 50px;
+  height: 20%;
+  text-align: center;
+}
+
 .profile_container {
   padding-top: 8vh;
   margin: 0;
@@ -376,19 +393,22 @@ p {
 }
 
 .profile_event {
-  background-color: #e74c3c;
+  border: 1px solid  black;
   min-width: 400px;
-  /* min-height: 30vh;
-  margin: 5px;
-  padding: 1%; */
   display: inherit;
 }
 
+.join_event {
+  z-index: 1;
+}
+
 .profile_friend {
-  background-color: #e74c3c;
-  /* padding: 1%; */
+  border: 1px solid black;
   min-width: 200px;
-  /* margin: 5px; */
+}
+
+.add_friend {
+  z-index: 1;
 }
 
 .profile_friend > a > img {

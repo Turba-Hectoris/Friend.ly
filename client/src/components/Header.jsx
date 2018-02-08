@@ -33,14 +33,14 @@ class Header extends React.Component {
   onLogin() {
     let username = document.querySelector('#loginUsername').value
     let password = document.querySelector('#loginPassword').value
-    axios.post('/login', { username, password }).then((response) => {
-      let userID, username;
-      ({userID, username} = response.data)
-      if (userID) {
-          this.closeModal()
-          this.props.toggleLogin(userID, username)
-      }
-    })
+    // axios.post('/login', { username, password }).then((response) => {
+    //   let userID, username;
+    //   ({userID, username} = response.data)
+    //   if (userID) {
+    //       this.closeModal()
+    //       this.props.toggleLogin(userID, username)
+    //   }
+    // })
   }
 
 

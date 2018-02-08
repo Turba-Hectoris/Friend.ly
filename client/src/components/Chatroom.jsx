@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import {roomsRef, timestamp, rootRef} from '../../../firebaseConfig.js';
+// import {roomsRef, timestamp, rootRef} from '../../../firebaseConfig.js';
 
 class Chatroom extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class Chatroom extends React.Component {
     this.state = {
       input: '',
       messages: [],
-      ref: roomsRef.child('0').child('/messages/')
+      // ref: roomsRef.child('0').child('/messages/')
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNewMessage = this.handleNewMessage.bind(this)
@@ -18,21 +18,21 @@ class Chatroom extends React.Component {
   // This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
 
-  componentWillReceiveProps(nextProps) {
-    this.state.ref.off()
-    this.setState(previousState => ({
-      messages: [],
-      ref: roomsRef.child(nextProps.roomId).child('/messages/')
-      roomId: nextProps.roomId
-    }), () => {   
-    this.state.ref.on('child_added', 
-      snapshot => {
-        if(this.state.temp === 1) {
-        this.handleNewMessage(snapshot.val(), snapshot.key)
-        }
-    });
-    })
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.state.ref.off()
+  //   this.setState(previousState => ({
+  //     messages: [],
+  //     ref: roomsRef.child(nextProps.roomId).child('/messages/'),
+  //     roomId: nextProps.roomId
+  //   }), () => {   
+  //   this.state.ref.on('child_added', 
+  //     snapshot => {
+  //       if(this.state.temp === 1) {
+  //       this.handleNewMessage(snapshot.val(), snapshot.key)
+  //       }
+  //   });
+  //   })
+  // }
 
   componentDidMount() {
     $('.db_typingText').on('keypress', (e) => {

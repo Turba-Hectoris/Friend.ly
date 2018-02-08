@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 import Search from './Search.jsx';
@@ -18,7 +18,7 @@ const Main = (props) => (
       }/>
       <Route path="/search" render={ ({ match, history }) => <Search match={match} history={history} isLogin={props.isLogin} userID={props.userData} username={props.username}/> }/>
       <Route path="/createEvent" render={ ({ match }) => <CreateEvent userID={props.userData} match={match}/> }/>
-      <Route path="/profile/:id" render={ ({ match }) => <Profile match={match} loggedInUserID={props.userData}/> }/>
+      <Route path="/profile/:id" render={ ({ match }) => <Profile match={match} loggedInUserID={props.userData.userID}/> }/>
     </Switch>
   </div>
 )

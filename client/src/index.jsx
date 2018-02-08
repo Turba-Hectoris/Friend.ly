@@ -7,24 +7,24 @@ import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
 import userProfileDummyData from '../../userProfileDummyData.js';
-import {roomsRef} from '../../firebaseConfig.js';
+// import {roomsRef} from '../../firebaseConfig.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogin: false,
-      userData: '',
-      username: ''
+      isLogin: true ||false,
+      userData: userProfileDummyData || '',
+      username: userProfileDummyData.username || ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
   }
 
   toggleLogin(userID, username) {
-    if (!userID) {
+    if (true || !userID) {
       this.setState({
-        isLogin:false,
-        userData: '',
+        isLogin: true || false,
+        userData: userProfileDummyData || '',
         username: ''
       })
     } else {
@@ -36,17 +36,17 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount () {
-    axios.get('/checklogin').then((results) => {
-      if(results.data.userID) {
-        let userID, username;
-        ({userID, username} = results.data);
-        this.toggleLogin(userID, username);
-      } else {
-        this.toggleLogin(null, null);
-      }
-    })
-  }
+  // componentWillMount () {
+  //   axios.get('/checklogin').then((results) => {
+  //     if(results.data.userID) {
+  //       let userID, username;
+  //       ({userID, username} = results.data);
+  //       this.toggleLogin(userID, username);
+  //     } else {
+  //       this.toggleLogin(null, null);
+  //     }
+  //   })
+  // }
 
   createNewRoom (roomId) {
     //after create an event, get the eventId as roomId to create a new room
