@@ -67,7 +67,7 @@ body {
   padding:0;
   margin:0;
   color: #ffffff;
-  z-index:1;
+  z-index:5;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .main {
@@ -707,7 +707,16 @@ p {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
-
+.db_info_swap{
+  margin: 0;
+  padding: 0;
+  display:none;
+}
+.db_chat_swap {
+  margin: 0;
+  padding: 0;
+  display: none;
+} 
 .db_chatroom {
   grid-column: 1 / 2;
   grid-row: 2 / 20;
@@ -830,7 +839,15 @@ p {
   display:flex;
   flex-direction:column;
 }
-
+.db_detail_swap > hr {
+  padding:0;
+  margin:0;
+}
+.db_detail_swap {
+  display: none;
+  margin:0;
+  padding:0;
+}
 .db_detail_name {
   text-align: center;
   font-size: 24px;
@@ -839,27 +856,29 @@ p {
   width: 90%;
   margin:auto;
   height: 20%;
+  min-height: 10%;
   font-size: 18px;
   overflow-y:scroll;
-  border-bottom:1px solid #bdc3c7;
+  /*border-bottom:1px solid #bdc3c7;*/
   overflow-x:hidden;
   word-break: break-word;
 }
 .db_detail > h1 {
   text-align:left;
   display: block;
+  margin:0;
   padding-left: 5%;
   font-size: 18px;
 }
 .db_detail_members {
-  overflow-x:hidden;
+  /*overflow-x:hidden;*/
   word-break: break-word;
   font-size: 18px;
   width: 90%;
   margin:auto;
   /*padding: 1em;*/
-    padding-top:1em;
-  padding-bottom: 1em;
+  padding-top:.5em;
+  padding-bottom: .5em;
 }
 .db_detail_startDate {
   font-size: 20px;
@@ -914,13 +933,27 @@ p {
     display: grid;
     height: 93vh;
   }
-
+  .db_info_swap {
+    display: inline-block;
+    cursor: pointer;
+    margin-right:.5em;
+    /*background-color: #eee;*/
+    color: #1574cd;
+  }
   .db_panel_3{
     grid-column: 2 / 11;
     grid-row: 1 / 10;
     z-index: -1;
     display: grid;
     height: 93vh;
+    font-size: 10px;
+  }
+  .db_detail_swap {
+    display: inline;
+    cursor: pointer;
+    margin-left: 5%;
+    color: #1574cd;
+    font-size: 20px;
   }
 }
 
@@ -973,6 +1006,12 @@ p {
   .db_events > ul > li {
     overflow: hidden;
     text-align:left;
+  }
+  .db_chat_swap {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: .5em;
+    color: #1574cd;
   }
 }
 
