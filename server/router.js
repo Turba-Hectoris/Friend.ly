@@ -192,7 +192,6 @@ router.post('/event_attendance_update', (req, res) => {
 /////////////////////////////////////////////////////////////////
 
 router.post('/createEvent', (req, res) => {
-	console.log(req.body)
 	let eventName = req.body.eventName;
 	let capacity = req.body.capacity;
 	let creatorID = req.body.creatorID;
@@ -200,10 +199,13 @@ router.post('/createEvent', (req, res) => {
 	let eventDesc = req.body.eventDesc;
 	let startDate = req.body.startDate;
 	let endDate = req.body.endDate;
-	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg"
-	db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, }}).spread((event, created) => {
-		db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
-			res.send(userevent.dataValues)
+	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
+	db.Users.findOne({where: {userID: creatorID}}).then(user => {
+		const creatorName = user.username;
+		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName}}).spread((event, created) => {
+			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
+				res.send(userevent.dataValues)
+			})
 		})
 	})
 })
@@ -268,7 +270,6 @@ router.get('/search/events', (req, res) => {
 	    res.send(events)
 	  })
 	} else {
-		//get all active events
 		console.log('in all search')
 		db.Events.findAll().then(events => res.send(events))
 	}

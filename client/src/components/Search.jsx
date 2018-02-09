@@ -16,10 +16,21 @@ class Search extends React.Component {
     this.getEvents = this.getEvents.bind(this);
     this.handleEventJoin = this.handleEventJoin.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.sortBy = this.sortBy.bind(this);
   }
 
   handleOptionChange (e) {  
-    this.setState({selectedOption: e.target.value}, () => console.log('searchBy ', this.state.selectedOption));
+    this.setState({selectedOption: e.target.value}, () => {
+      if(this.state.selectedOption === 'all') {
+        this.getEvents();
+      }
+      if(this.state.selectedOption === 'category') {
+
+      }
+      // if(this.state.selectedOption === 'date') {
+
+      // }
+    });
   }
 
   handleTermChange (e) {
@@ -67,10 +78,21 @@ class Search extends React.Component {
   }
 
   getEvents () {
-    axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.searchBy}})
+    axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.selectedOption}})
     .then((response) => {
       this.setState({events: response.data});
     })
+  }
+
+  sortBy (e) {
+    console.log('sorted by: ', e.target.id);
+
+    const events = this.state.events;
+    events.sort((a, b) => {
+      return a[e.target.id] - b[e.target.id]
+    });
+    console.log(events)
+    this.setState({events});
   }
 
   render() {
@@ -80,32 +102,34 @@ class Search extends React.Component {
             <div className="search_bar">
               <input name="name" value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
               <button onClick={this.handleSubmit}>Search</button>
-
               <form>
+                <label className="search_label">
+                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
+                  All                
+                </label>
                 <label className="search_label">
                   <input type="radio" name="search" value="name"  checked={this.state.selectedOption === 'name'} onChange={(e) => this.handleOptionChange(e)} />
                   Name                 
-                </label>
-                <label className="search_label">
-                  <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
-                  Category                 
                 </label>       
                 <label className="search_label">
                   <input type="radio" name="search" value="date" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
                   Date                 
                 </label>
                 <label className="search_label">
-                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
-                  All                 
+                  <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
+                  Category                
                 </label>
-            </form>
+              </form>
             </div>
             <div className="search_events">
               <h4>Search result: {this.state.events.length} found</h4>
               <br/>
               <table>
                 <tbody>
-                  <tr><td>Event</td><td>Date</td><td>Description</td><td>Creator</td><td>Join</td></tr>
+                  <tr><td>Event</td>
+                  <td>Description</td>
+                  <td><span id="category" onClick={(e) => this.sortBy(e)}>Category</span></td>
+                  <td >Start Date</td><td>End Date</td><td>Creator</td><td>Join</td></tr>
                     {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
                 </tbody>
               </table>
@@ -119,11 +143,25 @@ class Search extends React.Component {
 const ListItem = (props) => (
   <tr>
     <td>{props.event.eventName}</td>
-    <td>{props.event.date}</td>
-    <td>{props.event.description}</td>
-    <td>{props.event.creator}</td>
+    <td>{props.event.eventDesc}</td>
+    <td>{props.event.category}</td>
+    <td>{props.event.startDate}</td>
+    <td>{props.event.endDate}</td>
+    <td>{props.event.creatorName}</td>
     <td><button onClick={() => props.handleEventJoin(props.event)}>Join</button></td>
   </tr>
+)
+
+const Dropdown = (props) => (
+    <ul>
+      <li value="food">Food & Dine</li>
+      <li value="music">Live Music</li>      
+      <li value="arts">Arts</li>
+      <li value="exercise">Exercise</li>
+      <li value="movies">Movies</li>      
+      <li value="outdoors">Outdoors</li>
+      <li value="drinks">Drinks</li>
+    </ul>
 )
 
 export default Search
