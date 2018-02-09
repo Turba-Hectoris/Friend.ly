@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import ReactModalLogin from 'react-modal-login';
 import axios from 'axios';
+import FacebookAuth from './FacebookAuth.jsx';
 
 class Header extends React.Component {
     constructor(props) {
@@ -120,7 +121,7 @@ class Header extends React.Component {
             >
             Login
           </Link>
-
+          <FacebookAuth toggleLogin={this.props.toggleLogin}/>
           <ReactModalLogin
             visible={this.state.showModal}
             onCloseModal={this.closeModal.bind(this)}
