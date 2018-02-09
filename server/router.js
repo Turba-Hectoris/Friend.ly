@@ -1,8 +1,12 @@
 const router = require('express').Router();
 const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
+const cloudinarySDK = require('../services/cloudinary.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
+const multer  = require('multer')
+const upload = multer({'dest': 'upload/'});
+const fs = require('fs')
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
@@ -132,27 +136,47 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
-router.post('/profile_update/:userID', (req, res) => {
-	let userID = req.params.userID;
-	let data = {};
-	var index = 0;
-	for(var key in req.body) {
-		if(req.body[key]){
-			data[index] = {[`${key}`]: req.body[key]}
-			index += 1;
-		}
-	}
 
-	db.Users.find({
-		where: { userID: userID }
+var type = upload.single('file');
+
+router.post('/profile_update', type, (req, res) => {
+	let userID = req.body.userID
+	let queryData = req.query;
+	var imageFile = req.file.path;
+
+	queryData = Object.values(queryData).reduce((filter, query, idx) => {
+		if(query) {
+			filter[Object.keys(queryData)[idx]] = query
+		}
+		return filter;
+	}, {})
+
+	//add to options
+	//timestamp=1315060510abcd
+
+	cloudinarySDK
+	.v2
+	.uploader
+	.upload(`${imageFile}`, 
+	{
+		public_id: `${userID}`,
+	}, (err, response) => {
+		if(err) console.log(err)
+		
+		console.log('content_of_cloudinary_response_payload:-----', response)
+		
+
+	// 	db.Users.find({
+	// 		where: { userID }
+	// 	})
+	// 	.then(user => {
+	// 		return user.update(Object.assign(queryData, {imgUrl: secureUrl}))
+	// 	})
+	// 	.then(updatedUser => {
+	// 		res.status(200).send(userID + '');
+	// 	})
+	// 	.catch(err => console.log(err))
 	})
-	.then(user => {
-		return user.update(...Object.values(data))
-	})
-	.then(updatedUser => {
-		res.status(201).send(updatedUser.userID);
-	})
-	.catch(err => console.log(err))
 });
 
 router.post('/friendship_update', (req, res) => {
@@ -166,7 +190,7 @@ router.post('/friendship_update', (req, res) => {
 				res.status(200).send({response: friendship});
 			})
 		} else {
-			res.status(301).send({response: `Already friends ${foundFriendship}`});
+			res.status(200).send({response: `Already friends ${foundFriendship}`});
 		}
 	})
 })
@@ -182,7 +206,7 @@ router.post('/event_attendance_update', (req, res) => {
 				res.status(200).send({response: event});
 			})
 		} else {
-			res.status(301).send({response: `Already attending ${foundEvent}`});
+			res.status(201).send({response: `Already attending ${foundEvent}`});
 		}
 	})
 })
