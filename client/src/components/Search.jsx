@@ -7,7 +7,7 @@ class Search extends React.Component {
     super(props)
     this.state = {
       term: '',
-      selectedOption: 'name',
+      selectedOption: 'all',
       events: []
     }
     this.handleTermChange = this.handleTermChange.bind(this);
@@ -17,6 +17,7 @@ class Search extends React.Component {
     this.handleEventJoin = this.handleEventJoin.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.sortBy = this.sortBy.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   handleOptionChange (e) {  
@@ -24,12 +25,9 @@ class Search extends React.Component {
       if(this.state.selectedOption === 'all') {
         this.getEvents();
       }
-      if(this.state.selectedOption === 'category') {
+      if(this.state.selectedOption === 'name') {
 
       }
-      // if(this.state.selectedOption === 'date') {
-
-      // }
     });
   }
 
@@ -85,14 +83,25 @@ class Search extends React.Component {
   }
 
   sortBy (e) {
-    console.log('sorted by: ', e.target.id);
-
     const events = this.state.events;
+    const key = e.target.id;
+    console.log('sorted by: ', key);
     events.sort((a, b) => {
-      return a[e.target.id] - b[e.target.id]
+      return (a[key] > b[key])? 1 : (a[key] < b[key])? -1 : 0;
     });
-    console.log(events)
-    this.setState({events});
+    console.log(typeof events[0].startDate)
+    this.setState({events: events});
+  }
+
+  handleSelectChange (e) {
+    e.preventDefault();
+    console.log('select: ', e.target.value);
+    if(e.target.value !== 'category') {
+      this.setState({term: e.target.value, selectedOption: 'category'}, () => {
+        console.log(this.state.term, this.state.selectedOption)
+        this.handleSubmit();
+      })
+    }
   }
 
   render() {
@@ -104,7 +113,7 @@ class Search extends React.Component {
               <button onClick={this.handleSubmit}>Search</button>
               <form>
                 <label className="search_label">
-                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
+                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
                   All                
                 </label>
                 <label className="search_label">
@@ -117,7 +126,7 @@ class Search extends React.Component {
                 </label>
                 <label className="search_label">
                   <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
-                  Category                
+                   <span><SelectC handleSelectChange={this.handleSelectChange}/></span>               
                 </label>
               </form>
             </div>
@@ -129,7 +138,10 @@ class Search extends React.Component {
                   <tr><td>Event</td>
                   <td>Description</td>
                   <td><span id="category" onClick={(e) => this.sortBy(e)}>Category</span></td>
-                  <td >Start Date</td><td>End Date</td><td>Creator</td><td>Join</td></tr>
+                  <td><span id="startDate" onClick={(e) => this.sortBy(e)}>Start Date</span></td>
+                  <td><span id="endDate" onClick={(e) => this.sortBy(e)}>End Date</span></td>
+                  <td><span id="creatorName" onClick={(e) => this.sortBy(e)}>Creator</span></td>
+                  <td>Join</td></tr>
                     {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
                 </tbody>
               </table>
@@ -152,16 +164,18 @@ const ListItem = (props) => (
   </tr>
 )
 
-const Dropdown = (props) => (
-    <ul>
-      <li value="food">Food & Dine</li>
-      <li value="music">Live Music</li>      
-      <li value="arts">Arts</li>
-      <li value="exercise">Exercise</li>
-      <li value="movies">Movies</li>      
-      <li value="outdoors">Outdoors</li>
-      <li value="drinks">Drinks</li>
-    </ul>
+const SelectC = (props) => (
+  <select onChange={(e) => props.handleSelectChange(e)}>
+  <option value="category">Category</option>
+  <option value="movies">Movies</option>
+  <option value="outdoors">Outdoors</option>
+  <option value="food">Food/Dining</option>
+  <option value="music">Live Music</option>
+  <option value="exercise">Exercise</option>
+  <option value="gaming">Gaming</option>
+  <option value="drinks">Drinks</option>
+  <option value="arts">Arts & Culture</option>
+</select>
 )
 
 export default Search
