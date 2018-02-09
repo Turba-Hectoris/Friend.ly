@@ -15,7 +15,7 @@ router.post('/logout', util.expireSession, (req, res) => {
 router.post('/facebookLogin', (req, res) => {
 	let fbID = req.body.id;
 	let email = req.body.email;
-	let username = req.body.name;
+	let username = req.body.username;
 	let picture = req.body.picture
 	db.Users.findOne({where: {facebookID: fbID}}).then( (user) => {
 		if (!user) {
