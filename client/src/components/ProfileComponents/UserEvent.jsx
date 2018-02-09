@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const UserEvent = (props) => {
+export const UserEvent = ({ event, handleJoinEvent }) => {
   return (
     <div className="profile_event">
-      <img src={`${props.event.imgLink}`} />
+      <img src={`${event.imgLink}`} />
       <div className="profile_event_info" >
-        <p className="profile_event_name">{props.event.eventName}</p>
-        <p className="profile_event_status">{props.event.status}</p>
-        <p className="profile_event_creator">{props.event.creatorID}</p>
-        <p className="profile_event_date_range">{props.event.startDate} - {props.event.endDate}</p> 
-        <p className="profile_event_category">{props.event.category}</p>
-        <p className="profile_event_description">{props.event.eventDesc}</p>
+        <p className="profile_event_name">{event.eventName}</p>
+        <p className="profile_event_status">{event.status}</p>
+        <p className="profile_event_creator">{event.creatorID}</p>
+        <p className="profile_event_date_range">{event.startDate} - {event.endDate}</p> 
+        <p className="profile_event_category">{event.category}</p>
+        <p className="profile_event_description">{event.eventDesc}</p>
       </div>
-        <button className="btn join_event_button" type='button' onClick={() => {props.handleJoinEvent(props.event.eventID)}} > Join Event </button>  
+        <button className="btn join_event_button" type='button' onClick={() => {handleJoinEvent(event.eventID)}} > Join Event </button>  
     </div>
   );
 }

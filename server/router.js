@@ -3,6 +3,11 @@ const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
+const multer  = require('multer')
+const upload = multer({'dest': 'upload/'});
+const createfFileOnReq = upload.single('file');
+
+
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
@@ -151,6 +156,30 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
+router.post('/profile_update', createfFileOnReq, (req, res) => {
+	let userID = req.body.userID
+	let queryData = req.query;
+	let imageFile = req.file.path;
+
+	queryData = Object.values(queryData)
+	.reduce((filter, query, idx) => {
+		if(query) { filter[Object.keys(queryData)[idx]] = query }
+		return filter;
+	}, {})
+
+	cloudinarySDK
+	.v2
+	.uploader
+	.upload(`${imageFile}`, 
+	{
+		public_id: `${userID}`,
+	}, (err, response) => {
+		if(err) console.log(err)
+		
+	// 	console.log('content_of_cloudinary_response_payload:-----', response)
+  })
+})
+
 router.post('/profile_update/:userID', (req, res) => {
 	let userID = req.params.userID;
 	let data = {};
@@ -161,6 +190,7 @@ router.post('/profile_update/:userID', (req, res) => {
 			index += 1;
 		}
 	}
+
 
 	db.Users.find({
 		where: { userID: userID }
