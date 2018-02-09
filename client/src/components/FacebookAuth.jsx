@@ -13,14 +13,15 @@ class FacebookAuth extends React.Component {
   		username: res.name,
   		email: res.email,
   		id: res.id,
-  		picture: res.picture.data.url
-  	}
+      picture: res.picture.data.url,
+      gender: res.gender,
+      link: res.link 
+    }
     axios.post('/facebookLogin', newObj).then((response) => {
     	let userID, username
     	({userID, username} = response.data)
       //this was passing a single object before refactor
       this.props.toggleLogin(userID, username)    
-
     })
   }
 
@@ -29,7 +30,8 @@ class FacebookAuth extends React.Component {
       <FacebookLogin
         appId="574210012929596"
         autoLoad={true}
-        fields="name,email,picture"
+        fields="name,email,picture,website,gender,verified,link,locale"
+        scope="public_profile,user_friends"
         callback={this.responseFacebook}
       />
     )

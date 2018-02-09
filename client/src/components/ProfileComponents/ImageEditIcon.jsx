@@ -11,7 +11,7 @@ export class ImageEditIcon extends React.Component {
   
   handleDrop (files){
     const image = files[0];
-    const url = '/profile_update';
+    const url = `/profile_img_update`;
     //module to populate forms {replaces form HTML}
     const formData = new FormData();
     //file is a attr on form element, and second parameter is it's value

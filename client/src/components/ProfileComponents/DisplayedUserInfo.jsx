@@ -4,7 +4,7 @@ export const DisplayedUserInfo = ({ userDisplayedData, edit, handleEditClick }) 
   return (
     <div className="profile_info_container" >
       <div className="profile_image">
-        <img src={`${userDisplayedData.profilePic || 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'}`} />
+        <img src={`${userDisplayedData.profilePic}`} />
       </div>
         <div className="profile_info">
           <div className="profile_bio">
@@ -16,7 +16,7 @@ export const DisplayedUserInfo = ({ userDisplayedData, edit, handleEditClick }) 
             <hr/>
             <p>
               {
-                `${userDisplayedData.gender}${'\n'}${userDisplayedData.email}`
+                `${userDisplayedData.gender || 'undecided'}${'\n'}${userDisplayedData.email}`
               }
             </p>
           </div>

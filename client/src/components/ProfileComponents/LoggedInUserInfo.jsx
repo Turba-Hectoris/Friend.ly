@@ -3,11 +3,13 @@ import ImageEditIcon from './ImageEditIcon.jsx';
 import UserUpdateForm from './UserUpdateForm.jsx';
 
 export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) => {
+  console.log('userData', userDisplayedData)
+  console.log('edit: ', edit)
   return (
     <div className="profile_info_container">
       <div className="profile_image">
       {
-        edit ? <ImageEditIcon loggedInUserID={userDisplayedData.userID}/> : <img src={`${userDisplayedData.profilePic || 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'}`} />
+        edit ? <ImageEditIcon loggedInUserID={userDisplayedData.userID}/> : <img src={`${userDisplayedData.profilePic}`} />
       }
       </div>
       {
@@ -23,7 +25,7 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
             <hr/>
             <p>
               {
-                `${userDisplayedData.gender}${'\n'}${userDisplayedData.email}`
+                `${userDisplayedData.gender || 'undecided'}${'\n'}${userDisplayedData.email}`
               }
             </p>
           </div>

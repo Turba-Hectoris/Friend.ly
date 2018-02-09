@@ -22,11 +22,9 @@ const Users = sequelize.define('users', {
 	passHash: {
 		type: Sequelize.STRING
 	},
-	categories: {
-		type: Sequelize.STRING
-	},
 	bio: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		defaultValue: "Tell us a little bit about yourself?"
 	},
 	email: {
 		type: Sequelize.STRING
@@ -35,9 +33,13 @@ const Users = sequelize.define('users', {
 		type: Sequelize.STRING
 	},
 	facebookID: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
 	},
 	profilePic: {
+		type: Sequelize.STRING,
+		defaultValue: 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'
+	},
+	facebookLoginPage: {
 		type: Sequelize.STRING
 	}
 })

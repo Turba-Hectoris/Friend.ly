@@ -81,7 +81,6 @@ export class UserChart extends React.Component {
        }
     
     }, 0);
-    console.log(chart);
   }
 
   render() {
