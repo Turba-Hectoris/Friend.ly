@@ -24,3 +24,4 @@ export const UserUpdateForm = (props) => {
     </div>
   );
 }
+export default UserUpdateForm;

@@ -13,7 +13,9 @@ export const UserFriend = (props) => {
         <p className="profile_friend_gender">{props.friend.gender}</p>
         <p className="profile_friend_bio">{props.friend.bio}</p>
       </div>
-        <button className="btn add_friend" type='button' onClick={() => {props.handleAddFriend(props.friend.userID)}} > Add Friend </button>
+        <button className="btn add_friend_button" type='button' onClick={() => {props.handleAddFriend(props.friend.userID)}} > Add Friend </button>
 			</div>
 	);
 }
+
+export default UserFriend;

@@ -1,18 +1,19 @@
 import React from 'react';
-import ImageEditIcon from './ProfileComponents/ImageEditIcon.jsx';
+import ImageEditIcon from './ImageEditIcon.jsx';
+import UserUpdateForm from './UserUpdateForm.jsx';
 
-export const LoggedUserInfo = (props) => {
+export const LoggedInUserInfo = (props) => {
   return (
-    <div>
+    <div className="profile_info_container">
       <div className="profile_image">
       {
-        props.edit ? <ImageEditIcon loggedInUserID={props.loggedInUserID}/> : <img src={`${props.imgUrl}`} />
+        props.edit ? <ImageEditIcon loggedInUserID={props.userDisplayedData.userID}/> : <img src={`${props.userDisplayedData.profilePic || 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'}`} />
       }
       </div>
       {
       props.edit ? <UserUpdateForm loggedInUserID={props.userDisplayedData}/>
       :
-        <div className="profile_info_container">
+        <div className="profile_info">
           <div className="profile_bio">
             <p>
               { 
@@ -31,9 +32,11 @@ export const LoggedUserInfo = (props) => {
           </div>
         </div>
       }
-      <div className="profile_edit_button">
-        <button onClick={props.handleEditClick}> {props.edit ? "Save" : "Edit Profile"} </button>
+      <div className="profile_edit">
+        <button className="btn profile_edit_button" onClick={props.handleEditClick}> {props.edit ? "Save" : "Edit Profile"} </button>
       </div>
     </div>  
   )
 }
+
+export default LoggedInUserInfo;

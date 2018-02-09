@@ -91,3 +91,4 @@ export class UserChart extends React.Component {
   }
 }
 
+export default UserChart;

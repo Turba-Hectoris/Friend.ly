@@ -1,13 +1,12 @@
 import React from 'react';
-import ImageEditIcon from './ProfileComponents/ImageEditIcon.jsx';
 
 export const DisplayedUserInfo = (props) => {
   return (
-    <div>
+    <div className="profile_info_container" >
       <div className="profile_image">
-      <img src={`${props.imgUrl}`} />
+        <img src={`${props.userDisplayedData.imgUrl || 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'}`} />
       </div>
-        <div className="profile_info_container">
+        <div className="profile_info">
           <div className="profile_bio">
             <p>
               { 
@@ -25,6 +24,11 @@ export const DisplayedUserInfo = (props) => {
             <p> {props.userDisplayedData.username} </p>
         </div>
       </div>
+      <div className="profile_add_friend">
+        <button className="btn profile_friend_button" onClick={props.handleEditClick}> {props.edit ? "Friend" : "Unfriend"} </button>
+      </div>
     </div>  
   )
 }
+
+export default DisplayedUserInfo;

@@ -34,9 +34,9 @@ const Users = sequelize.define('users', {
 	gender: {
 		type: Sequelize.STRING
 	},
-	imgUrl: {
-		type: Sequelize.STRING
-	}
+	// imgUrl: {
+	// 	type: Sequelize.STRING
+	// }
 })
 
 const Friendships = sequelize.define('friendships', {
@@ -132,6 +132,8 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 // 	{userID: 6, friendID: 2},
 // 	{userID: 6, friendID: 4}
 // ])
+
+
 
 
 module.exports = {

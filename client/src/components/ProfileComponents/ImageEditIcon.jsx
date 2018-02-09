@@ -7,26 +7,25 @@ export class ImageEditIcon extends React.Component {
 	constructor(props) {
     super(props)
     this.handleDrop.bind(this);
-	}
-    // get's called from react dropzone when file is dropped
-    handleDrop (files){
-      // Push all the axios request promise into a single array
-      const image = files[0];
-      
-      // console.log(image)
-      // Initial FormData
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append("userID", this.props.loggedInUserID);
-      // formData.append('public_id', `${this.props.loggedInUserID}`);
-      // formData.append("tags", `Friend.ly, profile picture`);
-      // formData.append("upload_preset", cloudinary_cloud_upload_presets); // Replace the preset name with your own
-      // formData.append("api_key", cloudinary_API); // Replace API key with your own Cloudinary key
-      // formData.append("timestamp", (Date.now() / 1000) | 0);
-      
-      // // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
-      axios.post('/profile_update', formData)
+  }
+  
+  handleDrop (files){
+    const image = files[0];
+    const url = '/profile_update';
+    //module to populate forms {replaces form HTML}
+    const formData = new FormData();
+    //file is a attr on form element, and second parameter is it's value
+    formData.append('file', image)
+
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
     }
+
+    return axios.post(url, formData, config, { userID: props.loggedInUserID })
+  }
+
 	render() {
 		return (
       <Dropzone 
@@ -39,3 +38,5 @@ export class ImageEditIcon extends React.Component {
 		)
 	}
 }
+
+export default ImageEditIcon;

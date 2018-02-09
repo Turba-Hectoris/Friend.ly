@@ -13,7 +13,9 @@ export const UserEvent = (props) => {
         <p className="profile_event_category">{props.event.category}</p>
         <p className="profile_event_description">{props.event.eventDesc}</p>
       </div>
-        <button className="btn join_event" type='button' onClick={() => {props.handleJoinEvent(props.event.eventID)}} > Join Event </button>  
+        <button className="btn join_event_button" type='button' onClick={() => {props.handleJoinEvent(props.event.eventID)}} > Join Event </button>  
     </div>
   );
 }
+
+export default UserEvent;

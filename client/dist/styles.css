@@ -323,6 +323,7 @@ p {
   border-radius: 50px 50px;
   height: 20%;
   text-align: center;
+  z-index: 1;
 }
 
 .profile_container {
@@ -348,35 +349,64 @@ p {
   margin: 1px;
 }
 
-#chartdiv {
-  width: 45vw;
-  height: 23vh;
+.profile_info_container {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
 }
 
-.profile_image > img {
-  width: 100%;
-  height: auto;
-  border-radius: 50%;
+/*****************************************************************/
+                       /* ProfileInfo CSS */
+/*****************************************************************/
+
+.profile_info_container {
+  display: grid;
+  grid-auto-columns: auto auto 10%;
+  grid-auto-rows: 10% 50% 40%;
+}
+
+.profile_image {
+  grid-column: 1/2;
+  grid-row: 1/3;
+}
+
+.profile_edit {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.profile_add_friend {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.profile_info {
+  display: grid;
+  grid-auto-columns: 90% 10%;
+  grid-auto-rows: 10% auto auto;
+}
+
+.profile_bio {
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.profile_username {
+  grid-column: 1/2;
+  grid-row: 2/4;
+}
+
+.profile_gender {
+
+}
+
+.profile_email {
+
 }
 
 .profile_image > a > img {
   width: 10%;
   height: auto;
-}
-
-.profile_username {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-}
-
-.profile_edit_button {
-  grid-column: 3 / 4;
-  grid-row: 2 / 3;
-}
-
-.profile_edit_button > button {
-  border-radius: 2px;
-}
+} 
 
 .profile_username > p {
   font-size: 6vmax;
@@ -385,6 +415,53 @@ p {
   width: 100%;
   height: auto;
 }
+
+.profile_image > img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.profile_bio > p {
+  text-align: center;
+  font-family: SANS-SERIF;
+  width: 100%;
+  height: auto;
+}
+
+.profile_edit { 
+}
+
+.profile_edit_button {
+  width: 100%;
+  height: auto;
+  font-size: 10px;
+  display: block;
+  padding: 3px;
+}
+
+.profile_add_friend { 
+}
+
+.profile_friend_button {
+  width: 100%;
+  height: auto;
+  font-size: 10px;
+  display: block;
+  padding: 5px;
+}
+
+.profile_gender {
+
+}
+
+.profile_email {
+  
+}
+
+/*****************************************************************/
+                       /* ProfileContainer CSS */
+/*****************************************************************/
 
 .profile_event > img {
   height: 15vh;
@@ -398,8 +475,7 @@ p {
   display: inherit;
 }
 
-.join_event {
-  z-index: 1;
+.join_event_button {
 }
 
 .profile_friend {
@@ -407,8 +483,7 @@ p {
   min-width: 200px;
 }
 
-.add_friend {
-  z-index: 1;
+.add_friend_button {
 }
 
 .profile_friend > a > img {
@@ -417,30 +492,6 @@ p {
   border-radius: 50%;
   border: 5px solid rgba(21, 116, 205, .2);
  
-}
-
-.profile_data {
-  grid-column: 3 / 4;
-  grid-row: 1 / 3;
-}
-
-.profile_image {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-}
-
-.profile_bio {
-  grid-column: 2 / 3;
-  grid-row: 1 / 3;
-  text-align: center;
-  font-size: 1.5vw;
-}
-
-.profile_bio > p {
-  text-align: center;
-  font-family: SANS-SERIF;
-  width: 100%;
-  height: auto;
 }
 
 .profile_events::-webkit-scrollbar {
@@ -482,7 +533,15 @@ p {
   width: 100%;
 }
 
+.profile_data {
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
+}
 
+#chartdiv {
+  width: 45vw;
+  height: 23vh;
+}
 /*****************************************************************/
                        /* Search CSS */
 /*****************************************************************/

@@ -1,9 +1,12 @@
 const router = require('express').Router();
-// const db = require('../db/index.js');
-// const controller = require('../db/controllers.js');
+const db = require('../db/index.js');
+const controller = require('../db/controllers.js');
 const cloudinarySDK = require('../services/cloudinary.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
+const multer  = require('multer')
+const upload = multer({'dest': 'upload/'});
+const fs = require('fs')
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
@@ -114,39 +117,46 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
-router.post('/profile_update', (req, res) => {
+
+var type = upload.single('file');
+
+router.post('/profile_update', type, (req, res) => {
 	let userID = req.body.userID
 	let queryData = req.query;
-	let imagefile = req.files;
-
-	console.log('content_of_imagefile:----', imagefile)
+	var imageFile = req.file.path;
 
 	queryData = Object.values(queryData).reduce((filter, query, idx) => {
-		console.log(filter, query, idx)
 		if(query) {
 			filter[Object.keys(queryData)[idx]] = query
 		}
 		return filter;
 	}, {})
 
-	cloudinarySDK.v2.uploader.upload(`${image_file}`, {
-		public_id: userID
-	}, (err, { secureUrl }) => {
+	//add to options
+	//timestamp=1315060510abcd
+
+	cloudinarySDK
+	.v2
+	.uploader
+	.upload(`${imageFile}`, 
+	{
+		public_id: `${userID}`,
+	}, (err, response) => {
 		if(err) console.log(err)
 		
-		console.log('content_of_cloudinary_response_payload:-----', secureUrl)
+		console.log('content_of_cloudinary_response_payload:-----', response)
 		
 
-		db.Users.find({
-			where: { userID }
-		})
-		.then(user => {
-			return user.update(Object.assign(queryData, {imgUrl: secureUrl}))
-		})
-		.then(updatedUser => {
-			res.status(200).send(userID + '');
-		})
-		.catch(err => console.log(err))
+	// 	db.Users.find({
+	// 		where: { userID }
+	// 	})
+	// 	.then(user => {
+	// 		return user.update(Object.assign(queryData, {imgUrl: secureUrl}))
+	// 	})
+	// 	.then(updatedUser => {
+	// 		res.status(200).send(userID + '');
+	// 	})
+	// 	.catch(err => console.log(err))
 	})
 });
 
