@@ -7,7 +7,7 @@ class Search extends React.Component {
     super(props)
     this.state = {
       term: '',
-      selectedOption: 'all',
+      selectedOption: 'name',
       events: []
     }
     this.handleTermChange = this.handleTermChange.bind(this);
@@ -24,9 +24,6 @@ class Search extends React.Component {
     this.setState({selectedOption: e.target.value}, () => {
       if(this.state.selectedOption === 'all') {
         this.getEvents();
-      }
-      if(this.state.selectedOption === 'name') {
-
       }
     });
   }
@@ -49,7 +46,6 @@ class Search extends React.Component {
   }
 
   handleEventJoin (event) {
-    console.log('event click to join: ', event)
     const eventID = event.eventID;
     const creatorID = event.creatorID;
     const userID = this.props.userID;
@@ -78,27 +74,28 @@ class Search extends React.Component {
   getEvents () {
     axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.selectedOption}})
     .then((response) => {
-      this.setState({events: response.data});
+      this.setState({events: response.data})
     })
+  }
+
+  reformatDate (str) {
+    const date = new Date(str);
+    return (date.getMonth()+1) + '-' + date.getDate() + '-' + date.getFullYear() ;
   }
 
   sortBy (e) {
     const events = this.state.events;
     const key = e.target.id;
-    console.log('sorted by: ', key);
     events.sort((a, b) => {
       return (a[key] > b[key])? 1 : (a[key] < b[key])? -1 : 0;
     });
-    console.log(typeof events[0].startDate)
     this.setState({events: events});
   }
 
   handleSelectChange (e) {
     e.preventDefault();
-    console.log('select: ', e.target.value);
     if(e.target.value !== 'category') {
       this.setState({term: e.target.value, selectedOption: 'category'}, () => {
-        console.log(this.state.term, this.state.selectedOption)
         this.handleSubmit();
       })
     }
@@ -142,7 +139,7 @@ class Search extends React.Component {
                   <td><span id="endDate" onClick={(e) => this.sortBy(e)}>End Date</span></td>
                   <td><span id="creatorName" onClick={(e) => this.sortBy(e)}>Creator</span></td>
                   <td>Join</td></tr>
-                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
+                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin} reformatDate={this.reformatDate}/>)}
                 </tbody>
               </table>
             </div>
@@ -157,8 +154,8 @@ const ListItem = (props) => (
     <td>{props.event.eventName}</td>
     <td>{props.event.eventDesc}</td>
     <td>{props.event.category}</td>
-    <td>{props.event.startDate}</td>
-    <td>{props.event.endDate}</td>
+    <td>{props.reformatDate(props.event.startDate)}</td>
+    <td>{props.reformatDate(props.event.endDate)}</td>
     <td>{props.event.creatorName}</td>
     <td><button onClick={() => props.handleEventJoin(props.event)}>Join</button></td>
   </tr>
