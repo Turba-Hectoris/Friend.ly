@@ -23,7 +23,7 @@ class App extends React.Component {
   toggleLogin(userID, username) {
     if (!userID) {
       this.setState({
-        isLogin: false,
+        isLogin:false,
         userData: '',
         username: ''
       })

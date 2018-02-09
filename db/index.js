@@ -82,6 +82,9 @@ const Events = sequelize.define('events', {
 	},
 	eventDesc: {
 		type: Sequelize.STRING
+	},
+	creatorName: {
+		type: Sequelize.STRING
 	}
 
 })
