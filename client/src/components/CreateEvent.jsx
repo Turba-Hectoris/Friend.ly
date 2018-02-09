@@ -194,7 +194,7 @@ class CreateEvent extends React.Component{
               endDate: this.state.endDate,
               location: this.state.locale
               })})
-            .then((response) => {console.log(response)})}>
+            .then((response) => {console.log('hi')})}>
             { formApi => (
               <form onSubmit={formApi.submitForm} id="form2">
                 <label htmlFor="eventName">Event name</label>
