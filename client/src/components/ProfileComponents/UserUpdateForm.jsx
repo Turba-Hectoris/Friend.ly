@@ -5,7 +5,7 @@ export const UserUpdateForm = ({ userDisplayedData }) => {
     <div>
       <form id="profile_form" action="" method="">
         <label >Bio:</label>
-        <textarea name="bio" id="" cols="30" rows="10" placeholder={`${userDisplayedData.bio}`}>
+        <textarea name="bio" id="POST-textarea" cols="30" rows="10" placeholder={`${userDisplayedData.bio}`}>
         </textarea>
         <label >Username:</label> <input id="POST-username" type="text" name="username" placeholder={`${userDisplayedData.username}`}/>
         <hr/>
@@ -18,7 +18,7 @@ export const UserUpdateForm = ({ userDisplayedData }) => {
           <input type="radio" id="genderChoice2"
             name="gender" value="F"/>
           <label>Female</label>
-          <button type="submit" value="" />
+          <button type="submit" value=""/>
         </fieldset>
       </form>
     </div>
