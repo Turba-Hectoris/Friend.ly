@@ -1,12 +1,8 @@
 const router = require('express').Router();
 const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
-const cloudinarySDK = require('../services/cloudinary.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
-const multer  = require('multer')
-const upload = multer({'dest': 'upload/'});
-const fs = require('fs')
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
@@ -16,11 +12,30 @@ router.post('/logout', util.expireSession, (req, res) => {
 	res.end()
 })
 
+router.post('/facebookLogin', (req, res) => {
+	let fbID = req.body.id;
+	let email = req.body.email;
+	let username = req.body.name;
+	let picture = req.body.picture
+	db.Users.findOne({where: {facebookID: fbID}}).then( (user) => {
+		if (!user) {
+			db.Users.findCreateFind({where: {facebookID: fbID, username: username, email: email, profilePic: picture}})
+			.spread((user, created) => {
+				let userID = user.dataValues.userID
+				util.createSession(req, res, userID)
+			})
+		} else {
+			let userID = user.dataValues.userID
+			util.createSession(req, res, userID)
+		}
+	})
+})
+
 router.post('/signup', (req, res) => {
-	var username = req.body.username;
+	let username = req.body.username;
 	db.Users.findOne({where: {username: username}}).then( async (foundUser) => {
 		if (!foundUser) {
-			var password = await bcrypt.hash(req.body.password, 4)
+			let password = await bcrypt.hash(req.body.password, 4)
 			///Creating filler data and merging them with default with Object.assign
 			let fillerdata = {
 				bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error voluptatum ullam saepe. Fugit, ullam.",
@@ -40,8 +55,8 @@ router.post('/signup', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-	var username = req.body.username
-	var password = req.body.password
+	let username = req.body.username
+	let password = req.body.password
 	db.Users.findOne({where: {username: username}})
 	.then((user) => {
 		if (!user) {
@@ -136,47 +151,27 @@ router.get('/profile/data/:userID', (req, res) => {
 	})
 })
 
-
-var type = upload.single('file');
-
-router.post('/profile_update', type, (req, res) => {
-	let userID = req.body.userID
-	let queryData = req.query;
-	var imageFile = req.file.path;
-
-	queryData = Object.values(queryData).reduce((filter, query, idx) => {
-		if(query) {
-			filter[Object.keys(queryData)[idx]] = query
+router.post('/profile_update/:userID', (req, res) => {
+	let userID = req.params.userID;
+	let data = {};
+	let index = 0;
+	for(let key in req.body) {
+		if(req.body[key]){
+			data[index] = {[`${key}`]: req.body[key]}
+			index += 1;
 		}
-		return filter;
-	}, {})
+	}
 
-	//add to options
-	//timestamp=1315060510abcd
-
-	cloudinarySDK
-	.v2
-	.uploader
-	.upload(`${imageFile}`, 
-	{
-		public_id: `${userID}`,
-	}, (err, response) => {
-		if(err) console.log(err)
-		
-		console.log('content_of_cloudinary_response_payload:-----', response)
-		
-
-	// 	db.Users.find({
-	// 		where: { userID }
-	// 	})
-	// 	.then(user => {
-	// 		return user.update(Object.assign(queryData, {imgUrl: secureUrl}))
-	// 	})
-	// 	.then(updatedUser => {
-	// 		res.status(200).send(userID + '');
-	// 	})
-	// 	.catch(err => console.log(err))
+	db.Users.find({
+		where: { userID: userID }
 	})
+	.then(user => {
+		return user.update(...Object.values(data))
+	})
+	.then(updatedUser => {
+		res.status(201).send(updatedUser.userID);
+	})
+	.catch(err => console.log(err))
 });
 
 router.post('/friendship_update', (req, res) => {
@@ -190,7 +185,7 @@ router.post('/friendship_update', (req, res) => {
 				res.status(200).send({response: friendship});
 			})
 		} else {
-			res.status(200).send({response: `Already friends ${foundFriendship}`});
+			res.status(301).send({response: `Already friends ${foundFriendship}`});
 		}
 	})
 })
@@ -206,7 +201,7 @@ router.post('/event_attendance_update', (req, res) => {
 				res.status(200).send({response: event});
 			})
 		} else {
-			res.status(201).send({response: `Already attending ${foundEvent}`});
+			res.status(301).send({response: `Already attending ${foundEvent}`});
 		}
 	})
 })
