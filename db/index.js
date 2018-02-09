@@ -34,9 +34,12 @@ const Users = sequelize.define('users', {
 	gender: {
 		type: Sequelize.STRING
 	},
-	// imgUrl: {
-	// 	type: Sequelize.STRING
-	// }
+	facebookID: {
+		type: Sequelize.STRING
+	},
+	profilePic: {
+		type: Sequelize.STRING
+	}
 })
 
 const Friendships = sequelize.define('friendships', {
@@ -114,15 +117,6 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 // 	{userID: 6, eventID: 3},
 // 	{userID: 6, eventID: 6},
 // 	{userID: 6, eventID: 7},
-// 	{userID: 6, eventID: 8},
-// 	{userID: 6, eventID: 9},
-// 	{userID: 1, eventID: 2},
-// 	{userID: 1, eventID: 9},
-// 	{userID: 1, eventID: 8},
-// 	{userID: 1, eventID: 10},
-// 	{userID: 1, eventID: 11},
-// 	{userID: 6, eventID: 10},
-// 	{userID: 6, eventID: 11},
 // ])
 
 // Friendships.bulkCreate([
@@ -132,8 +126,6 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 // 	{userID: 6, friendID: 2},
 // 	{userID: 6, friendID: 4}
 // ])
-
-
 
 
 module.exports = {
