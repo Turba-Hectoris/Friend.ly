@@ -937,7 +937,7 @@ p {
 .db_detail_description {
   width: 90%;
   margin:auto;
-  height: 20%;
+  height: 15%;
   min-height: 10%;
   font-size: 18px;
   overflow-y:scroll;
@@ -954,13 +954,21 @@ p {
 }
 .db_detail_members {
   /*overflow-x:hidden;*/
-  word-break: break-word;
-  font-size: 18px;
+  overflow-y:auto;
+  /*word-break: break-word;*/
+  /*font-size: 18px;*/
   width: 90%;
   margin:auto;
+  min-height: 80px;
+  /*height: 60px;*/
   /*padding: 1em;*/
+  list-style: none;
+  padding:0;
   padding-top:.5em;
   padding-bottom: .5em;
+}
+.db_detail_members > li {
+  font-size: 20px;
 }
 .db_detail_startDate {
   font-size: 20px;
