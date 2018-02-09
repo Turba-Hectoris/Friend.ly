@@ -173,7 +173,7 @@ router.post('/profile_update', createfFileOnReq, (req, res) => {
 	// 		res.status(200).send(userID + '');
 	// 	})
 	// 	.catch(err => console.log(err))
-	// })
+	})
 });
 
 router.post('/friendship_update', (req, res) => {
