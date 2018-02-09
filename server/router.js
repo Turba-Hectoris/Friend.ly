@@ -6,7 +6,9 @@ const util = require('./utils.js');
 const bcrypt = require('bcrypt');
 const multer  = require('multer')
 const upload = multer({'dest': 'upload/'});
-const fs = require('fs')
+
+const createfFileOnReq = upload.single('file');
+
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
@@ -137,22 +139,17 @@ router.get('/profile/data/:userID', (req, res) => {
 })
 
 
-var type = upload.single('file');
 
-router.post('/profile_update', type, (req, res) => {
+router.post('/profile_update', createfFileOnReq, (req, res) => {
 	let userID = req.body.userID
 	let queryData = req.query;
-	var imageFile = req.file.path;
+	let imageFile = req.file.path;
 
-	queryData = Object.values(queryData).reduce((filter, query, idx) => {
-		if(query) {
-			filter[Object.keys(queryData)[idx]] = query
-		}
+	queryData = Object.values(queryData)
+	.reduce((filter, query, idx) => {
+		if(query) { filter[Object.keys(queryData)[idx]] = query }
 		return filter;
 	}, {})
-
-	//add to options
-	//timestamp=1315060510abcd
 
 	cloudinarySDK
 	.v2
@@ -163,7 +160,7 @@ router.post('/profile_update', type, (req, res) => {
 	}, (err, response) => {
 		if(err) console.log(err)
 		
-		console.log('content_of_cloudinary_response_payload:-----', response)
+	// 	console.log('content_of_cloudinary_response_payload:-----', response)
 		
 
 	// 	db.Users.find({
@@ -176,7 +173,7 @@ router.post('/profile_update', type, (req, res) => {
 	// 		res.status(200).send(userID + '');
 	// 	})
 	// 	.catch(err => console.log(err))
-	})
+	// })
 });
 
 router.post('/friendship_update', (req, res) => {
