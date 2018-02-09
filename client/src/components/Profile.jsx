@@ -29,24 +29,26 @@ class Profile extends React.Component {
     this.handleJoinEvent = this.handleJoinEvent.bind(this);
   }
 
+  //init change edit to true, then when clicked again submit form data to post request
   componentWillUpdate(nextProps, nextState) {
     if(this.state.edit === true && String(nextState.edit) === 'false') {
       
       let queryString = $('#profile_form').serialize().replace('%20', '');
       
       axios.post(`/profile_update?${queryString}`, {userID: this.props.loggedInUserID})
-      .then(() => { 
+      .then((res) => { 
         this.getUserDisplayedData(this.props.loggedInUserID)
        })
+       .catch(err => console.log(err))
     }
   }
 
-
+  //initial user data call 
   componentWillMount() {
     this.getUserDisplayedData(this.props.match.params.id) 
   }
 
-    
+  //retrieve user data when URL is changed to render friend profile clicked
   componentWillReceiveProps(nextProps) {
     if(this.props.match.params.id !== nextProps.match.params.id) {
       this.getUserDisplayedData(nextProps.match.params.id)
@@ -58,6 +60,7 @@ class Profile extends React.Component {
     .then((results) => {
       this.setState({userDisplayedData: results.data, loggedInUserID: this.props.loggedInUserID})
     })
+    .catch(err => console.log(err))
   }
 
   handleEditClick(e) {
@@ -66,7 +69,7 @@ class Profile extends React.Component {
   }
 
   handleAddFriend(friendID) {
-    axios.post('/friendship_update', {userID: this.props.loggedInUserID,friendID})
+    axios.post('/friendship_update', {userID: this.props.loggedInUserID, friendID})
     .then((response) => {
 
     })
