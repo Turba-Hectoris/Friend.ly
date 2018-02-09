@@ -1184,3 +1184,30 @@ p {
 }
 
 }
+
+/*****************************************************************/
+                       /* Event Create CSS */
+/*****************************************************************/
+
+
+.event_container {
+  box-sizing: border-box;
+  padding-top: 7vh;
+  margin: 0;
+  background-color:grey;
+  height: 100vh;
+}
+
+.event_create {
+  font-family: 'Rubik', sans-serif;
+  font-weight:400;
+  line-height:1.25;
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: 60%;
+  grid-template-rows: 1fr, 9fr;
+  width: 100vw;
+  height: 93vh;
+  background-color:lightblue;
+  justify-content: center;  
+}

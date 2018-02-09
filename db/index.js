@@ -85,6 +85,9 @@ const Events = sequelize.define('events', {
 	},
 	creatorName: {
 		type: Sequelize.STRING
+	},
+	locationName: {
+		type: Sequelize.STRING
 	}
 
 })

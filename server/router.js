@@ -249,9 +249,10 @@ router.post('/createEvent', (req, res) => {
 	let startDate = req.body.startDate;
 	let endDate = req.body.endDate;
 	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
+	let locationName = req.body.location
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
 		const creatorName = user.username;
-		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName}}).spread((event, created) => {
+		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationName: locationName}}).spread((event, created) => {
 			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
 				res.send(userevent.dataValues)
 			})
