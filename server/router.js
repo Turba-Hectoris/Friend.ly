@@ -80,8 +80,7 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/dashboard/events', (req, res) => {
-	let userID = req.query.userID;
-	console.log('userID: ', userID)
+	const userID = req.query.userID;
 		//EVENTS ---Refactor to join tables
 	db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
 		let eventsData = [];
@@ -242,7 +241,6 @@ router.post('/event_attendance_update', (req, res) => {
 /////////////////////////////////////////////////////////////////
 
 router.post('/createEvent', (req, res) => {
-	console.log(req.body)
 	let eventName = req.body.eventName;
 	let capacity = req.body.capacity;
 	let creatorID = req.body.creatorID;
@@ -250,10 +248,13 @@ router.post('/createEvent', (req, res) => {
 	let eventDesc = req.body.eventDesc;
 	let startDate = req.body.startDate;
 	let endDate = req.body.endDate;
-	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg"
-	db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, }}).spread((event, created) => {
-		db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
-			res.send(userevent.dataValues)
+	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
+	db.Users.findOne({where: {userID: creatorID}}).then(user => {
+		const creatorName = user.username;
+		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName}}).spread((event, created) => {
+			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
+				res.send(userevent.dataValues)
+			})
 		})
 	})
 })
@@ -298,15 +299,32 @@ router.get('/profile/events', (req, res) => {
 /////////////// SEARCH COMPONENT REQUEST /////////////////////////
 
 router.get('/search/events', (req, res) => {
-  const term = req.query.term
-  db.Events.findAll({where: {eventName: {
-    [db.Op.iLike]: '%' + term + '%'
-  }}}).then((events) => {
-    res.send(events)
-  })
+  const term = req.query.term;
+  const searchBy = req.query.searchBy;
+	console.log('term : ', term, ' searchBy ', searchBy)
+
+	if(searchBy === 'name') {
+		db.Events.findAll({where: {eventName: {
+	    [db.Op.iLike]: '%' + term + '%'
+	  }}}).then((events) => {
+	    res.send(events)
+	  })
+	} else if (searchBy === 'category') {
+		db.Events.findAll({where: {category: term}}).then((events) => {
+	    res.send(events)
+	  })
+	} else if (searchBy === 'date'){
+		consoel.log('in date search')
+		db.Events.findAll({where: {[db.Op.or]: [{startDate: term}, {endDate: term}]}}).then((events) => {
+	    res.send(events)
+	  })
+	} else {
+		console.log('in all search')
+		db.Events.findAll().then(events => res.send(events))
+	}
 })
 
-router.get('/userevents', (req, res) => {
+router.get('/search/userevents', (req, res) => {
     const eventID = req.query.eventID;
     const userID = req.query.userID;
     db.UserEvents.findOne({where: {eventID: eventID, userID: userID }}).then(event => {
@@ -314,7 +332,7 @@ router.get('/userevents', (req, res) => {
     });
 })
 
-router.post('/userevents/add', (req, res) => {
+router.post('/search/userevents/add', (req, res) => {
 	const userID = req.body.userID;
 	const eventID = req.body.eventID;
 	db.UserEvents.create({userID, eventID}).then((userEvent) => {

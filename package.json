@@ -36,6 +36,7 @@
     "path": "^0.12.7",
     "pg": "^7.4.1",
     "react": "^15.4.2",
+    "react-bootstrap": "^0.32.1",
     "react-dates": "^16.2.1",
     "react-dom": "^15.4.2",
     "react-dropzone": "^4.2.7",
