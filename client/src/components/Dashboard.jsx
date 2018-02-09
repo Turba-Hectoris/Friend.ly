@@ -17,9 +17,11 @@ class Dashboard extends React.Component {
       currentRoom: 0,
       roomName: 'asd',
       location: '',
-      locale: ''
+      locale: '',
+      members: []
     }
     this.handleClick = this.handleClick.bind(this);
+    this.getMembers = this.getMembers.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.setLocale = this.setLocale.bind(this);
   }
@@ -31,20 +33,36 @@ class Dashboard extends React.Component {
       currentRoom: item.roomNumber,
       roomName: item.eventName,
       select_event_id: item.item.eventID
-    }))
+    }), () => {
+      this.getMembers()
+    })
     $('.db_panel_2').css("z-index", "1")
+  }
+
+  getMembers() {
+    axios.get('/dashboard/events/members', {params: {eventID: this.state.select_event_id}})
+    .then((res) => {
+      this.setState({
+        members: res.data
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   componentWillMount() {
     axios.get('/dashboard/events', {params: {userID: this.props.userData}})
     .then((res) => {
-      console.log('events in dashboard: ', res.data)
+      // console.log('events in dashboard: ', res.data)
       this.setState({
         events: res.data,
         select_event_id: res.data[0].eventID
       // }, () => {console.log('state\'s events: ', this.state.events)})
+      }, () => {
+        this.getMembers()
       });
-      console.log('state\'s events: ', this.state.events);
+      // console.log('state\'s events: ', this.state.events);
     })
   }
 
@@ -82,7 +100,7 @@ handleLocationChange (location) {
 
           <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
-          <EventDetails currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale}/>
+          <EventDetails members={this.state.members} currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale}/>
 
       </div>
     </div>
@@ -102,7 +120,12 @@ const EventDetails = (props) => (
       <h1>Description:</h1>
       <div className="db_detail_description">{props.currentRoom.eventDesc}</div>
       <h1>Members:</h1>
-      <div className="db_detail_members">{props.currentRoom.capacity + ' maximum attendees'}</div>
+      {/*<div className="db_detail_members">{props.currentRoom.capacity + ' maximum attendees'}</div>*/}
+      <ul className="db_detail_members">
+        {props.members.map((member, idx) => 
+          (<li key={idx}><img className="eventListPhoto"height="40px" width="40px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/>{member.username}</li>)
+          )}
+      </ul>
       <h1>Start Date:</h1>
       <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
       <h1>End Date:</h1>

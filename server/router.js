@@ -88,13 +88,29 @@ router.get('/dashboard/events', (req, res) => {
 		eventsData = events.map(({ eventID }) => {
 			return db.Events.findOne({where: {eventID: eventID}})
 		})
-
 		Promise.all(eventsData)
 		.then((results) => {
 			console.log('events: ', results)
 			res.status(200).send(results);
 		})
 	})
+})
+
+router.get('/dashboard/events/members', (req, res) => {
+  const eventID = req.query.eventID;
+  db.UserEvents.findAll({where: {eventID : eventID}}).then((events) => {
+    let memberData = [];
+
+    memberData = events.map(({userID}) => {
+      return db.Users.findOne({where: {userID: userID}})
+    })
+
+    Promise.all(memberData)
+    .then((results) => {
+      console.log('members', results)
+      res.status(200).send(results)
+    })
+  })
 })
 
 router.get('/profile/data/:userID', (req, res) => {
