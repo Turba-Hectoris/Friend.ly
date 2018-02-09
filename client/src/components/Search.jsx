@@ -74,7 +74,7 @@ class Search extends React.Component {
   getEvents () {
     axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.selectedOption}})
     .then((response) => {
-      this.setState({events: response.data})
+      this.setState({events: response.data}, () => this.sortBy())
     })
   }
 
@@ -85,7 +85,7 @@ class Search extends React.Component {
 
   sortBy (e) {
     const events = this.state.events;
-    const key = e.target.id;
+    const key = e? e.target.id : 'startDate';
     events.sort((a, b) => {
       return (a[key] > b[key])? 1 : (a[key] < b[key])? -1 : 0;
     });
