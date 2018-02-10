@@ -68,10 +68,10 @@ const Events = sequelize.define('events', {
 		type: Sequelize.INTEGER
 	},
 	startDate: {
-		type: Sequelize.DATE
+		type: Sequelize.DATE(6)
 	},
 	endDate: {
-		type: Sequelize.DATE
+		type: Sequelize.DATE(13)
 	},
 	capacity: {
 		type: Sequelize.INTEGER
@@ -117,21 +117,16 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 
 
 // UserEvents.bulkCreate([
-// 	{userID: 6, eventID: 1},
-// 	{userID: 6, eventID: 2},
-// 	{userID: 6, eventID: 3},
-// 	{userID: 6, eventID: 6},
-// 	{userID: 6, eventID: 7},
+// 	{userID: 7, eventID: 6},
+// 	{userID: 7, eventID: 1},
+// 	{userID: 7, eventID: 10},
 // ])
 
 // Friendships.bulkCreate([
-// 	{userID: 6, friendID: 1},
-// 	{userID: 6, friendID: 3},
-// 	{userID: 6, friendID: 5},
-// 	{userID: 6, friendID: 2},
-// 	{userID: 6, friendID: 4}
+// 	{userID: 7, friendID: 9},
+// 	{userID: 7, friendID: 10},
+// 	{userID: 7, friendID: 4},
 // ])
-
 
 module.exports = {
 	sequelize: sequelize,

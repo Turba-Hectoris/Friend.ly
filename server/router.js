@@ -3,6 +3,7 @@ const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
+const cloudinarySDK = require('../services/cloudinary.js')
 const multer  = require('multer')
 const upload = multer({'dest': 'upload/'});
 const createfFileOnReq = upload.single('file');
@@ -99,13 +100,13 @@ router.get('/dashboard/events', (req, res) => {
 			// console.log('events: ', results)
 			res.status(200).send(results);
 		})
+		.catch(err => console.log(err))
 	})
 })
 
 router.get('/profile/data/:userID', (req, res) => {
 	let userID = req.params.userID;
 	db.Users.findOne({where: {userID: userID}}).then((user) => {
-
 		let userClientSideData = {
 			userID: user.dataValues.userID,
 			username: user.dataValues.username,
@@ -128,7 +129,6 @@ router.get('/profile/data/:userID', (req, res) => {
 					const friend_array = results.reduce((friend_arr, friend) => {
 						let pull_data = 'username email gender bio userID'
 						let friend_object = {};
-
 						for(let attr in friend.dataValues) {
 							if(pull_data.includes(attr)) {
 								friend_object[attr] = friend.dataValues[attr]
@@ -152,22 +152,25 @@ router.get('/profile/data/:userID', (req, res) => {
 								userClientSideData.events = results;
 								res.status(200).send(userClientSideData);
 							})
+							.catch(err => console.log(err))
 						})
+						.catch(err => console.log(err))
 				})
+				.catch(err => console.log(err))
 			})
+			.catch(err => console.log(err))
 	})
+	.catch(err => console.log(err))
 })
 
-router.post('/profile_img_update', createfFileOnReq, ({ body }, res) => {
-	let imageFile = req.file.path;
-
-
+router.post('/profile_img_update', createfFileOnReq, ({ file: { path: imageFile }, query: { userID } } , res) => {
+	
 	cloudinarySDK
 	.v2
 	.uploader
 	.upload(`${imageFile}`, 
 	{
-		public_id: `${body.userID}`,
+		public_id: `${userID}`,
 	}, (err, { secure_url }) => {
 		if(err) console.log(err)
 		db.Users.find({
@@ -178,8 +181,10 @@ router.post('/profile_img_update', createfFileOnReq, ({ body }, res) => {
 				profilePic: secure_url 
 			})
 		})
+		.catch(err => console.log(err))
 		.then(updatedUser => {
-			res.status(201).send(updatedUser.userID);
+			
+			res.status(200).send({'response_message': `updated userID:${updatedUser.dataValues.userID} info`});
 		})
 		.catch(err => console.log(err))
   })
@@ -187,6 +192,7 @@ router.post('/profile_img_update', createfFileOnReq, ({ body }, res) => {
 
 router.post('/profile_form_update', (req, res) => {
 	let queryData = req.query;
+	let userID = req.body.userID;
 
 	queryData = Object.values(queryData)
 	.reduce((filter, query, idx) => {
@@ -198,10 +204,10 @@ router.post('/profile_form_update', (req, res) => {
 		where: { userID: userID }
 	})
 	.then(user => {
-		return user.update(...Object.values(data))
+		return user.update(queryData)
 	})
 	.then(updatedUser => {
-		res.status(201).send(updatedUser.userID);
+		res.status(200).send({'response_message': `updated userID:${updatedUser.dataValues.userID} info`});
 	})
 	.catch(err => console.log(err))
 });
@@ -323,6 +329,7 @@ router.post('/search/userevents/add', (req, res) => {
 		res.send(userEvent);
 	})
 })
+
 
 ///////////////////////////////////////////////////////////////////
 

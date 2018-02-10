@@ -35,7 +35,7 @@ class Profile extends React.Component {
       
       let queryString = $('#profile_form').serialize().replace('%20', '');
       
-      axios.post(`/profile_update?${queryString}`, {userID: this.props.loggedInUserID})
+      axios.post(`/profile_form_update?${queryString}`, {userID: this.props.loggedInUserID})
       .then((res) => { 
         this.getUserDisplayedData(this.props.loggedInUserID)
        })

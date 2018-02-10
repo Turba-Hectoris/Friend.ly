@@ -3,8 +3,6 @@ import ImageEditIcon from './ImageEditIcon.jsx';
 import UserUpdateForm from './UserUpdateForm.jsx';
 
 export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) => {
-  console.log('userData', userDisplayedData)
-  console.log('edit: ', edit)
   return (
     <div className="profile_info_container">
       <div className="profile_image">
