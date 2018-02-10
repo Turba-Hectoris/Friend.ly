@@ -9,7 +9,7 @@ class Search extends React.Component {
     super(props)
     this.state = {
       term: '',
-      selectedOption: 'name',
+      selectedOption: 'all',
       events: [],
       startDate: null,
       endDate: null,
@@ -24,6 +24,10 @@ class Search extends React.Component {
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.sortBy = this.sortBy.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.getEvents();
   }
 
   handleOptionChange (e) {  
