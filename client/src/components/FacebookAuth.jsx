@@ -28,7 +28,7 @@ class FacebookAuth extends React.Component {
     return (
       <FacebookLogin
         appId="574210012929596"
-        autoLoad={true}
+        autoLoad={false}
         fields="name,email,picture"
         callback={this.responseFacebook}
       />

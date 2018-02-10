@@ -15,8 +15,8 @@ const Main = (props) => (
         : <Homepage />
       }}/>
       <Route path="/search" render={ ({ match, history }) => <Search match={match} history={history} isLogin={props.isLogin} userID={props.userData} username={props.username}/> }/>
-      <Route path="/createEvent" render={ ({ match }) =>  { 
-        return props.isLogin ? <CreateEvent userID={props.userData} match={match}/> 
+      <Route path="/createEvent" render={ ({ match, history }) =>  { 
+        return props.isLogin ? <CreateEvent userID={props.userData} match={match} history={history}/> 
         : <Homepage />
       }}/> 
       <Route path="/profile/:id" render={ ({ match }) => { 

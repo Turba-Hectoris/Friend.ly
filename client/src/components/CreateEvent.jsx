@@ -50,10 +50,6 @@ import CreateMap from './CreateMap.jsx';
 
   let capacity = [
     {
-      label: '1',
-      value: '1'
-    },
-    {
       label: '2',
       value: '2'
     },
@@ -64,6 +60,14 @@ import CreateMap from './CreateMap.jsx';
     {
       label: '4',
       value: '4'
+    },
+    {
+      label: '5',
+      value: '5'
+    },
+    {
+      label: '6',
+      value: '6'
     }
   ]
 
@@ -173,48 +177,52 @@ class CreateEvent extends React.Component{
   render() {
 
     return(
-      <div>
-      <Form
+      <div className="event_container">
+        <div className="event_create">
+          <Form
       // validateError={this.errorValidator}
       // validateWarning={this.warningValidator}
       // validateSuccess={this.successValidator}
 
-      onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {axios.post('/createEvent', {
-        eventName: this.state.submittedValues.eventName,
-        eventDesc: this.state.submittedValues.eventDesc,
-        capacity: this.state.submittedValues.capacity,
-        category: this.state.submittedValues.category,
-        creatorID: this.props.userID,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-        })})
-      .then((response) => {console.log(response)})}>
-      { formApi => (
-        <form onSubmit={formApi.submitForm} id="form2">
-          <label htmlFor="eventName">Event name</label>
-          <StyledText field="eventName" id="eventName" />
-          <label htmlFor="eventDesc">Event description</label>
-          <StyledTextArea field="eventDesc" id="eventDesc" />
-          <label>How many people?</label>
-          <StyledSelect field="capacity" id="capacity" options={capacity} />
-          <label htmlFor="category" className="d-block">Event category</label>
-          <StyledSelect field="category" id="category" options={categories} />
-          <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
-          <DateRangePicker
-            startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-            startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-            endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-            endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-            onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-            focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-            onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-          />
-          <button type="submit" className="mb-4 btn btn-primary">Submit</button>
-        </form>
-      )}
-    </Form>
-    <CreateMap getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
-    </div>
+            onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {axios.post('/createEvent', {
+              eventName: this.state.submittedValues.eventName,
+              eventDesc: this.state.submittedValues.eventDesc,
+              capacity: this.state.submittedValues.capacity,
+              category: this.state.submittedValues.category,
+              creatorID: this.props.userID,
+              startDate: this.state.startDate,
+              endDate: this.state.endDate,
+              location: this.state.locale
+              })})
+            .then((response) => {console.log('hi')})}>
+            { formApi => (
+              <form onSubmit={formApi.submitForm} id="form2">
+                <label htmlFor="eventName">Event name</label>
+                <StyledText field="eventName" id="eventName" />
+                <label htmlFor="eventDesc">Event description</label>
+                <StyledTextArea field="eventDesc" id="eventDesc" />
+                <label>How many people?</label>
+                <StyledSelect field="capacity" id="capacity" options={capacity} />
+                <label htmlFor="category" className="d-block">Event category</label>
+                <StyledSelect field="category" id="category" options={categories} />
+                <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
+                <DateRangePicker
+                  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                  startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                  endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                  onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                />
+                <br/>
+                <button type="submit" className="mb-4 btn btn-primary">Submit</button>
+              </form>
+            )}
+          </Form>
+          <CreateMap getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
+        </div>
+      </div>
       )
   }
 }
