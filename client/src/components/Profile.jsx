@@ -35,7 +35,7 @@ class Profile extends React.Component {
       
       let queryString = $('#profile_form').serialize().replace('%20', '');
       
-      axios.post(`/profile_update?${queryString}`, {userID: this.props.loggedInUserID})
+      axios.post(`/profile_form_update?${queryString}`, {userID: this.props.loggedInUserID})
       .then((res) => { 
         this.getUserDisplayedData(this.props.loggedInUserID)
        })
@@ -99,7 +99,7 @@ class Profile extends React.Component {
               <UserChart catagories={this.state.userDisplayedData.catagories}/>
             </div>
             {
-              (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo loggedInUser={this.state.userDisplayedData} handleEditClick={this.handleEditClick} edit={this.state.edit}/> : <DisplayedUserInfo userDisplayedData={this.state.userDisplayedData}/>
+              (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo userDisplayedData={this.state.userDisplayedData} handleEditClick={this.handleEditClick} edit={this.state.edit}/> : <DisplayedUserInfo userDisplayedData={this.state.userDisplayedData}/>
             }
             <div className="profile_events">
               <div className="profile_events_container">

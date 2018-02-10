@@ -3,6 +3,7 @@ const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
+const cloudinarySDK = require('../services/cloudinary.js')
 const multer  = require('multer')
 const upload = multer({'dest': 'upload/'});
 const createfFileOnReq = upload.single('file');
@@ -22,9 +23,19 @@ router.post('/facebookLogin', (req, res) => {
 	let email = req.body.email;
 	let username = req.body.username;
 	let picture = req.body.picture
+	let fbLink = req.body.link;
+	let gender = req.body.gender;
+
 	db.Users.findOne({where: {facebookID: fbID}}).then( (user) => {
 		if (!user) {
-			db.Users.findCreateFind({where: {facebookID: fbID, username: username, email: email, profilePic: picture}})
+			db.Users.findCreateFind({where: {
+				facebookID: fbID, 
+				username: username, 
+				email: email, 
+				profilePic: picture,
+				facebookLoginPage: fbLink,
+				gender: gender,
+			}})
 			.spread((user, created) => {
 				let userID = user.dataValues.userID
 				util.createSession(req, res, userID)
@@ -41,13 +52,8 @@ router.post('/signup', (req, res) => {
 	db.Users.findOne({where: {username: username}}).then( async (foundUser) => {
 		if (!foundUser) {
 			let password = await bcrypt.hash(req.body.password, 4)
-			///Creating filler data and merging them with default with Object.assign
-			let fillerdata = {
-				bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error voluptatum ullam saepe. Fugit, ullam.",
-				gender: 'M'
-			}
 
-			db.Users.findCreateFind({where: Object.assign({username: username, passHash: password, email: req.body.email}, fillerdata)})
+			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
 			.spread((user, created) => {
 				({userID, username} = user.dataValues)
 				res.status(200).send({userID, username});
@@ -90,9 +96,10 @@ router.get('/dashboard/events', (req, res) => {
 		})
 		Promise.all(eventsData)
 		.then((results) => {
-			console.log('events: ', results)
+			// console.log('events: ', results)
 			res.status(200).send(results);
 		})
+		.catch(err => console.log(err))
 	})
 })
 
@@ -119,14 +126,13 @@ router.get('/profile/data/:userID', (req, res) => {
 		let userClientSideData = {
 			userID: user.dataValues.userID,
 			username: user.dataValues.username,
-			categories: user.dataValues.catagories,
 			bio: user.dataValues.bio,
 			email: user.dataValues.email,
 			gender: user.dataValues.gender,
 			createdAt: user.dataValues.createdAt,
 			updatedAt: user.dataValues.updatedAt,
+			profilePic: user.dataValues.profilePic
 		};
-			//FRIENDS ---Refactor to join tables
 			db.Friendships.findAll({where: {userID: userID}}).then((friends) => {
 				let friendsData = [];
 
@@ -136,11 +142,9 @@ router.get('/profile/data/:userID', (req, res) => {
 
 				Promise.all(friendsData)
 				.then((results) => {
-					//inserted friends HERE
 					const friend_array = results.reduce((friend_arr, friend) => {
 						let pull_data = 'username email gender bio userID'
 						let friend_object = {};
-
 						for(let attr in friend.dataValues) {
 							if(pull_data.includes(attr)) {
 								friend_object[attr] = friend.dataValues[attr]
@@ -152,7 +156,6 @@ router.get('/profile/data/:userID', (req, res) => {
 
 					userClientSideData.friends = friend_array;
 
-						//EVENTS ---Refactor to join tables
 						db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
 							let eventsData = [];
 
@@ -165,56 +168,62 @@ router.get('/profile/data/:userID', (req, res) => {
 								userClientSideData.events = results;
 								res.status(200).send(userClientSideData);
 							})
+							.catch(err => console.log(err))
 						})
+						.catch(err => console.log(err))
 				})
+				.catch(err => console.log(err))
 			})
+			.catch(err => console.log(err))
 	})
+	.catch(err => console.log(err))
 })
 
-router.post('/profile_update', createfFileOnReq, (req, res) => {
-	let userID = req.body.userID
-	let queryData = req.query;
-	let imageFile = req.file.path;
-
-	queryData = Object.values(queryData)
-	.reduce((filter, query, idx) => {
-		if(query) { filter[Object.keys(queryData)[idx]] = query }
-		return filter;
-	}, {})
-
+router.post('/profile_img_update', createfFileOnReq, ({ file: { path: imageFile }, query: { userID } } , res) => {
+	
 	cloudinarySDK
 	.v2
 	.uploader
 	.upload(`${imageFile}`, 
 	{
 		public_id: `${userID}`,
-	}, (err, response) => {
+	}, (err, { secure_url }) => {
 		if(err) console.log(err)
-		
-	// 	console.log('content_of_cloudinary_response_payload:-----', response)
+		db.Users.find({
+			where: { userID }
+		})
+		.then(user => {
+			return user.update({
+				profilePic: secure_url 
+			})
+		})
+		.catch(err => console.log(err))
+		.then(updatedUser => {
+			
+			res.status(200).send({'response_message': `updated userID:${updatedUser.dataValues.userID} info`});
+		})
+		.catch(err => console.log(err))
   })
 })
 
-router.post('/profile_update/:userID', (req, res) => {
-	let userID = req.params.userID;
-	let data = {};
-	let index = 0;
-	for(let key in req.body) {
-		if(req.body[key]){
-			data[index] = {[`${key}`]: req.body[key]}
-			index += 1;
-		}
-	}
+router.post('/profile_form_update', (req, res) => {
+	let queryData = req.query;
+	let userID = req.body.userID;
 
-
+	queryData = Object.values(queryData)
+	.reduce((filter, query, idx) => {
+		if(query) { filter[Object.keys(queryData)[idx]] = query }
+		return filter;
+	}, {})
+	
 	db.Users.find({
 		where: { userID: userID }
 	})
 	.then(user => {
-		return user.update(...Object.values(data))
+		return user.update(queryData)
 	})
 	.then(updatedUser => {
-		res.status(201).send(updatedUser.userID);
+		res.status(200).send({'response_message': `updated userID:${updatedUser.dataValues.userID} info`});
 	})
 	.catch(err => console.log(err))
 });
@@ -276,28 +285,9 @@ router.post('/createEvent', (req, res) => {
 	})
 })
 
-////////////////////////
-/// Used CREATE BULK ///
-//See index.js db file//
-//VvvvvvvvvvvvvvvvvvvV//
-// router.post('/createUser', (req, res) => {
-// 	let username = req.body.username;
-// 	let bio = req.body.bio;
-// 	let email = req.body.email;
-// 	let gender = req.body.gender;
-// 	let profileImg = "https://i.annihil.us/u/prod/marvel//universe3zx/images/f/f5/IronMan_Head.jpg"
-// 	db.Events.findCreateFind({where: {profile: profileImg, username: username, bio: bio, email: email, gender: gender}}).spread((event, created) => {
-// 		res.send(event.dataValues)
-// 	})
-// })
-
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-
-
 router.get('/profile/events', (req, res) => {
   let userID = req.query.userID
-  console.log(userID)
+  // console.log(userID)
 	db.UserEvents.findAll({where: { userID: userID }})
 	.then((events) => {
 		const allUserEvents = events.map((event) => {
@@ -368,6 +358,7 @@ router.post('/search/userevents/add', (req, res) => {
 		res.send(userEvent);
 	})
 })
+
 
 ///////////////////////////////////////////////////////////////////
 

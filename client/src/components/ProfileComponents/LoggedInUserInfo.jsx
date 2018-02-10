@@ -7,7 +7,7 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
     <div className="profile_info_container">
       <div className="profile_image">
       {
-        edit ? <ImageEditIcon loggedInUserID={userDisplayedData.userID}/> : <img src={`${userDisplayedData.profilePic || 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'}`} />
+        edit ? <ImageEditIcon loggedInUserID={userDisplayedData.userID}/> : <img src={`${userDisplayedData.profilePic}`} />
       }
       </div>
       {
@@ -15,26 +15,13 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
       :
         <div className="profile_info">
           <div className="profile_bio">
-            <p>
-              { 
-                userDisplayedData.bio
-              }
-            </p>
+            <p>{userDisplayedData.bio}</p>
             <hr/>
-            <p>
-              {
-                `${userDisplayedData.gender}${'\n'}${userDisplayedData.email}`
-              }
-            </p>
+            <div className="profile_gender">{`${userDisplayedData.gender}` || 'undecided'}</div>
+            <div className="profile_email">{userDisplayedData.email}</div>
           </div>
-          <div className="profile_username">
-            <p> 
-              {
-                userDisplayedData.username
-              } 
-            </p>
-          </div>
-        </div>
+            <div className="profile_username"> {userDisplayedData.username}</div>
+        </div>  
       }
       <div className="profile_edit">
         <button className="btn profile_edit_button" onClick={handleEditClick}> {edit ? "Save" : "Edit Profile"} </button>

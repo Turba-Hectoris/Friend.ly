@@ -13,10 +13,10 @@ export const UserUpdateForm = ({ userDisplayedData }) => {
         <fieldset>
           <legend>Gender</legend>
           <input type="radio" id="genderChoice1"
-            name="gender" value="M"/>
+            name="gender" value="male"/>
           <label >Male</label>
           <input type="radio" id="genderChoice2"
-            name="gender" value="F"/>
+            name="gender" value="female"/>
           <label>Female</label>
           <button type="submit" value=""/>
         </fieldset>
