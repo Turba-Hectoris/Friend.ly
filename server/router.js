@@ -60,7 +60,7 @@ router.post('/signup', (req, res) => {
 			})
 		} else {
 			({userID, username} = foundUser.dataValues)
-			res.status(200).send({response: 'Already a memeber', userID, username});
+			res.status(200).send({response: 'Already a member', userID, username});
 		}
 	})
 })
@@ -96,7 +96,6 @@ router.get('/dashboard/events', (req, res) => {
 		})
 		Promise.all(eventsData)
 		.then((results) => {
-			// console.log('events: ', results)
 			res.status(200).send(results);
 		})
 		.catch(err => console.log(err))
@@ -114,7 +113,6 @@ router.get('/dashboard/events/members', (req, res) => {
 
     Promise.all(memberData)
     .then((results) => {
-      console.log('members', results)
       res.status(200).send(results)
     })
   })
@@ -255,7 +253,7 @@ router.post('/event_attendance_update', (req, res) => {
 				res.status(200).send({response: event});
 			})
 		} else {
-			res.status(301).send({response: `Already attending ${foundEvent}`});
+			res.status(200).send({response: `Already attending eventID ${foundEvent.dataValues.eventID}`});
 		}
 	})
 })
