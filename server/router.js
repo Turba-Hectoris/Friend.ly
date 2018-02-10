@@ -20,7 +20,7 @@ router.post('/logout', util.expireSession, (req, res) => {
 router.post('/facebookLogin', (req, res) => {
 	let fbID = req.body.id;
 	let email = req.body.email;
-	let username = req.body.name;
+	let username = req.body.username;
 	let picture = req.body.picture
 	db.Users.findOne({where: {facebookID: fbID}}).then( (user) => {
 		if (!user) {
@@ -265,6 +265,7 @@ router.post('/createEvent', (req, res) => {
 	let startDate = req.body.startDate;
 	let endDate = req.body.endDate;
 	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
+	let locationName = req.body.location
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName}}).spread((event, created) => {
