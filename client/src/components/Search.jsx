@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Dashboard from './Dashboard.jsx';
+import 'react-dates/initialize'; 
+import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 
 class Search extends React.Component {
   constructor(props) {
@@ -8,7 +10,11 @@ class Search extends React.Component {
     this.state = {
       term: '',
       selectedOption: 'name',
-      events: []
+      events: [],
+      startDate: null,
+      endDate: null,
+      focusedInput: null,
+      calendarShow: false
     }
     this.handleTermChange = this.handleTermChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,6 +28,12 @@ class Search extends React.Component {
 
   handleOptionChange (e) {  
     this.setState({selectedOption: e.target.value}, () => {
+      if(this.state.selectedOption === 'date') {
+        this.setState({calendarShow: true});
+      } else {
+        this.setState({calendarShow: false});
+      }
+
       if(this.state.selectedOption === 'all') {
         this.getEvents();
       }
@@ -33,15 +45,24 @@ class Search extends React.Component {
   }
 
   handleSubmit () {
-    if(this.state.term.length) {
+    if(this.state.term.length || this.state.selectedOption === 'date') {
       this.getEvents();
-      this.setState({term: ''});
+      this.setState({term: '', startDate: null, endDate: null, calendarShow: false});
     }
   }
 
   handleKeyPress (e) {
     if(e.key === 'Enter') {
       this.handleSubmit();
+    }
+  }
+
+  handleSelectChange (e) {
+    e.preventDefault();
+    if(e.target.value !== 'category') {
+      this.setState({term: e.target.value, selectedOption: 'category'}, () => {
+        this.handleSubmit();
+      })
     }
   }
 
@@ -72,10 +93,18 @@ class Search extends React.Component {
   }
 
   getEvents () {
-    axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.selectedOption}})
+    let params;
+    if(this.state.selectedOption !== 'date') {
+      params = {term: this.state.term, searchBy: this.state.selectedOption};
+    } else {
+      params = {startDate: this.state.startDate, endDate: this.state.endDate, searchBy: 'date'};
+    }
+    axios.get('/search/events', {params: params})
     .then((response) => {
-      this.setState({events: response.data}, () => this.sortBy())
-    })
+      this.setState({events: response.data}, () => {
+        this.sortBy();
+      })
+    }) 
   }
 
   reformatDate (str) {
@@ -92,16 +121,8 @@ class Search extends React.Component {
     this.setState({events: events});
   }
 
-  handleSelectChange (e) {
-    e.preventDefault();
-    if(e.target.value !== 'category') {
-      this.setState({term: e.target.value, selectedOption: 'category'}, () => {
-        this.handleSubmit();
-      })
-    }
-  }
-
   render() {
+    const show = this.state.calendarShow;
       return (
         <div className="search_container">
           <div className="search">
@@ -119,7 +140,18 @@ class Search extends React.Component {
                 </label>       
                 <label className="search_label">
                   <input type="radio" name="search" value="date" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
-                  Date                 
+                  <span>Date
+                    { show ?
+                    <DateRangePicker 
+                      startDate={this.state.startDate} 
+                      startDateId="your_unique_start_date_id" 
+                      endDate={this.state.endDate} 
+                      endDateId="your_unique_end_date_id" 
+                      onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} 
+                      focusedInput={this.state.focusedInput} 
+                      onFocusChange={focusedInput => this.setState({ focusedInput })} 
+                    /> : null}
+                  </span>                 
                 </label>
                 <label className="search_label">
                   <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
@@ -147,7 +179,7 @@ class Search extends React.Component {
         </div>
       )
     }
-}
+  }
 
 const ListItem = (props) => (
   <tr>
