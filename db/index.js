@@ -66,10 +66,10 @@ const Events = sequelize.define('events', {
 		type: Sequelize.INTEGER
 	},
 	startDate: {
-		type: Sequelize.DATE
+		type: Sequelize.DATE(6)
 	},
 	endDate: {
-		type: Sequelize.DATE
+		type: Sequelize.DATE(6)
 	},
 	capacity: {
 		type: Sequelize.INTEGER

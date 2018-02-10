@@ -318,7 +318,7 @@ router.get('/search/events', (req, res) => {
   const term = req.query.term;
   const searchBy = req.query.searchBy;
 	console.log('term : ', term, ' searchBy ', searchBy)
-
+	
 	if(searchBy === 'name') {
 		db.Events.findAll({where: {eventName: {
 	    [db.Op.iLike]: '%' + term + '%'
@@ -330,13 +330,25 @@ router.get('/search/events', (req, res) => {
 	    res.send(events)
 	  })
 	} else if (searchBy === 'date'){
-		consoel.log('in date search')
-		db.Events.findAll({where: {[db.Op.or]: [{startDate: term}, {endDate: term}]}}).then((events) => {
-	    res.send(events)
-	  })
+		const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+		console.log('in date search')
+		console.log('startDate type from client', typeof startDate, ' endDate ', endDate);
+		// db.Events.findAll({where: {[db.Op.or]: [{startDate: {
+		// 	[db.Op.lte]: endDate
+		// }}, {endDate: {
+		// 	[db.Op.gte]: startDate
+		// }}]}}).then((events) => {
+		// 	console.log('getvent by date============', events);
+	 //    res.send(events)
+	 //  })
+	 db.Events.findAll({where: {startDate : startDate}}).then(events => res.send(events))
 	} else {
 		console.log('in all search')
-		db.Events.findAll().then(events => res.send(events))
+		db.Events.findAll({where: {status: 'active'}}).then(events => {
+			console.log('sdate type in server: ', typeof events[0].startDate);
+			res.send(events)
+		})
 	}
 })
 

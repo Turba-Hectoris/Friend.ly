@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Dashboard from './Dashboard.jsx';
+import 'react-dates/initialize'; 
+import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 
 class Search extends React.Component {
   constructor(props) {
@@ -8,7 +10,11 @@ class Search extends React.Component {
     this.state = {
       term: '',
       selectedOption: 'name',
-      events: []
+      events: [],
+      startDate: null,
+      endDate: null,
+      focusedInput: null,
+      calendarShow: false
     }
     this.handleTermChange = this.handleTermChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,19 +23,20 @@ class Search extends React.Component {
     this.handleEventJoin = this.handleEventJoin.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.sortBy = this.sortBy.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   handleOptionChange (e) {  
     this.setState({selectedOption: e.target.value}, () => {
+      if(this.state.selectedOption === 'date') {
+        this.setState({calendarShow: true});
+      } else {
+        this.setState({calendarShow: false});
+      }
+
       if(this.state.selectedOption === 'all') {
         this.getEvents();
       }
-      if(this.state.selectedOption === 'category') {
-
-      }
-      // if(this.state.selectedOption === 'date') {
-
-      // }
     });
   }
 
@@ -38,9 +45,9 @@ class Search extends React.Component {
   }
 
   handleSubmit () {
-    if(this.state.term.length) {
+    if(this.state.term.length || this.state.selectedOption === 'date') {
       this.getEvents();
-      this.setState({term: ''});
+      this.setState({term: '', startDate: null, endDate: null, calendarShow: false});
     }
   }
 
@@ -50,8 +57,16 @@ class Search extends React.Component {
     }
   }
 
+  handleSelectChange (e) {
+    e.preventDefault();
+    if(e.target.value !== 'category') {
+      this.setState({term: e.target.value, selectedOption: 'category'}, () => {
+        this.handleSubmit();
+      })
+    }
+  }
+
   handleEventJoin (event) {
-    console.log('event click to join: ', event)
     const eventID = event.eventID;
     const creatorID = event.creatorID;
     const userID = this.props.userID;
@@ -78,24 +93,36 @@ class Search extends React.Component {
   }
 
   getEvents () {
-    axios.get('/search/events', {params: {term: this.state.term, searchBy: this.state.selectedOption}})
+    let params;
+    if(this.state.selectedOption !== 'date') {
+      params = {term: this.state.term, searchBy: this.state.selectedOption};
+    } else {
+      params = {startDate: this.state.startDate, endDate: this.state.endDate, searchBy: 'date'};
+    }
+    axios.get('/search/events', {params: params})
     .then((response) => {
-      this.setState({events: response.data});
-    })
+      this.setState({events: response.data}, () => {
+        this.sortBy();
+      })
+    }) 
+  }
+
+  reformatDate (str) {
+    const date = new Date(str);
+    return (date.getMonth()+1) + '-' + date.getDate() + '-' + date.getFullYear() ;
   }
 
   sortBy (e) {
-    console.log('sorted by: ', e.target.id);
-
     const events = this.state.events;
+    const key = e? e.target.id : 'startDate';
     events.sort((a, b) => {
-      return a[e.target.id] - b[e.target.id]
+      return (a[key] > b[key])? 1 : (a[key] < b[key])? -1 : 0;
     });
-    console.log(events)
-    this.setState({events});
+    this.setState({events: events});
   }
 
   render() {
+    const show = this.state.calendarShow;
       return (
         <div className="search_container">
           <div className="search">
@@ -104,7 +131,7 @@ class Search extends React.Component {
               <button onClick={this.handleSubmit}>Search</button>
               <form>
                 <label className="search_label">
-                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
+                  <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
                   All                
                 </label>
                 <label className="search_label">
@@ -113,11 +140,22 @@ class Search extends React.Component {
                 </label>       
                 <label className="search_label">
                   <input type="radio" name="search" value="date" checked={this.state.selectedOption === 'date'} onChange={(e) => this.handleOptionChange(e)} />
-                  Date                 
+                  <span>Date
+                    { show ?
+                    <DateRangePicker 
+                      startDate={this.state.startDate} 
+                      startDateId="your_unique_start_date_id" 
+                      endDate={this.state.endDate} 
+                      endDateId="your_unique_end_date_id" 
+                      onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} 
+                      focusedInput={this.state.focusedInput} 
+                      onFocusChange={focusedInput => this.setState({ focusedInput })} 
+                    /> : null}
+                  </span>                 
                 </label>
                 <label className="search_label">
                   <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
-                  Category                
+                   <span><SelectC handleSelectChange={this.handleSelectChange}/></span>               
                 </label>
               </form>
             </div>
@@ -129,8 +167,11 @@ class Search extends React.Component {
                   <tr><td>Event</td>
                   <td>Description</td>
                   <td><span id="category" onClick={(e) => this.sortBy(e)}>Category</span></td>
-                  <td >Start Date</td><td>End Date</td><td>Creator</td><td>Join</td></tr>
-                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin}/>)}
+                  <td><span id="startDate" onClick={(e) => this.sortBy(e)}>Start Date</span></td>
+                  <td><span id="endDate" onClick={(e) => this.sortBy(e)}>End Date</span></td>
+                  <td><span id="creatorName" onClick={(e) => this.sortBy(e)}>Creator</span></td>
+                  <td>Join</td></tr>
+                    {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin} reformatDate={this.reformatDate}/>)}
                 </tbody>
               </table>
             </div>
@@ -138,30 +179,32 @@ class Search extends React.Component {
         </div>
       )
     }
-}
+  }
 
 const ListItem = (props) => (
   <tr>
     <td>{props.event.eventName}</td>
     <td>{props.event.eventDesc}</td>
     <td>{props.event.category}</td>
-    <td>{props.event.startDate}</td>
-    <td>{props.event.endDate}</td>
+    <td>{props.reformatDate(props.event.startDate)}</td>
+    <td>{props.reformatDate(props.event.endDate)}</td>
     <td>{props.event.creatorName}</td>
     <td><button onClick={() => props.handleEventJoin(props.event)}>Join</button></td>
   </tr>
 )
 
-const Dropdown = (props) => (
-    <ul>
-      <li value="food">Food & Dine</li>
-      <li value="music">Live Music</li>      
-      <li value="arts">Arts</li>
-      <li value="exercise">Exercise</li>
-      <li value="movies">Movies</li>      
-      <li value="outdoors">Outdoors</li>
-      <li value="drinks">Drinks</li>
-    </ul>
+const SelectC = (props) => (
+  <select onChange={(e) => props.handleSelectChange(e)}>
+  <option value="category">Category</option>
+  <option value="movies">Movies</option>
+  <option value="outdoors">Outdoors</option>
+  <option value="food">Food/Dining</option>
+  <option value="music">Live Music</option>
+  <option value="exercise">Exercise</option>
+  <option value="gaming">Gaming</option>
+  <option value="drinks">Drinks</option>
+  <option value="arts">Arts & Culture</option>
+</select>
 )
 
 export default Search
