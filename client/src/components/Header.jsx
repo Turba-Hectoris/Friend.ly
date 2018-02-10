@@ -121,7 +121,7 @@ class Header extends React.Component {
             >
             Login
           </Link>
-          {/* <FacebookAuth toggleLogin={this.props.toggleLogin}/> */}
+          <FacebookAuth toggleLogin={this.props.toggleLogin}/>
           <ReactModalLogin
             visible={this.state.showModal}
             onCloseModal={this.closeModal.bind(this)}

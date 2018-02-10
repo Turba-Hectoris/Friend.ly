@@ -24,6 +24,7 @@ class Dashboard extends React.Component {
     this.getMembers = this.getMembers.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.setLocale = this.setLocale.bind(this);
+    this.handleAddFriend = this.handleAddFriend.bind(this); 
   }
   
   handleClick (div, item) {
@@ -37,6 +38,14 @@ class Dashboard extends React.Component {
       this.getMembers()
     })
     $('.db_panel_2').css("z-index", "1")
+  }
+
+  handleAddFriend(friendID) {
+    axios.post('/friendship_update', {userID: this.props.userData, friendID})
+    .then((response) => {
+      //...check Network response
+    })
+    .catch(err => console.log(err));
   }
 
   getMembers() {
@@ -78,6 +87,7 @@ handleLocationChange (location) {
     })
   }
   render () {
+    let loggedInUser = this.props.userData;
     return (
       <div className="db_container">
         <div className="dashboard">
@@ -100,7 +110,12 @@ handleLocationChange (location) {
 
           <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
-          <EventDetails members={this.state.members} currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale}/>
+          <EventDetails members={this.state.members.reduce((arrOfMembers, member) => {
+            if(member.userID === loggedInUser) {
+              return arrOfMembers;
+            }
+            return arrOfMembers.concat([member])
+          }, [])} currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale} handleAddFriend={this.handleAddFriend}/>
 
       </div>
     </div>
@@ -123,7 +138,10 @@ const EventDetails = (props) => (
       {/*<div className="db_detail_members">{props.currentRoom.capacity + ' maximum attendees'}</div>*/}
       <ul className="db_detail_members">
         {props.members.map((member, idx) => 
-          (<li key={idx}><img className="eventListPhoto"height="40px" width="40px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/>{member.username}</li>)
+          (<li 
+            key={member.userID}
+            onClick={() => {props.handleAddFriend(member.userID)}}
+            ><img className="eventListPhoto"height="40px" width="40px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/>{member.username}</li>)
           )}
       </ul>
       <h1>Start Date:</h1>

@@ -71,7 +71,7 @@ class Profile extends React.Component {
   handleAddFriend(friendID) {
     axios.post('/friendship_update', {userID: this.props.loggedInUserID, friendID})
     .then((response) => {
-
+      //...check Network response
     })
     .catch(err => console.log(err));
   }
@@ -79,7 +79,7 @@ class Profile extends React.Component {
   handleJoinEvent(eventID) {
     axios.post('/event_attendance_update', {userID: this.props.loggedInUserID, eventID})
     .then((response) => {
-
+      //...check Network response
     })
     .catch(err => console.log(err));
   }
