@@ -8,26 +8,13 @@ export const DisplayedUserInfo = ({ userDisplayedData, edit, handleEditClick }) 
       </div>
         <div className="profile_info">
           <div className="profile_bio">
-            <p>
-              { 
-                userDisplayedData.bio
-              }
-            </p>
+            <p>{userDisplayedData.bio}</p>
             <hr/>
-            <p>
-              {
-                `${userDisplayedData.gender || 'undecided'}${'\n'}${userDisplayedData.email}`
-              }
-            </p>
+            <div className="profile_gender" >{`${userDisplayedData.gender}` || 'undecided'}</div>
+            <div className="profile_email" >{userDisplayedData.email}</div>
           </div>
-          <div className="profile_username">
-            <p> 
-              {
-                userDisplayedData.username
-              }
-            </p>
+            <div className="profile_username">{userDisplayedData.username}</div> 
         </div>
-      </div>
       <div className="profile_add_friend">
         <button className="btn profile_friend_button" onClick={handleEditClick}> { edit ? "Friend" : "Unfriend"} </button>
       </div>

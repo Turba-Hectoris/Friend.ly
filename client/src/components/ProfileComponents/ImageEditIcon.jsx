@@ -10,8 +10,6 @@ export class ImageEditIcon extends React.Component {
   }
   
   handleDrop (files, loggedInUserID){
-    console.log('files[0]', files[0])
-    console.log('loggedUser', loggedInUserID)
     const image = files[0];
     const url = `/profile_img_update`;
     //module to populate forms {replaces form HTML}

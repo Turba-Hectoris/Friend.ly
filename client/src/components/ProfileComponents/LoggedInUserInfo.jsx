@@ -15,26 +15,13 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
       :
         <div className="profile_info">
           <div className="profile_bio">
-            <p>
-              { 
-                userDisplayedData.bio
-              }
-            </p>
+            <p>{userDisplayedData.bio}</p>
             <hr/>
-            <p>
-              {
-                `${userDisplayedData.gender || 'undecided'}${'\n'}${userDisplayedData.email}`
-              }
-            </p>
+            <div className="profile_gender">{`${userDisplayedData.gender}` || 'undecided'}</div>
+            <div className="profile_email">{userDisplayedData.email}</div>
           </div>
-          <div className="profile_username">
-            <p> 
-              {
-                userDisplayedData.username
-              } 
-            </p>
-          </div>
-        </div>
+            <div className="profile_username"> {userDisplayedData.username}</div>
+        </div>  
       }
       <div className="profile_edit">
         <button className="btn profile_edit_button" onClick={handleEditClick}> {edit ? "Save" : "Edit Profile"} </button>
