@@ -355,16 +355,6 @@ p {
   grid-row: 1 / 3;
 }
 
-/*****************************************************************/
-                       /* ProfileInfo CSS */
-/*****************************************************************/
-
-.profile_info_container {
-  display: grid;
-  grid-auto-columns: auto auto 10%;
-  grid-auto-rows: 10% 50% 40%;
-}
-
 .profile_image {
   grid-column: 1/2;
   grid-row: 1/3;
@@ -375,9 +365,14 @@ p {
   grid-row: 1 / 2;
 }
 
-.profile_add_friend {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
+/*****************************************************************/
+                       /* ProfileInfo CSS */
+/*****************************************************************/
+
+.profile_info_container {
+  display: grid;
+  grid-auto-columns: auto auto 10%;
+  grid-auto-rows: 10% 50% 40%;
 }
 
 .profile_info {
@@ -391,11 +386,6 @@ p {
   grid-row: 1/2;
 }
 
-.profile_username {
-  grid-column: 1/2;
-  grid-row: 2/4;
-}
-
 .profile_gender {
 
 }
@@ -404,18 +394,15 @@ p {
 
 }
 
+.profile_username {
+  grid-column: 1/2;
+  grid-row: 2/4;
+}
+
 .profile_image > a > img {
   width: 10%;
   height: auto;
 } 
-
-.profile_username > p {
-  font-size: 6vmax;
-  text-align: center;
-  font-family: SANS-SERIF;
-  width: 100%;
-  height: auto;
-}
 
 .profile_image > img {
   width: 100%;
@@ -423,7 +410,23 @@ p {
   border-radius: 50%;
 }
 
-.profile_bio > p {
+.profile_bio {
+  text-align: center;
+  font-family: SANS-SERIF;
+  width: 100%;
+  height: auto;
+}
+
+.profile_gender {
+
+}
+
+.profile_email {
+  
+}
+
+.profile_username {
+  font-size: 6vmax;
   text-align: center;
   font-family: SANS-SERIF;
   width: 100%;
@@ -431,6 +434,7 @@ p {
 }
 
 .profile_edit { 
+  
 }
 
 .profile_edit_button {
@@ -442,6 +446,7 @@ p {
 }
 
 .profile_add_friend { 
+  
 }
 
 .profile_friend_button {
@@ -449,15 +454,75 @@ p {
   height: auto;
   font-size: 10px;
   display: block;
-  padding: 5px;
+  padding: 3px;
 }
 
-.profile_gender {
+/*              Friend             */
+.profile_friend_image {
+  display: grid;
+  grid-auto-columns: 80% 20%;
+  grid-auto-rows: 20% 60% 20%;
+}
+
+.profile_friend_image > img {
+  grid-column: 1/2;
+  grid-row: 1/3;
+}
+
+.add_friend_button {
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.profile_friend_username {
+  grid-column: 1/3;
+  grid-row: 3/4;
+}
+
+.profile_friend_image > img {
 
 }
 
-.profile_email {
+.profile_friend_username {
+
+}
+
+.add_friend_button {
+  width: 100%;
+  height: auto;
+  font-size: 10px;
+  display: block;
+  padding: 3px;
+}
+
+.profile_friend_info_container {
+  display: grid;
+  grid-auto-columns: auto auto 10%;
+  grid-auto-rows: 70% 15% 15%;
+}
+
+.profle_friend_bio {
   
+}
+
+.profile_friend_email {
+
+}
+
+.profile_friend_gender {
+
+}
+
+.profle_friend_bio {
+  
+}
+
+.profile_friend_email {
+
+}
+
+.profile_friend_gender {
+
 }
 
 /*****************************************************************/
@@ -482,6 +547,7 @@ p {
 .profile_friend {
   border: 1px solid black;
   min-width: 200px;
+  display: inherit;
 }
 
 .add_friend_button {

@@ -22,11 +22,9 @@ const Users = sequelize.define('users', {
 	passHash: {
 		type: Sequelize.STRING
 	},
-	categories: {
-		type: Sequelize.STRING
-	},
 	bio: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		defaultValue: "Tell us a little bit about yourself?"
 	},
 	email: {
 		type: Sequelize.STRING
@@ -35,9 +33,13 @@ const Users = sequelize.define('users', {
 		type: Sequelize.STRING
 	},
 	facebookID: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
 	},
 	profilePic: {
+		type: Sequelize.STRING,
+		defaultValue: 'https://previews.123rf.com/images/diddleman/diddleman1204/diddleman120400002/13058158-no-user-profile-picture-hand-drawn-.jpg'
+	},
+	facebookLoginPage: {
 		type: Sequelize.STRING
 	}
 })
@@ -115,21 +117,16 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 
 
 // UserEvents.bulkCreate([
-// 	{userID: 6, eventID: 1},
-// 	{userID: 6, eventID: 2},
-// 	{userID: 6, eventID: 3},
-// 	{userID: 6, eventID: 6},
-// 	{userID: 6, eventID: 7},
+// 	{userID: 7, eventID: 6},
+// 	{userID: 7, eventID: 1},
+// 	{userID: 7, eventID: 10},
 // ])
 
 // Friendships.bulkCreate([
-// 	{userID: 6, friendID: 1},
-// 	{userID: 6, friendID: 3},
-// 	{userID: 6, friendID: 5},
-// 	{userID: 6, friendID: 2},
-// 	{userID: 6, friendID: 4}
+// 	{userID: 7, friendID: 9},
+// 	{userID: 7, friendID: 10},
+// 	{userID: 7, friendID: 4},
 // ])
-
 
 module.exports = {
 	sequelize: sequelize,
