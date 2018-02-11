@@ -1,314 +1,105 @@
 module.exports = [{
-  bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-  createdAt: "2018-02-02T19:28:47.966Z",
-  email: "aaron@aaron.com",
-  events: [{
-    capacity: 
-    222,
-    category:
-    null,
-    createdAt:
-    "2018-02-02T19:30:18.076Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T19:30:17.815Z",
-    eventDesc:
-    "i wanna climb a bunch of rocks!",
-    eventID:
-    3,
-    eventName:
-    "rock climbing",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T19:30:18.076Z",
-    }
-    ,
-    {
-    capacity:
-    3,
-    category:
-    null,
-    createdAt:
-    "2018-02-02T19:30:49.386Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T19:30:49.019Z",
-    eventDesc:
-    "Rock on broda!",
-    eventID:
-    4,
-    eventName:
-    "air guitar",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T19:30:49.386Z",
-    },
-    {
-    capacity:
-    4,
-    category:
-    null,
-    createdAt:
-    "2018-02-02T19:31:07.856Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T19:31:07.621Z",
-    eventDesc:
-    "I'm sick and tired of these damn monkeys on this damn plane!!",
-    eventID:
-    5,
-    eventName:
-    "wild monkey taming",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T19:31:07.856Z",
-    },
-    {
-    capacity:
-    4,
-    category:
-    null,
-    createdAt:
-    "2018-02-02T19:31:23.295Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T19:31:23.049Z",
-    eventDesc:
-    "JK let's go to peter dillon's",
-    eventID:
-    6,
-    eventName:
-    "bible study",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T19:31:23.295Z",
-    },
-    {
-    capacity:
-    1,
-    category:
-    null,
-    createdAt:
-    "2018-02-02T19:31:37.735Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T19:31:37.705Z",
-    eventDesc:
-    "dancing on my own by robyn",
-    eventID:
-    7,
-    eventName:
-    "impromptu dance party",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T19:31:37.735Z",
-    },
-    {
-    capacity:
-    2,
-    category:
-    "food",
-    createdAt:
-    "2018-02-02T20:02:14.492Z",
-    creatorID:
-    6,
-    date:
-    "2018-02-02T20:02:14.443Z",
-    eventDesc:
-    "time for the biggest party of them all",
-    eventID:
-    8,
-    eventName:
-    "big bad party",
-    imgLink:
-    "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
-    status:
-    "active",
-    updatedAt:
-    "2018-02-02T20:02:14.492Z",
-    }],
-    friends: [{
-    bio: 
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-    categories:
-    null,
-    createdAt:
-    "2018-02-02T15:05:48.874Z",
-    email:
-    "jackie@test.com",
-    gender:
-    "M",
-    passHash:
-    "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-    updatedAt:
-    "2018-02-02T15:05:48.874Z",
-    userID:
-    11,
-    username:
-    "jackie",
-    },
-    {
-    bio:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-    categories:
-    null,
-    createdAt:
-    "2018-02-02T16:20:41.432Z",
-    email:
-    "dad@daddi.com",
-    gender:
-    "M",
-    passHash:
-    "$2a$04$h5la5c6mwCVh7FlCp9zSG.JRHHwizqS3dQzcGTmke5luiZkq7eaSa",
-    updatedAt:
-    "2018-02-02T16:20:41.432Z",
-    userID:
-    3,
-    username:
-    "sam"
-    },
-    {
-    bio:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-    categories:
-    null,
-    createdAt:
-    "2018-02-02T18:43:15.221Z",
-    email:
-    "email",
-    gender:
-    "M",
-    passHash:
-    "$2a$04$RjiJgvhW9vn8nUcvasZN7.hjW4N/E19kkKLe3NS9HAnJV4pWY1L22",
-    updatedAt:
-    "2018-02-02T18:43:15.221Z",
-    userID:
-    5,
-    username:
-    "jim",
-    },
-    {
-      bio: 
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-      categories:
-      null,
-      createdAt:
-      "2018-02-02T15:05:48.874Z",
-      email:
-      "jackie@test.com",
-      gender:
-      "M",
-      passHash:
-      "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-      updatedAt:
-      "2018-02-02T15:05:48.874Z",
-      userID:
-      1,
-      username:
-      "jackie",
+  "userID": 3,
+  "username": "William John",
+  "bio": "Tell us a little bit about yourself?",
+  "email": "wjeichhold@gmail.com",
+  "gender": "male",
+  "createdAt": "2018-02-10T19:13:47.344Z",
+  "updatedAt": "2018-02-10T19:13:47.344Z",
+  "profilePic": "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/19990504_10209385385251938_6746533800077156722_n.jpg?oh=057f953d2dcf583fc7725e1088db47e3&oe=5B238A73",
+  "friends": [
+      {
+          "userID": 2,
+          "username": "derrick",
+          "bio": "edit",
+          "email": "test",
+          "gender": null,
+          "profilePic": "https://res.cloudinary.com/dzy8ulefz/image/upload/v1518292787/2.png"
+      }
+  ],
+  "allPendingFriendRequest": [
+      [
+          null,
+          {
+              "friendID": 1
+          }
+      ]
+  ],
+  "events": [
+      {
+          "eventID": 1,
+          "eventName": "Test event",
+          "status": "active",
+          "creatorID": 2,
+          "startDate": "2018-02-10 17:00:00.000 +00:00",
+          "endDate": "2018-02-23 17:00:00.000 +00:00",
+          "capacity": 4,
+          "imgLink": "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+          "category": "arts",
+          "eventDesc": "Hey everyone join my event and help me TDD !",
+          "creatorName": "test",
+          "createdAt": "2018-02-10T18:56:52.359Z",
+          "updatedAt": "2018-02-10T18:56:52.359Z"
       },
       {
-        bio: 
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-        categories:
-        null,
-        createdAt:
-        "2018-02-02T15:05:48.874Z",
-        email:
-        "jackie@test.com",
-        gender:
-        "M",
-        passHash:
-        "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-        updatedAt:
-        "2018-02-02T15:05:48.874Z",
-        userID:
-        7,
-        username:
-        "jackie",
-        },
-        {
-          bio: 
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-          categories:
-          null,
-          createdAt:
-          "2018-02-02T15:05:48.874Z",
-          email:
-          "jackie@test.com",
-          gender:
-          "M",
-          passHash:
-          "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-          updatedAt:
-          "2018-02-02T15:05:48.874Z",
-          userID:
-          8,
-          username:
-          "jackie",
-          },
-          {
-            bio: 
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-            categories:
-            null,
-            createdAt:
-            "2018-02-02T15:05:48.874Z",
-            email:
-            "jackie@test.com",
-            gender:
-            "M",
-            passHash:
-            "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-            updatedAt:
-            "2018-02-02T15:05:48.874Z",
-            userID:
-            9,
-            username:
-            "jackie",
-            },
-            {
-              bio: 
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium possimus blanditiis, facilis eligendi ea vero asperiores ipsa! Itaque exercitationem rerum veniam consequatur vitae earum error vol…",
-              categories:
-              null,
-              createdAt:
-              "2018-02-02T15:05:48.874Z",
-              email:
-              "jackie@test.com",
-              gender:
-              "M",
-              passHash:
-              "$2a$04$/uxeSwfyt1Bjw6.drIPCBu69YHBDxRyXIMzWZgSakCzgus9fwNM2.",
-              updatedAt:
-              "2018-02-02T15:05:48.874Z",
-              userID:
-              10,
-              username:
-              "jackie",
-              }],
-  gender: "M",
-  updatedAt: "2018-02-02T19:28:47.966Z",
-  userID: 6,
-  username: "aaron"
+          "eventID": 2,
+          "eventName": "another test event y'all!",
+          "status": "active",
+          "creatorID": 2,
+          "startDate": "2018-02-11 17:00:00.000 +00:00",
+          "endDate": "2018-02-23 17:00:00.000 +00:00",
+          "capacity": 3,
+          "imgLink": "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+          "category": "arts",
+          "eventDesc": "Just testing ",
+          "creatorName": "new test ",
+          "createdAt": "2018-02-10T19:31:40.753Z",
+          "updatedAt": "2018-02-10T19:31:40.753Z"
+      },
+      {
+          "eventID": 3,
+          "eventName": "bill's murder party",
+          "status": "active",
+          "creatorID": 3,
+          "startDate": "2018-02-13 17:00:00.000 +00:00",
+          "endDate": "2018-02-15 17:00:00.000 +00:00",
+          "capacity": 6,
+          "imgLink": "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+          "category": "exercise",
+          "eventDesc": "time to die!",
+          "creatorName": "William John",
+          "createdAt": "2018-02-10T19:41:44.905Z",
+          "updatedAt": "2018-02-10T19:41:44.905Z"
+      },
+      {
+          "eventID": 5,
+          "eventName": "TDD: Party JOIN! JOIN!",
+          "status": "active",
+          "creatorID": 5,
+          "startDate": "2018-02-10 17:00:00.000 +00:00",
+          "endDate": "2018-02-23 17:00:00.000 +00:00",
+          "capacity": 4,
+          "imgLink": "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+          "category": "arts",
+          "eventDesc": "Testing iz da waye",
+          "creatorName": "test",
+          "createdAt": "2018-02-10T20:06:42.077Z",
+          "updatedAt": "2018-02-10T20:06:42.077Z"
+      },
+      {
+          "eventID": 6,
+          "eventName": "facebook TDD",
+          "status": "active",
+          "creatorID": 6,
+          "startDate": "2018-02-10 17:00:00.000 +00:00",
+          "endDate": "2018-02-23 17:00:00.000 +00:00",
+          "capacity": 4,
+          "imgLink": "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg",
+          "category": "arts",
+          "eventDesc": "TDD facebook ",
+          "creatorName": "Derrick Theodore",
+          "createdAt": "2018-02-10T20:30:03.976Z",
+          "updatedAt": "2018-02-10T20:30:03.976Z"
+      }
+  ]
 }]

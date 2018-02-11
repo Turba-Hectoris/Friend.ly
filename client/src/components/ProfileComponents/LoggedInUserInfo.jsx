@@ -16,10 +16,11 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
         <div className="profile_info">
           <div className="profile_bio">
             <p>{userDisplayedData.bio}</p>
+          </div>
             <hr/>
             <div className="profile_gender">{`${userDisplayedData.gender}` || 'undecided'}</div>
             <div className="profile_email">{userDisplayedData.email}</div>
-          </div>
+            <a>  </a>
             <div className="profile_username"> {userDisplayedData.username}</div>
         </div>  
       }

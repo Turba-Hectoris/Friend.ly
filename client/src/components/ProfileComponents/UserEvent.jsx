@@ -12,8 +12,8 @@ export const UserEvent = ({ event, handleJoinEvent }) => {
         <p className="profile_event_date_range">{event.startDate} - {event.endDate}</p> 
         <p className="profile_event_category">{event.category}</p>
         <p className="profile_event_description">{event.eventDesc}</p>
-      </div>
-        <button className="btn join_event_button" type='button' onClick={() => {handleJoinEvent(event.eventID)}} > Join Event </button>  
+        <button className="btn join_event_button" type='button' onClick={() => {handleJoinEvent(event.eventID)}} > Join Event </button> 
+      </div>   
     </div>
   );
 }

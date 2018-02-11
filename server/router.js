@@ -131,17 +131,37 @@ router.get('/profile/data/:userID', (req, res) => {
 			updatedAt: user.dataValues.updatedAt,
 			profilePic: user.dataValues.profilePic
 		};
-			db.Friendships.findAll({where: {userID: userID}}).then((friends) => {
-				let friendsData = [];
-
-				friendsData = friends.map(({ friendID }) => {
-					return db.Users.findOne({where: {userID: friendID}})
-				})
-
+			db.Friendships.findAll({where: { userID }}).then((initFriendships) => {
+					db.Friendships.findAll({where: { friendID: userID }}).then((uninitFriendships) => {
+					const friendRequest = initFriendships.reduce((arrayOfRequest, { friendID: friendedMeBackID}) => {
+						let friendObj = { friendID: friendedMeBackID, access: false};
+						return arrayOfRequest.concat([db.Friendships.findOne({where: { userID: friendedMeBackID, friendID: userID }}), friendObj])
+					}, [])
+					const recievedFriendRequest = uninitFriendships.reduce((arrayOfRequest, { userID: friendedMeBackID, friendID }) => {
+						let friendObj = { friendID: friendedMeBackID, access: true};
+						return arrayOfRequest.concat([db.Friendships.findOne({where: { userID: friendID, friendID: friendedMeBackID }}), friendObj])
+					}, [])
+					Promise.all([...recievedFriendRequest, ...friendRequest])
+					.then((friendRequestResults) => {
+							const pendingFriendRequest = [];
+							const friends = {};
+							friendRequestResults.forEach((isFriend, idx, results) => {
+								if(idx % 2 === 0) {
+									if(isFriend === null) {
+										pendingFriendRequest.push([isFriend, results[ ++idx]])
+									} else {
+										friends[`${results[ ++idx ]}`] = [isFriend, results[idx]]
+									}
+								}
+							})
+						friendsData = Object.values(friends).map((friendshipObj) => {
+							let friendID = friendshipObj[1].friendID
+							return db.Users.findOne({where: { userID: friendID }})
+						})
 				Promise.all(friendsData)
 				.then((results) => {
 					const friend_array = results.reduce((friend_arr, friend) => {
-						let pull_data = 'username email gender bio userID'
+						let pull_data = 'username email gender bio userID profilePic'
 						let friend_object = {};
 						for(let attr in friend.dataValues) {
 							if(pull_data.includes(attr)) {
@@ -153,13 +173,14 @@ router.get('/profile/data/:userID', (req, res) => {
 					}, [])
 
 					userClientSideData.friends = friend_array;
+					userClientSideData.allPendingFriendRequest = pendingFriendRequest;
 
-						db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
-							let eventsData = [];
+					db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
+						let eventsData = [];
 
-							eventsData = events.map(({ eventID }) => {
-								return db.Events.findOne({where: {eventID: eventID}})
-							})
+						eventsData = events.map(({ eventID }) => {
+							return db.Events.findOne({where: {eventID: eventID}})
+						})
 
 							Promise.all(eventsData)
 							.then((results) => {
@@ -169,10 +190,14 @@ router.get('/profile/data/:userID', (req, res) => {
 							.catch(err => console.log(err))
 						})
 						.catch(err => console.log(err))
+					})
+					.catch(err => console.log(err))
 				})
 				.catch(err => console.log(err))
 			})
 			.catch(err => console.log(err))
+		})
+		.catch(err => console.log(err))
 	})
 	.catch(err => console.log(err))
 })
