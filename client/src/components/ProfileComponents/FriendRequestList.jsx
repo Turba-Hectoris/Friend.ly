@@ -1,7 +1,7 @@
-import { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-class FriendRequestList extends Component {
+class FriendRequestList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -13,11 +13,12 @@ class FriendRequestList extends Component {
 
 render(){
     return (
-      <div>
+      <div className="friend_request_list">
           {this.props.fetchedFriendRequest.map((request) => {
-            <FriendRequestListItem 
-              key={request.id}
-              request={request}
+            return <FriendRequestListItem 
+              key={request[1].friendID}
+              ID={request[1].friendID}
+              requestObj={request[2]}
               handleAddFriend={this.handleAddFriend}
               getUserDisplayedData={this.getUserDisplayedData}
             />
@@ -27,16 +28,20 @@ render(){
   }
 }
 
-export const FriendRequestListItem = ({ request, handleAddFriend, getUserDisplayedData }) => {
+export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, getUserDisplayedData }) => {
   return (
-    <div className="friend_request_modal">
-    	<Link className="friend_request_image" onClick={() => {getUserDisplayedData(request.userID)}} to={`/profile/${request.userID}`}>
-        <img src={`${request.profilePic}`} alt=""/>
-      </Link>  
-      <div className="friend_request_username" >{request.username}</div>
-      <button onClick={() => {handleAddFriend(request.userID)}} >Accept</button>
+    <div className="friend_request_listitem">
+    	{
+        requestObj.access ? 
+        <Link className="friend_request_image" onClick={() => {getUserDisplayedData(ID)}} to={`/profile/${ID}`}>
+          <img src={`${requestObj.profilePic}`} alt=""/>
+        </Link> :
+        <img src={`${requestObj.profilePic}`} alt=""/>
+      }  
+      <div className="friend_request_username">{requestObj.username}</div>
+      <button onClick={() => {handleAddFriend(requestObj.friendID)}}>Accept</button>
     </div>
   );
 }
 
-export default UserEvent;
+export default FriendRequestList;

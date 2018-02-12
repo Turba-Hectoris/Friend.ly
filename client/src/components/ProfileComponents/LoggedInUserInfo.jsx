@@ -2,7 +2,7 @@ import React from 'react';
 import ImageEditIcon from './ImageEditIcon.jsx';
 import UserUpdateForm from './UserUpdateForm.jsx';
 
-export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) => {
+export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick, toggleFriendRequestList, toggleFriendRequest }) => {
   return (
     <div className="profile_info_container">
       <div className="profile_image">
@@ -26,6 +26,9 @@ export const LoggedInUserInfo = ({ userDisplayedData, edit, handleEditClick }) =
       }
       <div className="profile_edit">
         <button className="btn profile_edit_button" onClick={handleEditClick}> {edit ? "Save" : "Edit Profile"} </button>
+      </div>
+      <div className="profile_queue">
+        <button className="btn profile_queue_button" onClick={toggleFriendRequestList}> {toggleFriendRequest ? "Categories" : "Friend Request"} </button>
       </div>
     </div>  
   )

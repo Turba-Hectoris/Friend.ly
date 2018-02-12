@@ -144,11 +144,13 @@ router.get('/profile/data/:userID', (req, res) => {
 					Promise.all([...recievedFriendRequest, ...friendRequest])
 					.then((friendRequestResults) => {
 							const pendingFriendRequest = [];
+							const pendingFriendRequestData = [];
 							const friends = {};
 							friendRequestResults.forEach((isFriend, idx, results) => {
 								if(idx % 2 === 0) {
 									if(isFriend === null) {
 										pendingFriendRequest.push([isFriend, results[ ++idx]])
+										pendingFriendRequestData.push(db.Users.findOne({where: { userID: results[idx].friendID}}))
 									} else {
 										friends[`${results[ ++idx ]}`] = [isFriend, results[idx]]
 									}
@@ -160,6 +162,8 @@ router.get('/profile/data/:userID', (req, res) => {
 						})
 				Promise.all(friendsData)
 				.then((results) => {
+					Promise.all(pendingFriendRequestData)
+					.then((pendingFriendRequestResolved) => {
 					const friend_array = results.reduce((friend_arr, friend) => {
 						let pull_data = 'username email gender bio userID profilePic'
 						let friend_object = {};
@@ -173,7 +177,10 @@ router.get('/profile/data/:userID', (req, res) => {
 					}, [])
 
 					userClientSideData.friends = friend_array;
-					userClientSideData.allPendingFriendRequest = pendingFriendRequest;
+					userClientSideData.allPendingFriendRequest = pendingFriendRequest.map((FR_WithData, idx) => {
+						({profilePic, username, facebookLoginPage, gender} = pendingFriendRequestResolved[idx])
+						return FR_WithData.concat({profilePic, username, facebookLoginPage, gender})
+					})	
 
 					db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
 						let eventsData = [];
@@ -188,6 +195,8 @@ router.get('/profile/data/:userID', (req, res) => {
 								res.status(200).send(userClientSideData);
 							})
 							.catch(err => console.log(err))
+						})
+						.catch(err => console.log(err))
 						})
 						.catch(err => console.log(err))
 					})
@@ -296,11 +305,6 @@ router.post('/event_attendance_update', (req, res) => {
 		}
 	})
 })
-
-/////////////////////////////////////////////////////////////////
-/////Route creates a event and associate it with a UserEvents////
-/////                                                        ////
-/////////////////////////////////////////////////////////////////
 
 router.post('/createEvent', (req, res) => {
 	let eventName = req.body.eventName;

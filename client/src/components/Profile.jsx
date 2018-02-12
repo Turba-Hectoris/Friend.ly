@@ -6,6 +6,7 @@ import UserFriend from './ProfileComponents/UserFriend.jsx';
 import UserEvent from './ProfileComponents/UserEvent.jsx';
 import LoggedInUserInfo from './ProfileComponents/LoggedInUserInfo.jsx';
 import DisplayedUserInfo from './ProfileComponents/DisplayedUserInfo.jsx';
+import FriendRequestList from './ProfileComponents/FriendRequestList.jsx';
 
 
 
@@ -21,6 +22,7 @@ class Profile extends React.Component {
     this.state = {
       userDisplayedData: '',
       loggedInUserID: this.props.loggedInUserID,
+      toggleFriendRequest: false,
       edit: false
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
@@ -29,6 +31,7 @@ class Profile extends React.Component {
     this.handleUnfriend = this.handleAddFriend.bind(this);
     this.handleJoinEvent = this.handleJoinEvent.bind(this);
     this.handleEventDetails = this.handleEventDetails.bind(this);
+    this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this)
   }
 
   //init change edit to true, then when clicked again submit form data to post request
@@ -55,6 +58,11 @@ class Profile extends React.Component {
     if(this.props.match.params.id !== nextProps.match.params.id) {
       this.getUserDisplayedData(nextProps.match.params.id)
     } 
+  }
+
+  toggleFriendRequestList(e) {
+    e.preventDefault()
+    this.setState({toggleFriendRequest: !this.state.toggleFriendRequest})
   }
 
   getUserDisplayedData(user_id) {
@@ -110,10 +118,16 @@ class Profile extends React.Component {
         <div className="profile_container">
           <div className="profile">
             <div className="profile_data">
-              <UserChart catagories={this.state.userDisplayedData.catagories}/>
+              {(this.props.match.params.id == this.props.loggedInUserID) ? 
+              this.state.toggleFriendRequest ? <FriendRequestList 
+              fetchedFriendRequest={this.state.userDisplayedData.allPendingFriendRequest} 
+              handleAddFriend={this.handleAddFriend} 
+              getUserDisplayedData={this.getUserDisplayedData}
+              /> : <UserChart catagories={this.state.userDisplayedData.catagories}/> : <UserChart catagories={this.state.userDisplayedData.catagories}/>}
             </div>
             {
-              (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo userDisplayedData={this.state.userDisplayedData} handleEditClick={this.handleEditClick} edit={this.state.edit}/> : <DisplayedUserInfo userDisplayedData={this.state.userDisplayedData}/>
+              (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo toggleFriendRequest={this.state.toggleFriendRequest}
+              userDisplayedData={this.state.userDisplayedData} toggleFriendRequestList={this.toggleFriendRequestList} handleEditClick={this.handleEditClick} edit={this.state.edit}/> : <DisplayedUserInfo userDisplayedData={this.state.userDisplayedData}/>
             }
             <div className="profile_events">
               <div className="profile_events_container">

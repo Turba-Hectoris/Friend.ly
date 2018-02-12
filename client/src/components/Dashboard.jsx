@@ -41,7 +41,7 @@ class Dashboard extends React.Component {
   }
 
   handleAddFriend(friendID) {
-    axios.post('/friendship_update', {userID: this.props.userData, friendID})
+    axios.post('/friendship_update', {userID: this.props.userData, friendID, add: 1})
     .then((response) => {
       //...check Network response
     })

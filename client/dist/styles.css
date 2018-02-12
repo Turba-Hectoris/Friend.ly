@@ -356,8 +356,8 @@ p {
 }
 
 .profile_image {
-  grid-column: 1/2;
-  grid-row: 2/3;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
 }
 
 .profile_edit {
@@ -368,6 +368,11 @@ p {
 .profile_info {
   grid-column: 2 / 3;
   grid-row: 1 / 4;
+}
+
+.profile_queue {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
 }
 
 /*****************************************************************/
@@ -443,6 +448,14 @@ p {
 }
 
 .profile_edit_button {
+  width: 100%;
+  height: auto;
+  font-size: 10px;
+  display: block;
+  padding: 3px;
+}
+
+.profile_queue_button {
   width: 100%;
   height: auto;
   font-size: 10px;
@@ -612,6 +625,11 @@ p {
 .profile_data {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
+}
+
+.friend_request_list {
+  grid-column: 2 / 3;
+  grid-row: 1 /2;
 }
 
 #chartdiv {
