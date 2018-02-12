@@ -53,18 +53,14 @@ class Search extends React.Component {
     e.preventDefault();
     if(this.state.term.length || this.state.selectedOption === 'date') {
       this.getEvents(() => {
-        console.log('in getEvents callback now')
-        this.setState({term: '', startDate: null, endDate: null}, () => console.log('in first reset'));
-        if(this.state.selectedOption === 'date') {
-          this.setState({calendarShow: true}, () => console.log('in calendarshow reset'));
-        } 
+        this.setState({term: '', startDate: null, endDate: null, calendarShow: false, selectedOption: 'name'});
       });     
     }
   }
 
   handleKeyPress (e) {
     if(e.key === 'Enter') {
-      this.handleSubmit();
+      this.handleSubmit(e);
     }
   }
 
@@ -72,7 +68,7 @@ class Search extends React.Component {
     e.preventDefault();
     if(e.target.value !== 'category') {
       this.setState({term: e.target.value, selectedOption: 'category'}, () => {
-        this.handleSubmit();
+        this.handleSubmit(e);
       })
     }
   }
