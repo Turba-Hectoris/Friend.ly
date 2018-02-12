@@ -31,6 +31,7 @@ class Search extends React.Component {
   }
 
   handleOptionChange (e) {  
+    e.preventDefault();
     this.setState({selectedOption: e.target.value}, () => {
       if(this.state.selectedOption === 'date') {
         this.setState({calendarShow: true});
@@ -48,10 +49,16 @@ class Search extends React.Component {
     this.setState({term: e.target.value});
   }
 
-  handleSubmit () {
+  handleSubmit (e) {
+    e.preventDefault();
     if(this.state.term.length || this.state.selectedOption === 'date') {
-      this.getEvents();
-      this.setState({term: '', startDate: null, endDate: null, calendarShow: false});
+      this.getEvents(() => {
+        console.log('in getEvents callback now')
+        this.setState({term: '', startDate: null, endDate: null}, () => console.log('in first reset'));
+        if(this.state.selectedOption === 'date') {
+          this.setState({calendarShow: true}, () => console.log('in calendarshow reset'));
+        } 
+      });     
     }
   }
 
@@ -96,7 +103,7 @@ class Search extends React.Component {
     }
   }
 
-  getEvents () {
+  getEvents (callback) {
     let params;
     if(this.state.selectedOption !== 'date') {
       params = {term: this.state.term, searchBy: this.state.selectedOption};
@@ -107,6 +114,7 @@ class Search extends React.Component {
     .then((response) => {
       this.setState({events: response.data}, () => {
         this.sortBy();
+        if(callback) callback();
       })
     }) 
   }
@@ -132,7 +140,7 @@ class Search extends React.Component {
           <div className="search">
             <div className="search_bar">
               <input name="name" value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
-              <button onClick={this.handleSubmit}>Search</button>
+              <button onClick={(e) => this.handleSubmit(e)}>Search</button>
               <form>
                 <label className="search_label">
                   <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
@@ -164,7 +172,7 @@ class Search extends React.Component {
               </form>
             </div>
             <div className="search_events">
-              <h4>Search result: {this.state.events.length} found</h4>
+              <h4>Search result: {this.state.events.length} found</h4>           
               <br/>
               <table>
                 <tbody>
