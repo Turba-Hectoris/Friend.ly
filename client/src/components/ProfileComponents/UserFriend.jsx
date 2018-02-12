@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const UserFriend = ({ getUserDisplayedData, friend, handleAddFriend }) => {
+export const UserFriend = ({ getUserDisplayedData, friend, handleAddFriend, handleUnfriend, displayedUser }) => {
 	return (
 			<div className="profile_friend">
-			<Link className="profile_friend_image" onClick={() => {getUserDisplayedData(friend.userID)}} to={`/profile/${friend.userID}`}>
-					<img className="" src={`${friend.profilePic}`} alt=""/>
-          <button className="btn add_friend_button" type='button' onClick={() => {handleAddFriend(friend.userID)}} > Add Friend </button>
-          <div className="profile_friend_username">{friend.username}</div>
-			</Link>
-        <div className="profile_friend_info_container" >
+         <div className="profile_friend_info_container" >
+          <Link className="profile_friend_image" onClick={() => {getUserDisplayedData(friend.userID)}} to={`/profile/${friend.userID}`}>
+              <img className="" src={`${friend.profilePic}`} alt=""/>
+              <div className="profile_friend_username">{friend.username}</div>
+          </Link>
+          {
+            displayedUser ? <button className="btn add_friend_button" type='button' onClick={() => {handleAddFriend(friend.userID)}} > Add Friend </button> :
+            <button className="btn add_friend_button" type='button' onClick={() => {handleUnfriend(friend.userID)}} > Remove Friend </button>
+          }
           <p className="profile_friend_bio">{friend.bio}</p>
           <hr/>
           <div className="profile_friend_email">{friend.email}</div>

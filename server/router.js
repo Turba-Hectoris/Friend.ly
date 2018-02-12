@@ -129,17 +129,41 @@ router.get('/profile/data/:userID', (req, res) => {
 			updatedAt: user.dataValues.updatedAt,
 			profilePic: user.dataValues.profilePic
 		};
-			db.Friendships.findAll({where: {userID: userID}}).then((friends) => {
-				let friendsData = [];
-
-				friendsData = friends.map(({ friendID }) => {
-					return db.Users.findOne({where: {userID: friendID}})
-				})
-
+			db.Friendships.findAll({where: { userID }}).then((initFriendships) => {
+					db.Friendships.findAll({where: { friendID: userID }}).then((uninitFriendships) => {
+					const friendRequest = initFriendships.reduce((arrayOfRequest, { friendID: friendedMeBackID}) => {
+						let friendObj = { friendID: friendedMeBackID, access: false};
+						return arrayOfRequest.concat([db.Friendships.findOne({where: { userID: friendedMeBackID, friendID: userID }}), friendObj])
+					}, [])
+					const recievedFriendRequest = uninitFriendships.reduce((arrayOfRequest, { userID: friendedMeBackID, friendID }) => {
+						let friendObj = { friendID: friendedMeBackID, access: true};
+						return arrayOfRequest.concat([db.Friendships.findOne({where: { userID: friendID, friendID: friendedMeBackID }}), friendObj])
+					}, [])
+					Promise.all([...recievedFriendRequest, ...friendRequest])
+					.then((friendRequestResults) => {
+							const pendingFriendRequest = [];
+							const pendingFriendRequestData = [];
+							const friends = {};
+							friendRequestResults.forEach((isFriend, idx, results) => {
+								if(idx % 2 === 0) {
+									if(isFriend === null) {
+										pendingFriendRequest.push([isFriend, results[ ++idx]])
+										pendingFriendRequestData.push(db.Users.findOne({where: { userID: results[idx].friendID}}))
+									} else {
+										friends[`${results[ ++idx ]}`] = [isFriend, results[idx]]
+									}
+								}
+							})
+						friendsData = Object.values(friends).map((friendshipObj) => {
+							let friendID = friendshipObj[1].friendID
+							return db.Users.findOne({where: { userID: friendID }})
+						})
 				Promise.all(friendsData)
 				.then((results) => {
+					Promise.all(pendingFriendRequestData)
+					.then((pendingFriendRequestResolved) => {
 					const friend_array = results.reduce((friend_arr, friend) => {
-						let pull_data = 'username email gender bio userID'
+						let pull_data = 'username email gender bio userID profilePic'
 						let friend_object = {};
 						for(let attr in friend.dataValues) {
 							if(pull_data.includes(attr)) {
@@ -151,13 +175,17 @@ router.get('/profile/data/:userID', (req, res) => {
 					}, [])
 
 					userClientSideData.friends = friend_array;
+					userClientSideData.allPendingFriendRequest = pendingFriendRequest.map((FR_WithData, idx) => {
+						({profilePic, username, facebookLoginPage, gender} = pendingFriendRequestResolved[idx])
+						return FR_WithData.concat({profilePic, username, facebookLoginPage, gender})
+					})	
 
-						db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
-							let eventsData = [];
+					db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
+						let eventsData = [];
 
-							eventsData = events.map(({ eventID }) => {
-								return db.Events.findOne({where: {eventID: eventID}})
-							})
+						eventsData = events.map(({ eventID }) => {
+							return db.Events.findOne({where: {eventID: eventID}})
+						})
 
 							Promise.all(eventsData)
 							.then((results) => {
@@ -167,10 +195,16 @@ router.get('/profile/data/:userID', (req, res) => {
 							.catch(err => console.log(err))
 						})
 						.catch(err => console.log(err))
+						})
+						.catch(err => console.log(err))
+					})
+					.catch(err => console.log(err))
 				})
 				.catch(err => console.log(err))
 			})
 			.catch(err => console.log(err))
+		})
+		.catch(err => console.log(err))
 	})
 	.catch(err => console.log(err))
 })
@@ -228,16 +262,30 @@ router.post('/friendship_update', (req, res) => {
 	let friendID = req.body.friendID;
 	let userID = req.body.userID;
 
-	db.Friendships.findOne({where: {userID, friendID}}).then((foundFriendship) => {
-		if (!foundFriendship) {
-			db.Friendships.findCreateFind({where: {userID, friendID}})
-			.then((friendship) => {
-				res.status(200).send({response: friendship});
+	console.log(typeof req.body.add)
+
+	if(Number(req.body.add)) {
+		db.Friendships.findOne({where: {userID, friendID}}).then((foundFriendship) => {
+			if (!foundFriendship) {
+				db.Friendships.findCreateFind({where: {userID, friendID}})
+				.then((friendship) => {
+					res.status(200).send({response: friendship});
+				})
+			} else {
+				res.status(301).send({response: `Already friends ${foundFriendship}`});
+			}
+		})
+	} else {
+		db.Friendships.findOne({where: {userID, friendID}}).then(({ id: id1}) => {
+			db.Friendships.findOne({where: {userID: friendID, friendID: userID}}).then(({ id: id2 }) => {
+				const unfriend = [id1, id2].map(id => db.Friendships.destroy({where: {id}}))
+				Promise.all(unfriend)
+				.then(results => res.status(200).send(results))
 			})
-		} else {
-			res.status(301).send({response: `Already friends ${foundFriendship}`});
-		}
-	})
+			.catch(err => res.status(200).send({"response": "No friendship found"}))
+		})
+		.catch(err => res.status(200).send({"response": "No friendship found"}))
+	}
 })
 
 router.post('/event_attendance_update', (req, res) => {
@@ -255,11 +303,6 @@ router.post('/event_attendance_update', (req, res) => {
 		}
 	})
 })
-
-/////////////////////////////////////////////////////////////////
-/////Route creates a event and associate it with a UserEvents////
-/////                                                        ////
-/////////////////////////////////////////////////////////////////
 
 router.post('/createEvent', (req, res) => {
 	let eventName = req.body.eventName;
