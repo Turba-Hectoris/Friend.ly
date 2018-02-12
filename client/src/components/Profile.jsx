@@ -26,7 +26,9 @@ class Profile extends React.Component {
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleAddFriend = this.handleAddFriend.bind(this);
+    this.handleUnfriend = this.handleAddFriend.bind(this);
     this.handleJoinEvent = this.handleJoinEvent.bind(this);
+    this.handleEventDetails = this.handleEventDetails.bind(this);
   }
 
   //init change edit to true, then when clicked again submit form data to post request
@@ -69,7 +71,15 @@ class Profile extends React.Component {
   }
 
   handleAddFriend(friendID) {
-    axios.post('/friendship_update', {userID: this.props.loggedInUserID, friendID})
+    axios.post('/friendship_update', {userID: this.props.loggedInUserID, friendID, add: 1})
+    .then((response) => {
+      //...check Network response
+    })
+    .catch(err => console.log(err));
+  }
+
+  handleUnfriend(friendID) {
+    axios.post('/friendship_update', {userID: this.props.loggedInUserID, friendID, add: 0})
     .then((response) => {
       //...check Network response
     })
@@ -82,6 +92,10 @@ class Profile extends React.Component {
       //...check Network response
     })
     .catch(err => console.log(err));
+  }
+
+  handleEventDetails(eventID) {
+    //..reroute to event slected page
   }
 
   render() {
@@ -104,14 +118,16 @@ class Profile extends React.Component {
             <div className="profile_events">
               <div className="profile_events_container">
                 {
-                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent}/>)
+                  (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>) : 
+                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>)
                 }
               </div>
             </div>
             <div className="profile_friends">
               <div className="profile_friends_container">
                 {
-                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} />)
+                  (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend} />) : 
+                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend}/>)
                 }
               </div>
             </div>

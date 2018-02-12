@@ -255,16 +255,30 @@ router.post('/friendship_update', (req, res) => {
 	let friendID = req.body.friendID;
 	let userID = req.body.userID;
 
-	db.Friendships.findOne({where: {userID, friendID}}).then((foundFriendship) => {
-		if (!foundFriendship) {
-			db.Friendships.findCreateFind({where: {userID, friendID}})
-			.then((friendship) => {
-				res.status(200).send({response: friendship});
+	console.log(typeof req.body.add)
+
+	if(Number(req.body.add)) {
+		db.Friendships.findOne({where: {userID, friendID}}).then((foundFriendship) => {
+			if (!foundFriendship) {
+				db.Friendships.findCreateFind({where: {userID, friendID}})
+				.then((friendship) => {
+					res.status(200).send({response: friendship});
+				})
+			} else {
+				res.status(301).send({response: `Already friends ${foundFriendship}`});
+			}
+		})
+	} else {
+		db.Friendships.findOne({where: {userID, friendID}}).then(({ id: id1}) => {
+			db.Friendships.findOne({where: {userID: friendID, friendID: userID}}).then(({ id: id2 }) => {
+				const unfriend = [id1, id2].map(id => db.Friendships.destroy({where: {id}}))
+				Promise.all(unfriend)
+				.then(results => res.status(200).send(results))
 			})
-		} else {
-			res.status(301).send({response: `Already friends ${foundFriendship}`});
-		}
-	})
+			.catch(err => res.status(200).send({"response": "No friendship found"}))
+		})
+		.catch(err => res.status(200).send({"response": "No friendship found"}))
+	}
 })
 
 router.post('/event_attendance_update', (req, res) => {
