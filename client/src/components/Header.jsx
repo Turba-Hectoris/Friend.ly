@@ -3,20 +3,20 @@ import {Link} from 'react-router-dom';
 import ReactModalLogin from 'react-modal-login';
 import axios from 'axios';
 import FacebookAuth from './FacebookAuth.jsx';
+import GoogleAuth from './GoogleAuth.jsx';
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            showModal: false,
-            loading: false,
-            error: null,
-            redirect: false,
-
-        };
-        this.closeModal = this.closeModal.bind(this)
-        this.onLogOut = this.onLogOut.bind(this)
-    } 
+  constructor(props) {
+    super(props)
+    this.state = {
+      showModal: false,
+      loading: false,
+      error: null,
+      redirect: false,
+    };
+    this.closeModal = this.closeModal.bind(this)
+    this.onLogOut = this.onLogOut.bind(this)
+  } 
 
   openModal() {
     this.setState({
@@ -43,7 +43,6 @@ class Header extends React.Component {
       }
     })
   }
-
 
   onLogOut() {
     axios.post('/logout', {userID: this.props.userData}).then((response) => {   
@@ -110,7 +109,12 @@ class Header extends React.Component {
         {' '}
         { 
           this.props.isLogin &&
-          <li><Link to={`/profile/${this.props.userData}`} style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>
+          <li><Link to={`/profile/${this.props.userData}`} style={{color: '#ffffff', textDecoration: 'none'}}>Profile</Link></li>          
+        }
+        {' '}
+        { 
+          this.props.isLogin &&
+          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth userID={this.props.userData}/></li>
         }
         {' '}
         {
@@ -122,6 +126,7 @@ class Header extends React.Component {
             Login
           </Link>
           <FacebookAuth toggleLogin={this.props.toggleLogin}/>
+          
           <ReactModalLogin
             visible={this.state.showModal}
             onCloseModal={this.closeModal.bind(this)}
@@ -181,7 +186,8 @@ class Header extends React.Component {
         }
         {
           this.props.isLogin &&
-          (<li><Link to="/" onClick={this.onLogOut} style={{color: '#ffffff', textDecoration: 'none'}}>Logout</Link></li>) 
+          (<li><Link to="/" onClick={this.onLogOut} style={{color: '#ffffff', textDecoration: 'none'}}>Logout
+            </Link></li>) 
         }     
         </ul>  
         </header>

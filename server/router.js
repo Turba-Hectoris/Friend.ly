@@ -45,6 +45,22 @@ router.post('/facebookLogin', (req, res) => {
 	})
 })
 
+router.post('/googleAuth', (req, res) => {
+	let googleID = req.body.googleID;
+	let userID = req.body.userID;
+	let token = req.body.token;
+
+	db.Users.findOne({where: {userID: userID}}).then(user => {
+		user.update({
+			googleid: googleID,
+			token: token
+		}).then((user) => {
+			console.log('succesfully add token: ', user)
+			res.sendStatus(200)
+		})
+	})
+})
+
 router.post('/signup', (req, res) => {
 	let username = req.body.username;
 	db.Users.findOne({where: {username: username}}).then( async (foundUser) => {
