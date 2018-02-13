@@ -11,76 +11,89 @@ export class UserChart extends React.Component {
   }
 
   makeGraph(){
-    var chart = AmCharts.makeChart( "chartdiv", {
-      "theme": "light",
-      "type": "serial",
-      "startDuration": 2,
-      "dataProvider": [{
-          "category": "Movies",
-          "attended": 5,
-          "color": "#FF0F00"
-      }, {
-          "category": "Outdoors",
-          "attended": 2,
-          "color": "#FF6600"
-      }, {
-          "category": "Food/Dining",
-          "attended": 9,
-          "color": "#FF9E01"
-      }, {
-          "category": "Live Music",
-          "attended": 2,
-          "color": "#FCD202"
-      }, {
-          "category": "Exercise",
-          "attended": 2,
-          "color": "#F8FF01"
-      }, {
-          "category": "Gaming",
-          "attended": 4,
-          "color": "#B0DE09"
-      }, {
-          "category": "Drinks",
-          "attended": 4,
-          "color": "#04D215"
-      }, {
-          "category": "Arts & Culture",
-          "attended": 8,
-          "color": "#04D215"
-	    }],
-      "valueAxes": [{
-          "position": "left",
-          "axisAlpha":0,
-          "gridAlpha":0
-      }],
-      "graphs": [{
-          "balloonText": "[[category]]: <b>[[value]]</b>",
-          "colorField": "color",
-          "fillAlphas": 0.85,
-          "lineAlpha": 0.1,
-          "type": "column",
-          "topRadius":1,
-          "valueField": "attended"
-      }],
-      "depth3D": 40,
-    "angle": 30,
-      "chartCursor": {
-          "categoryBalloonEnabled": false,
-          "cursorAlpha": 0,
-          "zoomable": false
-      },
-      "categoryField": "category",
-      "categoryAxis": {
-          "gridPosition": "start",
-          "axisAlpha":0,
-          "gridAlpha":0
-    
-      },
-      "export": {
-        "enabled": true
-       }
-    
-    }, 0);
+    AmCharts.makeChart("chartdiv",
+    {
+        "type": "serial",
+        "theme": "light",
+        "dataProvider": [
+            {
+                "name": "Arts/Cultre",
+                "points": "1",
+                "color": "#7F8DA9",
+                "bullet": "https://librariestaskforce.blog.gov.uk/wp-content/uploads/sites/159/2016/08/LD_IconCulture.png"
+            },
+            {
+                "name": "Drinks",
+                "points": "2",
+                "color": "#7F8DA9",
+                "bullet": "https://d27t3nufpewl0w.cloudfront.net/lichess/e7fd1e30904c7fcb9b86dd6aba626f3d536be03c_raster.png"
+            },
+            {
+                "name": "Gaming",
+                "points": "3",
+                "color": "#7F8DA9",
+                "bullet": "https://www.shareicon.net/download/2015/08/29/92894_game_2133x2133.png"
+            },
+            {
+                "name": "Exercise",
+                "points": "4",
+                "color": "#7F8DA9",
+                "bullet": "https://www.shareicon.net/download/2015/09/22/104946_fitness_512x512.png"
+            },
+                    {
+                "name": "Live Music",
+                "points": "5",
+                "color": "#7F8DA9",
+                "bullet": "https://cdn4.iconfinder.com/data/icons/music-and-entertainment/512/Music_Entertainment_Crowd-512.png"
+            },
+            {
+                "name": "Food/Dining",
+                "points": "6",
+                "color": "#7F8DA9",
+                "bullet": "https://housing.umn.edu/sites/housing.umn.edu/files/dining_icon-01.png"
+            },
+            {
+                "name": "Outdoors",
+                "points": "7",
+                "color": "#7F8DA9",
+                "bullet": "https://cdn0.iconfinder.com/data/icons/camping-circular/128/camping_outdoors_equipment-07-512.png"
+            },
+            {
+                "name": "Movies",
+                "points": "8",
+                "color": "#7F8DA9",
+                "bullet": "https://cdn4.iconfinder.com/data/icons/ballicons-2-new-generation-of-flat-icons/100/cinema-256.png"
+            }      
+        ],
+        "startDuration": 1,
+        "graphs": [{
+            "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+            "bulletOffset": 10,
+            "bulletSize": 52,
+            "colorField": "color",
+            "cornerRadiusTop": 8,
+            "customBulletField": "bullet",
+            "fillAlphas": 0.8,
+            "lineAlpha": 0,
+            "type": "column",
+            "valueField": "points"
+        }],
+        "marginTop": 0,
+        "marginRight": 0,
+        "marginLeft": 0,
+        "marginBottom": 0,
+        "autoMargins": false,
+        "categoryField": "name",
+        "categoryAxis": {
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "inside": true,
+            "tickLength": 0
+        },
+        "export": {
+            "enabled": true
+        }
+    });
   }
 
   render() {

@@ -104,6 +104,7 @@ class Profile extends React.Component {
 
   handleEventDetails(eventID) {
     //..reroute to event slected page
+          //this.props.history.action.push('/path_to_edit_event_page_HERE', [state]?)
   }
 
   render() {
@@ -124,7 +125,7 @@ class Profile extends React.Component {
               handleAddFriend={this.handleAddFriend}
               handleUnfriend={this.handleUnfriend} 
               getUserDisplayedData={this.getUserDisplayedData}
-              /> : <UserChart catagories={this.state.userDisplayedData.catagories}/> : <UserChart catagories={this.state.userDisplayedData.catagories}/>}
+              /> : <UserChart categories={this.state.userDisplayedData.categories}/> : <UserChart categories={this.state.userDisplayedData.categories}/>}
             </div>
             {
               (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo toggleFriendRequest={this.state.toggleFriendRequest}
