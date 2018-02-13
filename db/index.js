@@ -41,6 +41,12 @@ const Users = sequelize.define('users', {
 	},
 	facebookLoginPage: {
 		type: Sequelize.STRING
+	},
+	googleid: {
+		type: Sequelize.STRING
+	},
+	token: {
+		type: Sequelize.STRING
 	}
 })
 
