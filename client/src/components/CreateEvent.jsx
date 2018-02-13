@@ -13,6 +13,9 @@ import {
   } from 'react-form';
 import CreateMap from './CreateMap.jsx';
 
+  let pubKey = 'BA1A0um9RkyG6Y2BSPFT5QDdxQExFXvnfSXReTsaq-d5qEu9kMwuFYST_BMg-cdebdJM8i-jmSN7VDtxcRtpVLs';
+
+
     let categories = [ //Categories that the user can choose when creating an event
       {
         label: 'Movies',
@@ -82,8 +85,60 @@ class CreateEvent extends React.Component{
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.setLocale = this.setLocale.bind(this);
     this.askPermission = this.askPermission.bind(this);
+    this.sendSubscriptionToServer = this.sendSubscriptionToServer.bind(this);
+    this.subscribeUser = this.subscribeUser.bind(this);
   }
 
+  urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+ sendSubscriptionToServer(endpoint, key, auth) {
+    let encodedKey = btoa(String.fromCharCode.apply(null, new Uint8Array(key)));
+    let encodedAuth = btoa(String.fromCharCode.apply(null, new Uint8Array(auth)));
+    axios.post('/subscribeNotifs', {
+      publicKey: encodedKey,
+      auth: encodedAuth,
+      notificationEndPoint: endpoint
+    }).then((res) => console.log(JSON.stringify(res)))
+  }
+
+
+  subscribeUser() {
+    navigator.serviceWorker.ready.then((reg) => {
+    let subscribeParams = {userVisibleOnly: true};
+    console.log(this.urlB64ToUint8Array)
+    //Setting the public key of our VAPID key pair.
+    let applicationServerKey = this.urlB64ToUint8Array(pubKey);
+    subscribeParams.applicationServerKey = applicationServerKey;
+    reg.pushManager.subscribe(subscribeParams)
+        .then((subscription) => {
+
+            // Update status to subscribe current user on server, and to let
+            // other users know this user has subscribed
+            let endpoint = subscription.endpoint;
+            let key = subscription.getKey('p256dh');
+            let auth = subscription.getKey('auth');
+            this.sendSubscriptionToServer(endpoint, key, auth);
+        })
+        .catch((e) => {
+            // A problem occurred with the subscription.
+            console.log('Unable to subscribe to push.', e);
+        });
+});
+
+  }
 
  askPermission() {
   return new Promise(function(resolve, reject) {
@@ -106,6 +161,7 @@ class CreateEvent extends React.Component{
 
   componentWillMount() {
     this.askPermission()
+    this.subscribeUser()
   }
 
   handleLocationChange (location) {
