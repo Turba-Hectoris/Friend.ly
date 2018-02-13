@@ -28,7 +28,7 @@ class Profile extends React.Component {
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleAddFriend = this.handleAddFriend.bind(this);
-    this.handleUnfriend = this.handleAddFriend.bind(this);
+    this.handleUnfriend = this.handleUnfriend.bind(this);
     this.handleJoinEvent = this.handleJoinEvent.bind(this);
     this.handleEventDetails = this.handleEventDetails.bind(this);
     this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this)
@@ -121,7 +121,8 @@ class Profile extends React.Component {
               {(this.props.match.params.id == this.props.loggedInUserID) ? 
               this.state.toggleFriendRequest ? <FriendRequestList 
               fetchedFriendRequest={this.state.userDisplayedData.allPendingFriendRequest} 
-              handleAddFriend={this.handleAddFriend} 
+              handleAddFriend={this.handleAddFriend}
+              handleUnfriend={this.handleUnfriend} 
               getUserDisplayedData={this.getUserDisplayedData}
               /> : <UserChart catagories={this.state.userDisplayedData.catagories}/> : <UserChart catagories={this.state.userDisplayedData.catagories}/>}
             </div>
