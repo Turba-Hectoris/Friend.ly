@@ -356,11 +356,11 @@ router.get('/search/events', (req, res) => {
 	if(searchBy === 'name') {
 		db.Events.findAll({where: {eventName: {
 	    [db.Op.iLike]: '%' + term + '%'
-	  }}}).then((events) => {
+	  }, status: 'active'}}).then((events) => {
 	    res.send(events)
 	  })
 	} else if (searchBy === 'category') {
-		db.Events.findAll({where: {category: term}}).then((events) => {
+		db.Events.findAll({where: {category: term, status: 'active'}}).then((events) => {
 	    res.send(events)
 	  })
 	} else if (searchBy === 'date'){
@@ -368,7 +368,9 @@ router.get('/search/events', (req, res) => {
     const endDate = req.query.endDate;
 		
 		const where = {
-			[db.Op.or]: [
+			[db.Op.and]: [
+			{status: 'active'},
+			{[db.Op.or]: [
 				{startDate: {
 					[db.Op.and]: {
 						[db.Op.gte]: startDate,
@@ -383,7 +385,8 @@ router.get('/search/events', (req, res) => {
 						[db.Op.gte]:  startDate
 					}}
 				]
-			}]
+			}]}
+			]
 		};
 
 	  db.Events.findAll({where: where}).then((events) => {
@@ -392,7 +395,7 @@ router.get('/search/events', (req, res) => {
 	} else {
 		db.Events.findAll({where: {status: 'active'}}).then(events => {
 			res.send(events);
-			})
+		})
 	}
 })
 

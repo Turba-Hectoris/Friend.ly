@@ -5,7 +5,7 @@ import GoogleLogin from 'react-google-login';
 class GoogleAuth extends React.Component {
   constructor(props) {
     super(props)
-    // will refactor to event = this.props.event; remove the state
+    // will refactor to event = this.props.event && this.props.emails(for attendees); remove the state
     this.state = {
       event: {
         'summary': 'Google I/O 2015',
@@ -20,8 +20,8 @@ class GoogleAuth extends React.Component {
           'timeZone': 'America/Los_Angeles'
         },
         'attendees': [
-          {'email': 'laurajjwang@gmail.com'},
-          {'email': 'lixxx489@gmail.com'}
+          {'email': 'abc@gmail.com'},
+          {'email': 'cba@gmail.com'}
         ],
         'reminders': {
           'useDefault': false,
