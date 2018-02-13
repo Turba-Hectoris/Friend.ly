@@ -3,7 +3,7 @@ const db = require('../db/index.js');
 const controller = require('../db/controllers.js');
 const util = require('./utils.js');
 const bcrypt = require('bcrypt');
-const cloudinarySDK = require('../services/cloudinary.js')
+const cloudinarySDK = require('../service_wrappers/cloudinary.js')
 const multer  = require('multer')
 const upload = multer({'dest': 'upload/'});
 const createfFileOnReq = upload.single('file');
@@ -187,14 +187,28 @@ router.get('/profile/data/:userID', (req, res) => {
 							return db.Events.findOne({where: {eventID: eventID}})
 						})
 
-							Promise.all(eventsData)
-							.then((results) => {
-								userClientSideData.events = results;
-								res.status(200).send(userClientSideData);
+								Promise.all(eventsData)
+								.then((results) => {
+
+									db.UserEvents.findAll({where: { userID }})
+									.then((userEvents) => {
+										const joinedEvents = userEvents.map(({ eventID }) => db.Events.findOne({where: { eventID } }))
+										Promise.all(joinedEvents)
+										.then((joinedEventsData) => {
+											let categoryObj = joinedEventsData.reduce((categoryObj, joinedEventData) => {
+												categoryObj[joinedEventData.category] = 1 || (categoryObj[joinedEventData.category] += 1)
+												return categoryObj;
+											}, {})
+											userClientSideData.categories = categoryObj
+											userClientSideData.events = results;
+											res.status(200).send(userClientSideData);
+										})
+										.catch(err => console.log(err))
+									})
+								})
+								.catch(err => console.log(err))
 							})
 							.catch(err => console.log(err))
-						})
-						.catch(err => console.log(err))
 						})
 						.catch(err => console.log(err))
 					})

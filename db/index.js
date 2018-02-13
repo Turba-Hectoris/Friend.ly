@@ -121,19 +121,6 @@ Users.prototype.comparePassword = function (pwAttempt, callback) {
 	})
 }
 
-
-// UserEvents.bulkCreate([
-// 	{userID: 7, eventID: 6},
-// 	{userID: 7, eventID: 1},
-// 	{userID: 7, eventID: 10},
-// ])
-
-// Friendships.bulkCreate([
-// 	{userID: 7, friendID: 9},
-// 	{userID: 7, friendID: 10},
-// 	{userID: 7, friendID: 4},
-// ])
-
 module.exports = {
 	sequelize: sequelize,
 	Users: Users,
