@@ -5,8 +5,32 @@ const util = require('./utils.js');
 const bcrypt = require('bcrypt');
 const cloudinarySDK = require('../services/cloudinary.js')
 const multer  = require('multer')
+const webPush = require('web-push');
 const upload = multer({'dest': 'upload/'});
 const createfFileOnReq = upload.single('file');
+
+router.post('/subscribeNotifs', (req, res) => {
+	console.log(req.body)
+	webPush.setGCMAPIKey(req.body.publicKey)
+	webPush.setVapidDetails(
+		'mailto:wjeichhold@gmail.com',
+		'BPiwireF6caAoVpDjfv49II350Ad-JnZpC-1M4F5jV1RkXrowLEn0YikrSwUIVB83cf465FKw8rIFVoeusM8ewQ',
+		'2RW9kn-rlwHvAhEn330yq7TXCJuid9J3KGrJ1943yuA'
+		)
+	let payload = 'hey how are ya'
+	let pushSubscription = {
+			endpoint: req.body.notificationEndPoint,
+			keys: {
+				p256dh: req.body.publicKey,
+				auth: req.body.auth
+			}
+		}
+	webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
+		console.log(res)
+	}).catch((err) => {
+		console.log('error is', err)
+	})
+})
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
