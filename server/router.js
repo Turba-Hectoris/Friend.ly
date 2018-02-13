@@ -356,19 +356,20 @@ router.get('/search/events', (req, res) => {
 	if(searchBy === 'name') {
 		db.Events.findAll({where: {eventName: {
 	    [db.Op.iLike]: '%' + term + '%'
-	  }}}).then((events) => {
+	  }, status: 'active'}}).then((events) => {
 	    res.send(events)
 	  })
 	} else if (searchBy === 'category') {
-		db.Events.findAll({where: {category: term}}).then((events) => {
+		db.Events.findAll({where: {category: term, status: 'active'}}).then((events) => {
 	    res.send(events)
 	  })
 	} else if (searchBy === 'date'){
 		const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
-		
+    const endDate = req.query.endDate;		
 		const where = {
-			[db.Op.or]: [
+			[db.Op.and]: [
+			{status: 'active'},
+			{[db.Op.or]: [
 				{startDate: {
 					[db.Op.and]: {
 						[db.Op.gte]: startDate,
@@ -383,7 +384,8 @@ router.get('/search/events', (req, res) => {
 						[db.Op.gte]:  startDate
 					}}
 				]
-			}]
+			}]}
+			]
 		};
 
 	  db.Events.findAll({where: where}).then((events) => {
@@ -392,7 +394,7 @@ router.get('/search/events', (req, res) => {
 	} else {
 		db.Events.findAll({where: {status: 'active'}}).then(events => {
 			res.send(events);
-			})
+		})
 	}
 })
 
@@ -407,9 +409,18 @@ router.get('/search/userevents', (req, res) => {
 router.post('/search/userevents/add', (req, res) => {
 	const userID = req.body.userID;
 	const eventID = req.body.eventID;
-	db.UserEvents.create({userID, eventID}).then((userEvent) => {
-		res.send(userEvent);
+	db.Events.findOne({where: {eventID: eventID}}).then(event => {
+		if(event.current < event.capacity){
+			event.update({current: event.current + 1}).then(event => {
+				db.UserEvents.create({userID, eventID}).then(userEvent => {
+					res.send(userEvent);
+				})
+			})
+		} else {
+			res.send('The capacity is full');
+		}
 	})
+
 })
 
 

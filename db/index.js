@@ -41,12 +41,6 @@ const Users = sequelize.define('users', {
 	},
 	facebookLoginPage: {
 		type: Sequelize.STRING
-	},
-	googleid: {
-		type: Sequelize.STRING
-	},
-	token: {
-		type: Sequelize.STRING
 	}
 })
 
@@ -93,6 +87,9 @@ const Events = sequelize.define('events', {
 	},
 	creatorName: {
 		type: Sequelize.STRING
+	},
+	current: {
+		type: Sequelize.INTEGER, defaultValue: 1
 	}
 
 })

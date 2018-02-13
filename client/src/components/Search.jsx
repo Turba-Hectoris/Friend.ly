@@ -32,6 +32,7 @@ class Search extends React.Component {
 
   handleOptionChange (e) {  
     e.preventDefault();
+    e.persist();
     this.setState({selectedOption: e.target.value}, () => {
       if(this.state.selectedOption === 'date') {
         this.setState({calendarShow: true});
@@ -60,12 +61,14 @@ class Search extends React.Component {
 
   handleKeyPress (e) {
     if(e.key === 'Enter') {
+      e.persist();
       this.handleSubmit(e);
     }
   }
 
   handleSelectChange (e) {
     e.preventDefault();
+    e.persist();
     if(e.target.value !== 'category') {
       this.setState({term: e.target.value, selectedOption: 'category'}, () => {
         this.handleSubmit(e);
