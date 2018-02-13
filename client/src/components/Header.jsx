@@ -34,7 +34,7 @@ class Header extends React.Component {
   onLogin() {
     let username = document.querySelector('#loginUsername').value
     let password = document.querySelector('#loginPassword').value
-    axios.post('/login', { username, password }).then((response) => {
+    axios.post('/login', { username, password }).then(response => {
       let userID, username;
       ({userID, username} = response.data)
       if (userID) {
@@ -114,7 +114,7 @@ class Header extends React.Component {
         {' '}
         { 
           this.props.isLogin &&
-          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth userID={this.props.userData}/></li>
+          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth /></li>
         }
         {' '}
         {
