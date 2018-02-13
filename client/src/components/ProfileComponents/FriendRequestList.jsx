@@ -7,8 +7,6 @@ class FriendRequestList extends React.Component {
     this.state = {
       requestClicked: false
     }
-    this.handleAddFriend = this.props.handleAddFriend.bind(this)
-    this.getUserDisplayedData = this.props.getUserDisplayedData.bind(this)
   }
 
 render(){
@@ -18,9 +16,10 @@ render(){
             return <FriendRequestListItem 
               key={request[1].friendID}
               ID={request[1].friendID}
-              requestObj={request[2]}
-              handleAddFriend={this.handleAddFriend}
-              getUserDisplayedData={this.getUserDisplayedData}
+              requestObj={Object.assign(request[1], request[2])}
+              handleAddFriend={this.props.handleAddFriend}
+              handleUnfriend={this.props.handleUnfriend}
+              getUserDisplayedData={this.props.getUserDisplayedData}
             />
           })}
       </div>
@@ -28,7 +27,7 @@ render(){
   }
 }
 
-export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, getUserDisplayedData }) => {
+export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, handleUnfriend , getUserDisplayedData }) => {
   return (
     <div className="friend_request_listitem">
     	{
@@ -39,7 +38,11 @@ export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, getUser
         <img src={`${requestObj.profilePic}`} alt=""/>
       }  
       <div className="friend_request_username">{requestObj.username}</div>
-      <button onClick={() => {handleAddFriend(requestObj.friendID)}}>Accept</button>
+      {
+        requestObj.access ? 
+        <button onClick={() => {handleAddFriend(ID)}}>Accept</button> :
+        <button onClick={() => {handleUnfriend(ID)}}>Withdraw request</button>
+      }
     </div>
   );
 }
