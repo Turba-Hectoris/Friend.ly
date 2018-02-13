@@ -13,7 +13,7 @@ import {
   } from 'react-form';
 import CreateMap from './CreateMap.jsx';
 
-  let pubKey = 'BA1A0um9RkyG6Y2BSPFT5QDdxQExFXvnfSXReTsaq-d5qEu9kMwuFYST_BMg-cdebdJM8i-jmSN7VDtxcRtpVLs';
+  let pubKey = 'BPiwireF6caAoVpDjfv49II350Ad-JnZpC-1M4F5jV1RkXrowLEn0YikrSwUIVB83cf465FKw8rIFVoeusM8ewQ';
 
 
     let categories = [ //Categories that the user can choose when creating an event
@@ -118,7 +118,6 @@ class CreateEvent extends React.Component{
   subscribeUser() {
     navigator.serviceWorker.ready.then((reg) => {
     let subscribeParams = {userVisibleOnly: true};
-    console.log(this.urlB64ToUint8Array)
     //Setting the public key of our VAPID key pair.
     let applicationServerKey = this.urlB64ToUint8Array(pubKey);
     subscribeParams.applicationServerKey = applicationServerKey;
