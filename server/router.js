@@ -365,8 +365,7 @@ router.get('/search/events', (req, res) => {
 	  })
 	} else if (searchBy === 'date'){
 		const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
-		
+    const endDate = req.query.endDate;		
 		const where = {
 			[db.Op.and]: [
 			{status: 'active'},
@@ -410,9 +409,18 @@ router.get('/search/userevents', (req, res) => {
 router.post('/search/userevents/add', (req, res) => {
 	const userID = req.body.userID;
 	const eventID = req.body.eventID;
-	db.UserEvents.create({userID, eventID}).then((userEvent) => {
-		res.send(userEvent);
+	db.Events.findOne({where: {eventID: eventID}}).then(event => {
+		if(event.current < event.capacity){
+			event.update({current: event.current + 1}).then(event => {
+				db.UserEvents.create({userID, eventID}).then(userEvent => {
+					res.send(userEvent);
+				})
+			})
+		} else {
+			res.send('The capacity is full');
+		}
 	})
+
 })
 
 
