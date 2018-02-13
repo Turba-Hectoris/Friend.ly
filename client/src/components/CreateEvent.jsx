@@ -81,6 +81,31 @@ class CreateEvent extends React.Component{
     }
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.setLocale = this.setLocale.bind(this);
+    this.askPermission = this.askPermission.bind(this);
+  }
+
+
+ askPermission() {
+  return new Promise(function(resolve, reject) {
+    const permissionResult = Notification.requestPermission(function(result) {
+      resolve(result);
+    });
+
+    if (permissionResult) {
+      permissionResult.then(resolve, reject);
+    }
+  })
+  .then(function(permissionResult) {
+    if (permissionResult !== 'granted') {
+      throw new Error('We weren\'t granted permission.');
+    } else {
+      console.log(permissionResult)
+    }
+  });
+}
+
+  componentWillMount() {
+    this.askPermission()
   }
 
   handleLocationChange (location) {

@@ -18,6 +18,8 @@ class App extends React.Component {
       username: ''
     }
     this.toggleLogin = this.toggleLogin.bind(this)
+    this.registerServiceWorker = this.registerServiceWorker.bind(this);
+
   }
 
   toggleLogin(userID, username) {
@@ -36,7 +38,19 @@ class App extends React.Component {
     }
   }
 
+  registerServiceWorker() {
+    return navigator.serviceWorker.register('/service-worker.js')
+    .then(function(registration) {
+      console.log('Service worker successfully registered.');
+      return registration;
+    })
+    .catch(function(err) {
+      console.error('Unable to register service worker.', err);
+    });
+  }
+
   componentWillMount () {
+    this.registerServiceWorker();
     axios.get('/checklogin').then((results) => {
       if(results.data.userID) {
         let userID, username;
