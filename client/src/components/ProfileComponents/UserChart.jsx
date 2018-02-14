@@ -3,78 +3,75 @@ import React from 'react';
 export class UserChart extends React.Component {
   constructor(props) {
     super(props)
-    this.makeGraph.bind(this);
+    this.makeBarGraph.bind(this);
+    this.makePieChart.bind(this);
   }
 
   componentDidMount() {
-    this.makeGraph();
+    this.props.toggleGraph ? this.makePieChart() : this.makeBarGraph()
   }
 
-  makeGraph(){
-    let categoriesObject =  {
-            "arts": {
-                "name": "Arts/Culture",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://librariestaskforce.blog.gov.uk/wp-content/uploads/sites/159/2016/08/LD_IconCulture.png"
-            },
-            "drinks": {
-                "name": "Drinks",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://d27t3nufpewl0w.cloudfront.net/lichess/e7fd1e30904c7fcb9b86dd6aba626f3d536be03c_raster.png"
-            },
-            "gaming": {
-                "name": "Gaming",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://www.shareicon.net/download/2015/08/29/92894_game_2133x2133.png"
-            },
-            "exercie": {
-                "name": "Exercise",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://www.shareicon.net/download/2015/09/22/104946_fitness_512x512.png"
-            },
-            "music": {
-                "name": "Live Music",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://cdn4.iconfinder.com/data/icons/music-and-entertainment/512/Music_Entertainment_Crowd-512.png"
-            },
-            "food": {
-                "name": "Food/Dining",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://housing.umn.edu/sites/housing.umn.edu/files/dining_icon-01.png"
-            },
-            "outdoors": {
-                "name": "Outdoors",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://cdn0.iconfinder.com/data/icons/camping-circular/128/camping_outdoors_equipment-07-512.png"
-            },
-            "movies": {
-                "name": "Movies",
-                "points": "0",
-                "color": "#7F8DA9",
-                "bullet": "https://cdn4.iconfinder.com/data/icons/ballicons-2-new-generation-of-flat-icons/100/cinema-256.png"
-            }  
-        }
+  componentDidUpdate(prevProps) {
+    if(prevProps.toggleGraph !== this.props.toggleGraph) {
+      this.props.toggleGraph ? this.makePieChart() : this.makeBarGraph()
+    } 
+  }
 
-        let dataArray = Object.keys(this.props.categories).reduce((data, category, idx) => {
-            let categoryObject = categoriesObject[category]
-            categoryObject.points = Object.values(this.props.categories)[idx]
-          return data.concat( [categoryObject] )   
-        }, [])
-
-        console.log(dataArray)
-
+  makeBarGraph(){
     AmCharts.makeChart("chartdiv",
     {
         "type": "serial",
         "theme": "light",
-        "dataProvider": dataArray,
+        "dataProvider": [
+            {
+                "name": "Arts/Culture",
+                "points": `${this.props.categories.arts || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://librariestaskforce.blog.gov.uk/wp-content/uploads/sites/159/2016/08/LD_IconCulture.png"
+            },
+            {
+                "name": "Drinks",
+                "points": `${this.props.categories.drinks || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://d27t3nufpewl0w.cloudfront.net/lichess/e7fd1e30904c7fcb9b86dd6aba626f3d536be03c_raster.png"
+            },
+            {
+                "name": "Gaming",
+                "points": `${this.props.categories.gaming || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://www.shareicon.net/download/2015/08/29/92894_game_2133x2133.png"
+            },
+            {
+                "name": "Exercise",
+                "points": `${this.props.categories.exercise || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://www.shareicon.net/download/2015/09/22/104946_fitness_512x512.png"
+            },
+                    {
+                "name": "Live Music",
+                "points": `${this.props.categories.music || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://cdn4.iconfinder.com/data/icons/music-and-entertainment/512/Music_Entertainment_Crowd-512.png"
+            },
+            {
+                "name": "Food/Dining",
+                "points": `${this.props.categories.food || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://housing.umn.edu/sites/housing.umn.edu/files/dining_icon-01.png"
+            },
+            {
+                "name": "Outdoors",
+                "points": `${this.props.categories.outdoors || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://cdn0.iconfinder.com/data/icons/camping-circular/128/camping_outdoors_equipment-07-512.png"
+            },
+            {
+                "name": "Movies",
+                "points": `${this.props.categories.movies || 0}`,
+                "color": "#7F8DA9",
+                "bullet": "https://cdn4.iconfinder.com/data/icons/ballicons-2-new-generation-of-flat-icons/100/cinema-256.png"
+            }      
+        ],
         "startDuration": 1,
         "graphs": [{
             "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
@@ -107,9 +104,94 @@ export class UserChart extends React.Component {
     });
   }
 
+  makePieChart(){
+    let chart = AmCharts.makeChart("chartdiv", {
+      "type": "pie",
+      "startDuration": 0,
+       "theme": "light",
+      "addClassNames": true,
+      "innerRadius": "30%",
+      "defs": {
+        "filter": [{
+          "id": "shadow",
+          "width": "200%",
+          "height": "200%",
+          "feOffset": {
+            "result": "offOut",
+            "in": "SourceAlpha",
+            "dx": 0,
+            "dy": 0
+          },
+          "feGaussianBlur": {
+            "result": "blurOut",
+            "in": "offOut",
+            "stdDeviation": 5
+          },
+          "feBlend": {
+            "in": "SourceGraphic",
+            "in2": "blurOut",
+            "mode": "normal"
+          }
+        }]
+      },
+      "dataProvider": [ {
+        "Category": "Arts/Culture",
+        "points": `${this.props.categories.arts || 0}`
+    },
+    {
+        "Category": "Drinks",
+        "points": `${this.props.categories.drinks || 0}`
+    },
+    {
+        "Category": "Gaming",
+        "points": `${this.props.categories.gaming || 0}`
+    },
+    {
+        "Category": "Exercise",
+        "points": `${this.props.categories.exercise || 0}`
+    },
+            {
+        "Category": "Live Music",
+        "points": `${this.props.categories.music || 0}`
+    },
+    {
+       "Category": "Food/Dining",
+        "points": `${this.props.categories.food || 0}`
+    },
+    {
+        "Category": "Outdoors",
+        "points": `${this.props.categories.outdoors || 0}`
+    },
+    {
+        "Category": "Movies",
+        "points": `${this.props.categories.movies || 0}`
+    }      ],
+      "valueField": "points",
+      "titleField": "Category",
+      "export": {
+        "enabled": true
+      }
+    });
+    
+    chart.addListener("init", handleInit);
+    
+    chart.addListener("rollOverSlice", function(e) {
+      handleRollOver(e);
+    });
+    
+    const handleInit = () => {
+      this.legend.addListener("rollOverItem", handleRollOver);
+    }
+    
+    const handleRollOver = (e) => {
+      var wedge = e.dataItem.wedge.node;
+      wedge.parentNode.appendChild(wedge);
+    }
+  }
+
   render() {
     return(
-      <div id="chartdiv"> </div>
+      <div id="chartdiv" className={this.props.toggleGraph ? "amcharts-pie-slice" : "amcharts-bar"}> </div>
     )
   }
 }

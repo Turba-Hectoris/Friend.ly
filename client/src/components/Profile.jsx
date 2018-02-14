@@ -23,6 +23,7 @@ class Profile extends React.Component {
       userDisplayedData: '',
       loggedInUserID: this.props.loggedInUserID,
       toggleFriendRequest: false,
+      toggleGraphRequest: false,
       edit: false
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
@@ -31,7 +32,8 @@ class Profile extends React.Component {
     this.handleUnfriend = this.handleUnfriend.bind(this);
     this.handleJoinEvent = this.handleJoinEvent.bind(this);
     this.handleEventDetails = this.handleEventDetails.bind(this);
-    this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this)
+    this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this);
+    this.handleToggleGraph = this.handleToggleGraph.bind(this);
   }
 
   //init change edit to true, then when clicked again submit form data to post request
@@ -107,6 +109,12 @@ class Profile extends React.Component {
           //this.props.history.action.push('/path_to_edit_event_page_HERE', [state]?)
   }
 
+  handleToggleGraph() {
+    this.setState({toggleGraph: !this.state.toggleGraph}, () => {
+      this.setState({toggleGraphRequest: !this.state.toggleGraphRequest})
+    })
+  }
+
   render() {
       if(!this.state.userDisplayedData) {
         return(
@@ -125,11 +133,11 @@ class Profile extends React.Component {
               handleAddFriend={this.handleAddFriend}
               handleUnfriend={this.handleUnfriend} 
               getUserDisplayedData={this.getUserDisplayedData}
-              /> : <UserChart categories={this.state.userDisplayedData.categories}/> : <UserChart categories={this.state.userDisplayedData.categories}/>}
+              /> : <UserChart categories={this.state.userDisplayedData.categories} toggleGraph={this.state.toggleGraphRequest}/> : <UserChart categories={this.state.userDisplayedData.categories} toggleGraph={this.state.toggleGraphRequest}/>}
             </div>
             {
               (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo toggleFriendRequest={this.state.toggleFriendRequest}
-              userDisplayedData={this.state.userDisplayedData} toggleFriendRequestList={this.toggleFriendRequestList} handleEditClick={this.handleEditClick} edit={this.state.edit}/> : <DisplayedUserInfo userDisplayedData={this.state.userDisplayedData}/>
+              userDisplayedData={this.state.userDisplayedData} toggleFriendRequestList={this.toggleFriendRequestList} handleEditClick={this.handleEditClick} edit={this.state.edit} handleToggleGraph={this.handleToggleGraph} toggleGraphRequest={this.state.toggleGraphRequest}/> : <DisplayedUserInfo handleToggleGraph={this.handleToggleGraph} userDisplayedData={this.state.userDisplayedData} toggleGraphRequest={this.state.toggleGraphRequest} handleToggleGraph={this.handleToggleGraph}/>
             }
             <div className="profile_events">
               <div className="profile_events_container">

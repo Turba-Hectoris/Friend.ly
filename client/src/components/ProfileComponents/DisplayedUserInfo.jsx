@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const DisplayedUserInfo = ({ userDisplayedData, edit, handleEditClick }) => {
+export const DisplayedUserInfo = ({ userDisplayedData, handleToggleGraph, toggleGraphRequest }) => {
   return (
     <div className="profile_info_container" >
       <div className="profile_image">
@@ -15,9 +15,9 @@ export const DisplayedUserInfo = ({ userDisplayedData, edit, handleEditClick }) 
             <div className="profile_email" >{userDisplayedData.email}</div>
             <div className="profile_username">{userDisplayedData.username}</div> 
         </div>
-      <div className="profile_add_friend">
-        <button className="btn profile_friend_button" onClick={handleEditClick}> { edit ? "Friend" : "Unfriend"} </button>
-      </div>
+        <div className="profile_graph">
+          <button className="btn profile_graph_button" onClick={handleToggleGraph}> {toggleGraphRequest ? "Bar Graph" : "Pie Graph"} </button>
+        </div>
     </div>  
   )
 }

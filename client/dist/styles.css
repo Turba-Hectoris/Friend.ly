@@ -375,6 +375,11 @@ p {
   grid-row: 2 / 3;
 }
 
+.profile_graph {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+}
+
 /*****************************************************************/
                        /* ProfileInfo CSS */
 /*****************************************************************/
@@ -456,6 +461,14 @@ p {
 }
 
 .profile_queue_button {
+  width: 100%;
+  height: auto;
+  font-size: 10px;
+  display: block;
+  padding: 3px;
+}
+
+.profile_graph_button {
   width: 100%;
   height: auto;
   font-size: 10px;
@@ -632,9 +645,31 @@ p {
   grid-row: 1 /2;
 }
 
-#chartdiv {
-  width: 45vw;
-  height: 23vh;
+#chartdiv.amcharts-bar {
+  width: 100%;
+  height: 100%;
+}
+
+#chartdiv.amcharts-pie-slice {
+  width: 100%;
+  height: 100%;
+  font-size: 11px;
+}
+
+.amcharts-pie-slice {
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition-duration: 0.3s;
+  transition: all .3s ease-out;
+  -webkit-transition: all .3s ease-out;
+  -moz-transition: all .3s ease-out;
+  -o-transition: all .3s ease-out;
+  cursor: pointer;
+}
+
+.amcharts-pie-slice:hover {
+  transform: scale(1.05);
+  filter: url(#shadow);
 }
 /*****************************************************************/
                        /* Search CSS */
