@@ -9,7 +9,14 @@ const webPush = require('web-push');
 const upload = multer({'dest': 'upload/'});
 let vapidKeys = require('../config.js').vapidKeys
 const createfFileOnReq = upload.single('file');
-const sequelize = require('sequelize');
+
+router.post('/sendNotifs', (req, res) => {
+	// let eventID = req.body.eventID;
+	
+	db.sequelize.query(`select endpoints from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = 21`, {type: db.sequelize.QueryTypes.SELECT})
+	.then((results) => {console.log(results)})
+
+})
 
 router.post('/subscribeNotifs', (req, res) => {
 	webPush.setGCMAPIKey(req.body.publicKey)
@@ -24,11 +31,12 @@ router.post('/subscribeNotifs', (req, res) => {
 	  }
 	})
 	.then((user) => {
-		if (user.dataValues.endpoints === null || user.dataValues.endpoints.indexOf(req.body.notificationEndPoint) === -1) {
+		let newEndpoint = req.body.notificationEndPoint;
+		if (user.dataValues.endpoints === null || user.dataValues.endpoints.indexOf(newEndpoint) === -1) {
 				user.update({
-	    			endpoints: sequelize.fn('array_append', sequelize.col('endpoints'), req.body.notificationEndPoint)
+	    			endpoints: db.sequelize.fn('array_append', db.sequelize.col('endpoints'), newEndpoint)
 		  		})
-				.then(user => res.send('endpoint added to user field'))
+				.then(user => res.status(200).send({response: 'endpoint added to user field'}))
 		} else {
 			res.send('duplicate endpoint found')
 		}
@@ -48,8 +56,6 @@ router.post('/subscribeNotifs', (req, res) => {
 		console.log('error is', err)
 	})
 })
-
-
 
 router.get('/checklogin', util.checkUser, (req, res) => {
 	res.end()
