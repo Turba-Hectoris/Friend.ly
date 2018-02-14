@@ -101,7 +101,6 @@ class CreateEvent extends React.Component{
         <div className="event_create">
           <Form
             onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {
-              // console.log('locale in submit: ', this.state.locale, ' location in submit: ', this.state.location)
               axios.post('/createEvent', {
               eventName: this.state.submittedValues.eventName,
               eventDesc: this.state.submittedValues.eventDesc,
@@ -112,8 +111,11 @@ class CreateEvent extends React.Component{
               endDate: this.state.endDate,
               locationName: this.state.locale,
               locationGeo: this.state.location
+              }).then(response => {
+                console.log('response from submit: ', response.data)
+                this.props.history.push('/');
               })})
-            .then((response) => {console.log('hi')})}>
+            }>
             { formApi => (
               <form onSubmit={formApi.submitForm} id="form2">
                 <label htmlFor="eventName">Event name</label>
@@ -124,15 +126,14 @@ class CreateEvent extends React.Component{
                 <StyledSelect field="capacity" id="capacity" options={capacity} />
                 <label htmlFor="category" className="d-block">Event category</label>
                 <StyledSelect field="category" id="category" options={categories} />
-                <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
                 <DateRangePicker
-                  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                  startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                  endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                  onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                  startDate={this.state.startDate} 
+                  startDateId="your_unique_start_date_id" 
+                  endDate={this.state.endDate} 
+                  endDateId="your_unique_end_date_id" 
+                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} 
+                  focusedInput={this.state.focusedInput} 
+                  onFocusChange={focusedInput => this.setState({ focusedInput })} 
                 />
                 <br/>
                 <button type="submit" className="mb-4 btn btn-primary">Submit</button>

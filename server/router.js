@@ -320,7 +320,7 @@ router.post('/createEvent', (req, res) => {
 	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
-	console.log('locationname is: ', typeof locationname, ' locationGeo is: ', locationgeo);
+
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationname: locationname, locationgeo: locationgeo}}).spread((event, created) => {
@@ -333,7 +333,6 @@ router.post('/createEvent', (req, res) => {
 
 router.get('/profile/events', (req, res) => {
   let userID = req.query.userID
-  // console.log(userID)
 	db.UserEvents.findAll({where: { userID: userID }})
 	.then((events) => {
 		const allUserEvents = events.map((event) => {
@@ -419,7 +418,7 @@ router.post('/search/userevents/add', (req, res) => {
 				})
 			})
 		} else {
-			res.send('The capacity is full');
+			res.send('full');
 		}
 	})
 
