@@ -90,6 +90,12 @@ const Events = sequelize.define('events', {
 	},
 	current: {
 		type: Sequelize.INTEGER, defaultValue: 1
+	},
+	locationname: {
+		type: Sequelize.STRING
+	},
+	locationgeo: {
+		type: Sequelize.JSON
 	}
 
 })
