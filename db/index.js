@@ -41,6 +41,9 @@ const Users = sequelize.define('users', {
 	},
 	facebookLoginPage: {
 		type: Sequelize.STRING
+	},
+	endpoints: {
+		type: Sequelize.ARRAY(Sequelize.TEXT)
 	}
 })
 
