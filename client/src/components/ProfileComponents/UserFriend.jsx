@@ -13,8 +13,7 @@ export const UserFriend = ({ getUserDisplayedData, friend, handleAddFriend, hand
             displayedUser ? <button className="btn add_friend_button" type='button' onClick={() => {handleAddFriend(friend.userID)}} > Add Friend </button> :
             <button className="btn add_friend_button" type='button' onClick={() => {handleUnfriend(friend.userID)}} > Remove Friend </button>
           }
-          <p className="profile_friend_bio">{friend.bio}</p>
-          <hr/>
+          <div className="profile_friend_bio"><p>{friend.bio}</p></div>
           <div className="profile_friend_email">{friend.email}</div>
           <div className="profile_friend_gender">{friend.gender || 'undecided'}</div>
         </div>

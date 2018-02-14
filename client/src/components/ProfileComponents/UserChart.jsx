@@ -114,19 +114,6 @@ export class UserChart extends React.Component {
       "defs": {
         "filter": [{
           "id": "shadow",
-          "width": "200%",
-          "height": "200%",
-          "feOffset": {
-            "result": "offOut",
-            "in": "SourceAlpha",
-            "dx": 0,
-            "dy": 0
-          },
-          "feGaussianBlur": {
-            "result": "blurOut",
-            "in": "offOut",
-            "stdDeviation": 5
-          },
           "feBlend": {
             "in": "SourceGraphic",
             "in2": "blurOut",
