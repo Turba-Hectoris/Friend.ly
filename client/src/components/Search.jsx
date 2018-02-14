@@ -139,9 +139,10 @@ class Search extends React.Component {
         <div className="search_container">
           <div className="search">
             <div className="search_bar">
-              <input name="name" value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="what do you want to do"/>
+            <span className="search_bar_content">
+              <input name="name" value={this.state.term} onChange={(e) => this.handleTermChange(e)} onKeyPress={(e) => this.handleKeyPress(e)} placeholder="category, name, events..."/>
               <button onClick={(e) => this.handleSubmit(e)}>Search</button>
-              <form>
+              {/*<form className="search_bar_content_categories">
                 <label className="search_label">
                   <input type="radio" name="search" value="all" checked={this.state.selectedOption === 'all'} onChange={(e) => this.handleOptionChange(e)} />
                   All                
@@ -169,22 +170,25 @@ class Search extends React.Component {
                   <input type="radio" name="search" value="category" checked={this.state.selectedOption === 'category'} onChange={(e) => this.handleOptionChange(e)} />
                    <span><SelectC handleSelectChange={this.handleSelectChange}/></span>               
                 </label>
-              </form>
+              </form>*/}
+              </span>
             </div>
             <div className="search_events">
-              <h4>Search result: {this.state.events.length} found</h4>           
-              <br/>
-              <table>
-                <tbody>
-                  <tr><td>Event</td>
-                  <td>Description</td>
-                  <td><span id="category" onClick={(e) => this.sortBy(e)}>Category</span></td>
-                  <td><span id="startDate" onClick={(e) => this.sortBy(e)}>Start Date</span></td>
-                  <td><span id="endDate" onClick={(e) => this.sortBy(e)}>End Date</span></td>
-                  <td><span id="creatorName" onClick={(e) => this.sortBy(e)}>Creator</span></td>
-                  <td>Join</td></tr>
+              {/*<h4>{this.state.events.length} events</h4>           
+              <br/>*/}
+              <table className="search_events_results">
+              <tbody>
+                  <tr>
+                  <th>Event</th>
+                  <th>Description</th>
+                  <th><span id="category" onClick={(e) => this.sortBy(e)}>Category</span></th>
+                  <th><span id="startDate" onClick={(e) => this.sortBy(e)}>Start Date</span></th>
+                  <th><span id="endDate" onClick={(e) => this.sortBy(e)}>End Date</span></th>
+                  <th><span id="creatorName" onClick={(e) => this.sortBy(e)}>Creator</span></th>
+                  <th></th>
+                  </tr>
                     {this.state.events.map((event, index) => <ListItem key={index} event={event} handleEventJoin={this.handleEventJoin} reformatDate={this.reformatDate}/>)}
-                </tbody>
+              </tbody>
               </table>
             </div>
           </div>
