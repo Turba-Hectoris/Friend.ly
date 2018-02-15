@@ -7,29 +7,78 @@ const cloudinarySDK = require('../service_wrappers/cloudinary.js')
 const multer  = require('multer')
 const webPush = require('web-push');
 const upload = multer({'dest': 'upload/'});
+let vapidKeys = require('../config.js').vapidKeys
 const createfFileOnReq = upload.single('file');
 
+router.post('/sendNotifs', (req, res) => {
+	let eventID = req.body.eventID;
+	db.sequelize.query(`select endpoints from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = ${eventID}`, {type: db.sequelize.QueryTypes.SELECT})
+	.then((results) => {
+		results.forEach(result => {
+			let payload = "Someone has joined your event!"
+			if (result.endpoints !== null) {
+			let pushSubscription = {
+				endpoint: result.endpoints[0],
+				keys: {
+					p256dh: vapidKeys.publicKey,
+					auth: 'j9arQ0AJlyX9UKOv2kACFw=='
+				}
+			}
+			webPush.sendNotification(pushSubscription, payload,{}).then((res) => {
+				console.log('this is the response', res)
+			}).catch((err) => {
+				console.log('this is the error', err)
+			})
+		}
+		})
+		// for (var i = 0; i < results.length; i++) {
+		// 	if (results[i].endpoints !== null) {
+		// 		console.log(i, results[i])
+		// 	}
+		// }
+		
+
+})
+})
+
 router.post('/subscribeNotifs', (req, res) => {
-	console.log(req.body)
+	console.log(req.body.auth)
 	webPush.setGCMAPIKey(req.body.publicKey)
 	webPush.setVapidDetails(
 		'mailto:wjeichhold@gmail.com',
-		'BPiwireF6caAoVpDjfv49II350Ad-JnZpC-1M4F5jV1RkXrowLEn0YikrSwUIVB83cf465FKw8rIFVoeusM8ewQ',
-		'2RW9kn-rlwHvAhEn330yq7TXCJuid9J3KGrJ1943yuA'
+		vapidKeys.publicKey,
+		vapidKeys.privateKey
 		)
-	let payload = 'hey how are ya'
-	let pushSubscription = {
-			endpoint: req.body.notificationEndPoint,
-			keys: {
-				p256dh: req.body.publicKey,
-				auth: req.body.auth
-			}
-		}
-	webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
-		console.log(res)
-	}).catch((err) => {
-		console.log('error is', err)
+		db.Users.find({
+	  where: {
+	    userID: req.body.id
+	  }
 	})
+	.then((user) => {
+		let newEndpoint = req.body.notificationEndPoint;
+		if (user.dataValues.endpoints === null || user.dataValues.endpoints.indexOf(newEndpoint) === -1) {
+				user.update({
+	    			endpoints: db.sequelize.fn('array_append', db.sequelize.col('endpoints'), newEndpoint)
+		  		})
+				.then(user => res.status(200).send({response: 'endpoint added to user field'}))
+		} else {
+			res.send('duplicate endpoint found')
+		}
+	})
+
+	// let payload = 'hey how are ya'
+	// let pushSubscription = {
+	// 		endpoint: req.body.notificationEndPoint,
+	// 		keys: {
+	// 			p256dh: req.body.publicKey,
+	// 			auth: req.body.auth
+	// 		}
+	// 	}
+	// webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
+	// 	console.log(res)
+	// }).catch((err) => {
+	// 	console.log('error is', err)
+	// })
 })
 
 router.get('/checklogin', util.checkUser, (req, res) => {
