@@ -19,7 +19,7 @@ const Main = (props) => (
         return props.isLogin ? <CreateEvent userID={props.userData} match={match} history={history}/> 
         : <Homepage />
       }}/> 
-      <Route path="/profile/:id" render={ ({ match }) => { 
+      <Route path="/profile/:id" render={ ({ match, history }) => { 
         return props.isLogin ? <Profile match={match} loggedInUserID={props.userData}/>
         : <Homepage /> 
       }}/>
