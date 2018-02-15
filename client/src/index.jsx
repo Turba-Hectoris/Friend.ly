@@ -40,11 +40,10 @@ class App extends React.Component {
 
   registerServiceWorker() {
     return navigator.serviceWorker.register('/service-worker.js')
-    .then(function(registration) {
-      console.log('Service worker successfully registered.');
+    .then((registration) => {
       return registration;
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.error('Unable to register service worker.', err);
     });
   }

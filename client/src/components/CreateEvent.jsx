@@ -110,7 +110,8 @@ class CreateEvent extends React.Component{
     axios.post('/subscribeNotifs', {
       publicKey: encodedKey,
       auth: encodedAuth,
-      notificationEndPoint: endpoint
+      notificationEndPoint: endpoint,
+      id: this.props.userID
     }).then((res) => console.log(JSON.stringify(res)))
   }
 
@@ -131,11 +132,11 @@ class CreateEvent extends React.Component{
             let auth = subscription.getKey('auth');
             this.sendSubscriptionToServer(endpoint, key, auth);
         })
-        .catch((e) => {
+        .catch((err) => {
             // A problem occurred with the subscription.
-            console.log('Unable to subscribe to push.', e);
+            console.log('Unable to subscribe to push.', err);
         });
-});
+    });
 
   }
 
@@ -149,18 +150,17 @@ class CreateEvent extends React.Component{
       permissionResult.then(resolve, reject);
     }
   })
-  .then(function(permissionResult) {
+  .then( (permissionResult) => {
     if (permissionResult !== 'granted') {
       throw new Error('We weren\'t granted permission.');
     } else {
-      console.log(permissionResult)
+      this.subscribeUser()
     }
   });
 }
 
   componentWillMount() {
     this.askPermission()
-    this.subscribeUser()
   }
 
   handleLocationChange (location) {
