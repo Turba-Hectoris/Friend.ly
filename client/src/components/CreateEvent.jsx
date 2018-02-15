@@ -154,7 +154,6 @@ class CreateEvent extends React.Component{
     if (permissionResult !== 'granted') {
       throw new Error('We weren\'t granted permission.');
     } else {
-      console.log('hi')
       this.subscribeUser()
     }
   });
@@ -173,7 +172,7 @@ class CreateEvent extends React.Component{
   setLocale(locale) {
     this.setState({
       locale: locale
-    }, () => {console.log(this.state)})
+    })
   }
 
     // errorValidator( values ){

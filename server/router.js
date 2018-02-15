@@ -11,14 +11,38 @@ let vapidKeys = require('../config.js').vapidKeys
 const createfFileOnReq = upload.single('file');
 
 router.post('/sendNotifs', (req, res) => {
-	// let eventID = req.body.eventID;
-	
-	db.sequelize.query(`select endpoints from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = 21`, {type: db.sequelize.QueryTypes.SELECT})
-	.then((results) => {console.log(results)})
+	let eventID = req.body.eventID;
+	db.sequelize.query(`select endpoints from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = ${eventID}`, {type: db.sequelize.QueryTypes.SELECT})
+	.then((results) => {
+		results.forEach(result => {
+			let payload = "Someone has joined your event!"
+			if (result.endpoints !== null) {
+			let pushSubscription = {
+				endpoint: result.endpoints[0],
+				keys: {
+					p256dh: vapidKeys.publicKey,
+					auth: 'j9arQ0AJlyX9UKOv2kACFw=='
+				}
+			}
+			webPush.sendNotification(pushSubscription, payload,{}).then((res) => {
+				console.log('this is the response', res)
+			}).catch((err) => {
+				console.log('this is the error', err)
+			})
+		}
+		})
+		// for (var i = 0; i < results.length; i++) {
+		// 	if (results[i].endpoints !== null) {
+		// 		console.log(i, results[i])
+		// 	}
+		// }
+		
 
+})
 })
 
 router.post('/subscribeNotifs', (req, res) => {
+	console.log(req.body.auth)
 	webPush.setGCMAPIKey(req.body.publicKey)
 	webPush.setVapidDetails(
 		'mailto:wjeichhold@gmail.com',
@@ -42,19 +66,19 @@ router.post('/subscribeNotifs', (req, res) => {
 		}
 	})
 
-	let payload = 'hey how are ya'
-	let pushSubscription = {
-			endpoint: req.body.notificationEndPoint,
-			keys: {
-				p256dh: req.body.publicKey,
-				auth: req.body.auth
-			}
-		}
-	webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
-		console.log(res)
-	}).catch((err) => {
-		console.log('error is', err)
-	})
+	// let payload = 'hey how are ya'
+	// let pushSubscription = {
+	// 		endpoint: req.body.notificationEndPoint,
+	// 		keys: {
+	// 			p256dh: req.body.publicKey,
+	// 			auth: req.body.auth
+	// 		}
+	// 	}
+	// webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
+	// 	console.log(res)
+	// }).catch((err) => {
+	// 	console.log('error is', err)
+	// })
 })
 
 router.get('/checklogin', util.checkUser, (req, res) => {
