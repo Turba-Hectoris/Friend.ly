@@ -34,9 +34,9 @@ export class ImageEditIcon extends React.Component {
 		return (
       <Dropzone 
         onDrop={(files) => {this.handleDrop(files, loggedInUserID)}}
-        style={{gridColumn: "1 / 2", gridRow: "1 / 3"}} 
+        className="profile_dropzone"
       >
-        <img style={{width: "100%", height: "auto"}} src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
+        <img src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
       </Dropzone >
 		)
 	}
