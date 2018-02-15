@@ -37,7 +37,7 @@ export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, handleU
         </Link> :
         <img src={`${requestObj.profilePic}`} alt=""/>
       }  
-      <div className="friend_request_username">{requestObj.username}</div>
+        <span className="friend_request_username">{requestObj.username}</span>
       {
         requestObj.access ? 
         <button onClick={() => {handleAddFriend(ID)}}>Accept</button> :

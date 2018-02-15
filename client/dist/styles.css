@@ -619,6 +619,7 @@ p {
 .profile_event {
   border: 1px solid  black;
   min-width: 400px;
+  max-width: 40%;
   display: inherit;
 }
 
@@ -633,7 +634,9 @@ p {
   border: 1px solid black;
   min-width: min-content;
   max-width: 30%;
+  height: auto;
   display: inherit;
+  padding: 1px;
 }
 
 .profile_friend_image > img {
@@ -752,6 +755,48 @@ p {
 .friend_request_list {
   grid-column: 2 / 3;
   grid-row: 1 /2;
+}
+
+.friend_request_list {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.friend_request_listitem {
+  border: 1px solid black;
+  border-radius: 5px;
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  display: inherit;
+  padding: 1px;
+  margin: 10px 1px 5px 10px;
+}
+
+.friend_request_listitem * {
+  width: 100%;
+  height: auto;
+}
+
+.friend_request_image {
+  height: fit-content;
+}
+
+.friend_request_image > a > img {
+  border-radius: 50%;
+}
+
+.friend_request_username {
+  word-break: break-word;
+  font-size: 2vw;
+  font-weight: lighter;
+  text-align: center;
+  font-family: SANS-SERIF;
+}
+
+.friend_request_listitem > button {
+  background-color: #1574cd;
 }
 
 #chartdiv.amcharts-bar {
