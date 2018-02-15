@@ -376,51 +376,20 @@ router.get('/profile/events', (req, res) => {
 
 router.get('/search/events', (req, res) => {
   const term = req.query.term;
-  const searchBy = req.query.searchBy;
+  const like = {[db.Op.iLike]: '%' + term + '%'};
+  const where = {[db.Op.and]: [
+  	{status: 'active'},
+  	{[db.Op.or]: [
+  		{category: like},
+  		{eventName: like},
+  		{eventDesc: like}
+  	]}
+  ]};
 	
-	if(searchBy === 'name') {
-		db.Events.findAll({where: {eventName: {
-	    [db.Op.iLike]: '%' + term + '%'
-	  }, status: 'active'}}).then((events) => {
-	    res.send(events)
-	  })
-	} else if (searchBy === 'category') {
-		db.Events.findAll({where: {category: term, status: 'active'}}).then((events) => {
-	    res.send(events)
-	  })
-	} else if (searchBy === 'date'){
-		const startDate = req.query.startDate;
-    const endDate = req.query.endDate;		
-		const where = {
-			[db.Op.and]: [
-			{status: 'active'},
-			{[db.Op.or]: [
-				{startDate: {
-					[db.Op.and]: {
-						[db.Op.gte]: startDate,
-						[db.Op.lte]: endDate
-					}
-				}}, 
-				{[db.Op.and]: [
-					{startDate: {
-						[db.Op.lte]: startDate
-					}},
-					{endDate: {
-						[db.Op.gte]:  startDate
-					}}
-				]
-			}]}
-			]
-		};
+  db.Events.findAll({where: where}).then((events) => {
+  	res.send(events)
+  })
 
-	  db.Events.findAll({where: where}).then((events) => {
-	  	res.send(events)
-	  })
-	} else {
-		db.Events.findAll({where: {status: 'active'}}).then(events => {
-			res.send(events);
-		})
-	}
 })
 
 router.get('/search/userevents', (req, res) => {
