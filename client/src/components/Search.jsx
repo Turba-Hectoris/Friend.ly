@@ -92,7 +92,11 @@ class Search extends React.Component {
             window.alert('You\'ve already been in this event');
           } else {
             axios.post('/search/userevents/add', {userID, eventID}).then((response) => {
-              this.props.history.push('/');
+              if(response.data !== 'full') {
+                this.props.history.push('/');
+              } else {
+                window.alert('The event currently is full');
+              }             
             })
           }
         })

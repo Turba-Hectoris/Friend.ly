@@ -175,96 +175,13 @@ class CreateEvent extends React.Component{
     })
   }
 
-    // errorValidator( values ){
-    //   const validateEventName = ( eventName ) => {
-    //     return !eventName ? 'Please name your event' : null;
-    //   };
-    //   const validateEventDesc = ( eventDesc ) => {
-    //     return !eventDesc ? 'Event description required.' : null;
-    //   };
-    //   const validateGender = ( gender ) => {
-    //     return !gender ? 'Gender is required.' : null;
-    //   };
-    //   const validateBio = ( bio ) => {
-    //     return !bio ? 'Bio is required.' : null;
-    //   };
-    //   const validateAuthorize = ( authorize ) => {
-    //     return !authorize ? 'Please check authorize.' : null;
-    //   };
-    //   const validateStatus = ( category ) => {
-    //     return !category ? 'Please choose an event category.' : null;
-    //   };
-    //   return {
-    //     eventName: validateEventName( values.eventName ),
-    //     eventDesc: validateEventDesc( values.eventDesc ),
-    //     gender: validateGender( values.gender ),
-    //     bio: validateBio( values.bio ),
-    //     authorize: validateAuthorize( values.authorize ),
-    //     category: validateStatus( values.category )
-    //   };
-    // }
-
-    // warningValidator( values ) {
-    //   const validateEventName = ( eventName ) => {
-    //     return eventName && eventName.length < 2 ? 'Event name must be longer than 2 characters.' : null;
-    //   };
-    //   const validateEventDesc = ( eventDesc ) => {
-    //     return eventDesc && eventDesc.length < 40 ? 'Event description must be at least 40 characters long.' : null;
-    //   };
-    //   const validateBio = ( bio ) => {
-    //     return bio && bio.replace(/s+/g, ' ').trim().split(' ').length < 5 ? 'Bio should have more than 5 words.' : null;
-    //   };
-    //   return {
-    //     eventName: validateEventName( values.eventName ),
-    //     eventDesc: validateEventDesc( values.eventDesc ),
-    //     gender: null,
-    //     bio: validateBio( values.bio ),
-    //     authorize: null,
-    //     category: null
-    //   };
-    // }
-
-    // successValidator( values, errors ) {
-    //   const validateEventName = ( ) => {
-    //     return !errors.eventName ? 'Nice name!' : null;
-    //   };
-    //   const validateEventDesc = ( ) => {
-    //     return !errors.eventDesc ? 'Sounds like a great time!' : null;
-    //   };
-    //   const validateGender = ( ) => {
-    //     return !errors.gender ? 'Thanks for entering your gender.' : null;
-    //   };
-    //   const validateBio = ( ) => {
-    //     return !errors.bio ? 'Cool Bio!' : null;
-    //   };
-    //   const validateAuthorize = ( ) => {
-    //     return !errors.authorize ? 'You are now authorized.' : null;
-    //   };
-    //   const validateStatus = ( ) => {
-    //     return !errors.category ? null : null;
-    //   };
-    //   return {
-    //     eventName: validateEventName( values.eventName ),
-    //     eventDesc: validateEventDesc( values.eventDesc ),
-    //     gender: validateGender( values.gender ),
-    //     bio: validateBio( values.bio ),
-    //     authorize: validateAuthorize( values.authorize ),
-    //     category: validateStatus( values.category )
-    //   };
-    // }
-
-
   render() {
-
     return(
       <div className="event_container">
         <div className="event_create">
           <Form
-      // validateError={this.errorValidator}
-      // validateWarning={this.warningValidator}
-      // validateSuccess={this.successValidator}
-
-            onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {axios.post('/createEvent', {
+            onSubmit={submittedValues => this.setState({submittedValues: submittedValues}, () => {
+              axios.post('/createEvent', {
               eventName: this.state.submittedValues.eventName,
               eventDesc: this.state.submittedValues.eventDesc,
               capacity: this.state.submittedValues.capacity,
@@ -272,9 +189,13 @@ class CreateEvent extends React.Component{
               creatorID: this.props.userID,
               startDate: this.state.startDate,
               endDate: this.state.endDate,
-              location: this.state.locale
+              locationName: this.state.locale,
+              locationGeo: this.state.location
+              }).then(response => {
+                console.log('response from submit: ', response.data)
+                this.props.history.push('/');
               })})
-            .then((response) => {console.log('hi')})}>
+            }>
             { formApi => (
               <form onSubmit={formApi.submitForm} id="form2">
                 <label htmlFor="eventName">Event name</label>
@@ -285,15 +206,14 @@ class CreateEvent extends React.Component{
                 <StyledSelect field="capacity" id="capacity" options={capacity} />
                 <label htmlFor="category" className="d-block">Event category</label>
                 <StyledSelect field="category" id="category" options={categories} />
-                <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" />
                 <DateRangePicker
-                  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                  startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                  endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                  onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                  startDate={this.state.startDate} 
+                  startDateId="your_unique_start_date_id" 
+                  endDate={this.state.endDate} 
+                  endDateId="your_unique_end_date_id" 
+                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} 
+                  focusedInput={this.state.focusedInput} 
+                  onFocusChange={focusedInput => this.setState({ focusedInput })} 
                 />
                 <br/>
                 <button type="submit" className="mb-4 btn btn-primary">Submit</button>
