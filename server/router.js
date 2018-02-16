@@ -352,6 +352,35 @@ router.post('/createEvent', (req, res) => {
 		})
 	})
 })
+router.post('/confirmEvent', (req, res) => {
+  console.log(req.body.eventID, req.body.userID)
+  db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
+    if (event.creatorID === req.body.userID) {
+      event.update({status: 'closed'}).then(() => {
+        res.end()
+      })
+    } else {
+      res.end()
+    }
+  })
+})
+
+router.post('/editEvent', (req, res) => {
+  console.log(req.body.eventID, req.body.userID, req.body.event)
+  db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
+    if (event.creatorID === req.body.userID) {
+      event.update({
+        eventName : req.body.event.eventName,
+        eventDesc: req.body.event.eventDesc,
+        capacity: req.body.event.capacity
+      }).then(() => {
+        res.end()
+      })
+    } else {
+      res.end()
+    }
+  })
+})
 
 router.get('/profile/events', (req, res) => {
   let userID = req.query.userID
@@ -434,7 +463,7 @@ router.post('/search/userevents/add', (req, res) => {
 	const userID = req.body.userID;
 	const eventID = req.body.eventID;
 	db.Events.findOne({where: {eventID: eventID}}).then(event => {
-		if(event.current < event.capacity){
+		if(event.current < event.capacity && event.status === 'active'){
 			event.update({current: event.current + 1}).then(event => {
 				db.UserEvents.create({userID, eventID}).then(userEvent => {
 					res.send(userEvent);
