@@ -44,6 +44,9 @@ const Users = sequelize.define('users', {
 	},
 	endpoints: {
 		type: Sequelize.ARRAY(Sequelize.TEXT)
+	},
+	endpointauths: {
+		type: Sequelize.ARRAY(Sequelize.TEXT)
 	}
 })
 
