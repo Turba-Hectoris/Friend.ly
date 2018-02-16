@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const UserEvent = ({ event, handleJoinEvent, displayedUser, loggedInUserID }) => {
+
+  const toDateFormat = (dateStr) => {
+    let dateObj = new Date(dateStr);
+    return dateObj.toLocaleDateString();
+  }
+
   return (
     <div className="profile_event">
       <div className="profile_event_info" >
@@ -11,12 +17,14 @@ export const UserEvent = ({ event, handleJoinEvent, displayedUser, loggedInUserI
           <input type="text" style={{display: "none"}}/> :
           <button className="btn join_event_button" type='button' onClick={() => {handleJoinEvent(event.eventID)}} > Join Event </button>
         }
-        <p className="profile_event_name">{event.eventName}</p>
-        <p className="profile_event_status">{event.status}</p>
-        <p className="profile_event_creator">{event.creatorID}</p>
-        <p className="profile_event_date_range">{event.startDate} - {event.endDate}</p> 
-        <p className="profile_event_category">{event.category}</p>
-        <p className="profile_event_description">{event.eventDesc}</p>
+        <span className="profile_event_name">{event.eventName}</span>
+        <span className="profile_event_status">{event.status}</span>
+        <span className="profile_event_creator">{event.creatorName}</span>
+        <span className="profile_event_date_range">{toDateFormat(event.startDate)} - {toDateFormat(event.endDate)}</span> 
+        <span className="profile_event_category">{event.category}</span>
+        <span className="profile_event_capacity">{event.current} out of {event.capacity}</span>
+        <span className="profile_event_location">{event.locationname || 'undecided'}</span>
+        <div><p className="profile_event_description">{event.eventDesc}</p></div>
       </div>   
     </div>
   );

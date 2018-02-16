@@ -151,7 +151,9 @@ router.get('/profile/data/:userID', (req, res) => {
 			gender: user.dataValues.gender,
 			createdAt: user.dataValues.createdAt,
 			updatedAt: user.dataValues.updatedAt,
-			profilePic: user.dataValues.profilePic
+			profilePic: user.dataValues.profilePic,
+			facebookID: user.dataValues.facebookID,
+			facebookLoginPage: user.dataValues.facebookLoginPage
 		};
 			db.Friendships.findAll({where: { userID }}).then((initFriendships) => {
 					db.Friendships.findAll({where: { friendID: userID }}).then((uninitFriendships) => {
