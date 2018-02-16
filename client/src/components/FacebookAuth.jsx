@@ -33,6 +33,8 @@ class FacebookAuth extends React.Component {
         fields="name,email,picture,website,gender,verified,link,locale"
         scope="public_profile,user_friends"
         callback={this.responseFacebook}
+        size='small'
+        style={{color: '#ffffff', textDecoration: 'none'}}
       />
     )
   }
