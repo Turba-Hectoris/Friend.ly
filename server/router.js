@@ -12,7 +12,7 @@ const createfFileOnReq = upload.single('file');
 
 router.post('/sendNotifs', (req, res) => {
 	let eventID = req.body.eventID;
-	db.sequelize.query(`select endpoints from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = ${eventID}`, {type: db.sequelize.QueryTypes.SELECT})
+	db.sequelize.query(`select endpoints, endpointauths from users inner join userevents on users."userID" = userevents."userID" where userevents."eventID" = ${eventID}`, {type: db.sequelize.QueryTypes.SELECT})
 	.then((results) => {
 		results.forEach(result => {
 			let payload = "Someone has joined your event!"
@@ -21,7 +21,7 @@ router.post('/sendNotifs', (req, res) => {
 				endpoint: result.endpoints[0],
 				keys: {
 					p256dh: vapidKeys.publicKey,
-					auth: 'j9arQ0AJlyX9UKOv2kACFw=='
+					auth: result.endpointauths[0]
 				}
 			}
 			webPush.sendNotification(pushSubscription, payload,{}).then((res) => {
@@ -42,7 +42,6 @@ router.post('/sendNotifs', (req, res) => {
 })
 
 router.post('/subscribeNotifs', (req, res) => {
-	console.log(req.body.auth)
 	webPush.setGCMAPIKey(req.body.publicKey)
 	webPush.setVapidDetails(
 		'mailto:wjeichhold@gmail.com',
@@ -55,10 +54,13 @@ router.post('/subscribeNotifs', (req, res) => {
 	  }
 	})
 	.then((user) => {
+		console.log(user.dataValues)
 		let newEndpoint = req.body.notificationEndPoint;
+		let newAuth = req.body.auth;
 		if (user.dataValues.endpoints === null || user.dataValues.endpoints.indexOf(newEndpoint) === -1) {
 				user.update({
-	    			endpoints: db.sequelize.fn('array_append', db.sequelize.col('endpoints'), newEndpoint)
+	    			endpoints: db.sequelize.fn('array_append', db.sequelize.col('endpoints'), newEndpoint),
+	    			endpointauths: db.sequelize.fn('array_append', db.sequelize.col('endpointauths'), newAuth)
 		  		})
 				.then(user => res.status(200).send({response: 'endpoint added to user field'}))
 		} else {
@@ -409,8 +411,9 @@ router.post('/createEvent', (req, res) => {
 	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
-
+	console.log('here')
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
+		console.log(user)
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationname: locationname, locationgeo: locationgeo}}).spread((event, created) => {
 			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {

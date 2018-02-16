@@ -15,6 +15,14 @@ const CreateMap = compose(
     }),
 
     lifecycle({
+    componentWillReceiveProps() {
+        if(this.props.geo) {
+          this.setState({center: {
+            lat: this.props.geo.lat,
+            lng: this.props.geo.lng
+          }})
+        }
+      },
       componentWillMount() {
         const refs = {}
 

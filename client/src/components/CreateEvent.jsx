@@ -107,6 +107,7 @@ class CreateEvent extends React.Component{
  sendSubscriptionToServer(endpoint, key, auth) {
     let encodedKey = btoa(String.fromCharCode.apply(null, new Uint8Array(key)));
     let encodedAuth = btoa(String.fromCharCode.apply(null, new Uint8Array(auth)));
+    console.log('HERE IS ENCODED KEY WEE', encodedKey, encodedAuth)
     axios.post('/subscribeNotifs', {
       publicKey: encodedKey,
       auth: encodedAuth,
@@ -124,7 +125,6 @@ class CreateEvent extends React.Component{
     subscribeParams.applicationServerKey = applicationServerKey;
     reg.pushManager.subscribe(subscribeParams)
         .then((subscription) => {
-
             // Update status to subscribe current user on server, and to let
             // other users know this user has subscribed
             let endpoint = subscription.endpoint;
@@ -220,7 +220,7 @@ class CreateEvent extends React.Component{
               </form>
             )}
           </Form>
-          <CreateMap getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
+          <CreateMap geo={this.state.locationGeo} getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
         </div>
       </div>
       )

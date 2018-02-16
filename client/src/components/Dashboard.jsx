@@ -148,7 +148,7 @@ const EventDetails = (props) => (
       <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
       <h1>End Date:</h1>
       <div className="db_detail_endDate">{new Date(props.currentRoom.endDate).toLocaleTimeString()}</div>
-      <div className="db_detail_map"><CreateMap getEventCoordinate={props.handleLocationChange} setLocale={props.setLocale}/></div>
+      <div className="db_detail_map"><CreateMap geo={props.currentRoom.locationgeo} getEventCoordinate={props.handleLocationChange} setLocale={props.setLocale}/></div>
     </div>
   </div>
 )
