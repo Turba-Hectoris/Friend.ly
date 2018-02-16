@@ -18,13 +18,13 @@ export const UserEvent = ({ event, handleJoinEvent, displayedUser, loggedInUserI
           <button className="btn join_event_button" type='button' onClick={() => {handleJoinEvent(event.eventID)}} > Join Event </button>
         }
         <span className="profile_event_name">{event.eventName}</span>
-        <span className="profile_event_status">{event.status}</span>
+        {/* <span className="profile_event_status">{event.status}</span> */}
         <span className="profile_event_creator">{event.creatorName}</span>
         <span className="profile_event_date_range">{toDateFormat(event.startDate)} - {toDateFormat(event.endDate)}</span> 
-        <span className="profile_event_category">{event.category}</span>
+        {/* <span className="profile_event_category">{event.category}</span> */}
         <span className="profile_event_capacity">{event.current} out of {event.capacity}</span>
         <span className="profile_event_location">{event.locationname || 'undecided'}</span>
-        <div><p className="profile_event_description">{event.eventDesc}</p></div>
+        <div className="profile_event_description"><p>{event.eventDesc}</p></div>
       </div>   
     </div>
   );

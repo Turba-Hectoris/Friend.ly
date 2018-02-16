@@ -38,9 +38,6 @@ class Profile extends React.Component {
     this.handleProfileDashBoardClick = this.handleProfileDashBoardClick.bind(this);
   }
 
-  componentDidMount() {
-
-  }
   //init change edit to true, then when clicked again submit form data to post request
   componentWillUpdate(nextProps, nextState) {
     if(this.state.edit === true && String(nextState.edit) === 'false') {
@@ -86,6 +83,13 @@ class Profile extends React.Component {
   }
 
   handleProfileDashBoardClick(e) {
+      let buttons = ['active', 'closed', 'friends']
+      $(`#${e.target.id}`).css({"text-decoration": "underline"}).css({"opacity": "1"})
+      buttons.forEach((button) => {
+        if(button !== e.target.id) {
+          $(`#${button}`).css({"text-decoration": "none"}).css({"opacity": "0.5"})
+        }
+      })
     this.setState({dashRender: `${e.target.id}`})
   }
 
