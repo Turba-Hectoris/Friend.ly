@@ -308,11 +308,6 @@ p {
 /*****************************************************************/
                        /* Profile CSS */
 /*****************************************************************/
-.profile .btn:hover {
-  opacity: .7;
-  transition: opacity 300ms linear;
-}
-
 .profile .btn {
   background-color: #1574cd;
   border: none;
@@ -325,6 +320,10 @@ p {
   height: auto;
   text-align: center;
   z-index: 1;
+}
+
+.profile .btn:focus {
+  outline: none;
 }
 
 .profile_container {
@@ -345,10 +344,15 @@ p {
   height: 97%;
   width: 98%;
   grid-template-columns: 46% 54%;
-  grid-template-rows: 34% 33% 32%;
+  grid-template-rows: 34% 65%;
   grid-gap: 10px;
   padding: 0;
   margin: 4px 0 0 4px;
+}
+
+.profile_dashboard {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
 }
 
 .profile_info_container {
@@ -382,6 +386,12 @@ p {
   grid-auto-rows: 33% 34% 33%;
 }
 
+.profile_action_buttons {
+  background-color: #1574cd;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
 .profile_edit {
   grid-row: 1 / 2;
 }
@@ -411,8 +421,15 @@ p {
 .profile_dropzone > img {
   display: block;
   margin: auto;
-  width: 70%;
+  max-width: 70%;
   height: auto;
+}
+
+.profile_dashboard {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-rows: 20% 80%;
+  grid-gap: 1rem;
 }
 
 .profile_info_container {
@@ -450,28 +467,26 @@ p {
   display: -webkit-inline-box;
 }
 
-.profile_social_media {
-}
-
 .profile_social_media_icon {
-
+  width: 3rem;
+  height: auto;
 }
 
 .profile_social_media_icon > a > img {
-  width: 4vmax;
-  height: 100%;
+  width: 100%;
+  height: auto;
 }
 
 .profile_image > a > img {
-  width: 10%;
+  max-width: 10%;
   height: auto;
 } 
 
 .profile_image > img {
   display: block;
   margin: auto;
-  width: auto;
-  height: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 50%;
 }
 
@@ -486,8 +501,6 @@ p {
   width: 100%;
 }
 
-
-
 .profile_gender {
   font-size: 1vw;
   font-weight: bolder;
@@ -497,22 +510,19 @@ p {
 
 .profile_email {
   word-break: break-word;
-  font-size: 2vw;
+  font-size: 1rem;
   font-weight: lighter;
   text-align: center;
   font-family: SANS-SERIF;
+  padding: 5px 1px 5px 1px;
 }
 
 .profile_username {
   word-break: break-word;
-  font-size: 2vw;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
   font-family: SANS-SERIF;
-}
-
-.profile_edit { 
-  
 }
 
 .profile_form {
@@ -534,13 +544,19 @@ p {
   width: auto;
 }
 
-
-
 #profile_form > .row > label, fieldset {
   width: inherit;
   padding: 2px;
   box-sizing: border-box;
   resize: vertical;
+}
+
+#profile_form > .row > fieldset * {
+  font-size: 1rem;
+}
+
+#profile_form > .row > fieldset > button{
+  display: none;
 }
 
 #profile_form > .row > textarea{
@@ -566,9 +582,6 @@ p {
   display: table;
   clear: both;
 }
-
-
-
 
 .profile_edit_button {
   width: 100%;
@@ -617,7 +630,6 @@ p {
 }
 
 .profile_event {
-  border: 1px solid  black;
   min-width: 400px;
   max-width: 40%;
   display: inherit;
@@ -631,7 +643,6 @@ p {
 }
 
 .profile_friend {
-  border: 1px solid black;
   min-width: min-content;
   max-width: 30%;
   height: auto;
@@ -659,7 +670,7 @@ p {
 }
 
 .profile_friend .profile_friend_info_container > a > img {
-  width: 50%;
+  max-width: 50%;
   height: auto;
   border-radius: 50%;
   border: 5px solid rgba(21, 116, 205, .2);
@@ -713,8 +724,36 @@ p {
   display: none;
 }
 
+.profile_dashboard_nav {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  display: flex;
+  justify-content: center;
+  min-width: 100%;
+}
+
+.profile_dashboard_nav * {
+  min-width: 33%;
+  text-align: -webkit-center;
+  font-family: sans-serif;
+  border-bottom: 1px solid gray;
+  padding-top: 2rem;
+}
+
+.profile_dashboard_nav #active {
+
+}
+
+.profile_dashboard_nav #closed {
+  
+}
+
+.profile_dashboard_nav #friends {
+  
+}
+
 .profile_events {
-  grid-column: 1 / 4;
+  grid-column: 1 / 2;
   grid-row: 2 / 3;
   display: flex;
   justify-content: center;
@@ -728,8 +767,8 @@ p {
 }
 
 .profile_friends {
-  grid-column: 1 / 4;
-  grid-row: 3 / 4;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
   display: inline-flex;
   justify-content: center;
   min-width: 100%;
@@ -740,7 +779,9 @@ p {
 .profile_events_container {
   display: inline-flex;
   width: 100%;
+  
 }
+
 
 .profile_friends_container {
   display: inline-flex;

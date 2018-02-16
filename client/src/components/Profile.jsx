@@ -24,7 +24,8 @@ class Profile extends React.Component {
       loggedInUserID: this.props.loggedInUserID,
       toggleFriendRequest: false,
       toggleGraphRequest: false,
-      edit: false
+      edit: false,
+      dashRender: 'active'
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
@@ -34,8 +35,12 @@ class Profile extends React.Component {
     this.handleEventDetails = this.handleEventDetails.bind(this);
     this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this);
     this.handleToggleGraph = this.handleToggleGraph.bind(this);
+    this.handleProfileDashBoardClick = this.handleProfileDashBoardClick.bind(this);
   }
 
+  componentDidMount() {
+
+  }
   //init change edit to true, then when clicked again submit form data to post request
   componentWillUpdate(nextProps, nextState) {
     if(this.state.edit === true && String(nextState.edit) === 'false') {
@@ -78,6 +83,10 @@ class Profile extends React.Component {
   handleEditClick(e) {
     e.preventDefault()
     this.setState({edit: !this.state.edit})
+  }
+
+  handleProfileDashBoardClick(e) {
+    this.setState({dashRender: `${e.target.id}`})
   }
 
   handleAddFriend(friendID) {
@@ -139,28 +148,68 @@ class Profile extends React.Component {
               (this.props.match.params.id == this.props.loggedInUserID) ? <LoggedInUserInfo toggleFriendRequest={this.state.toggleFriendRequest}
               userDisplayedData={this.state.userDisplayedData} toggleFriendRequestList={this.toggleFriendRequestList} handleEditClick={this.handleEditClick} edit={this.state.edit} handleToggleGraph={this.handleToggleGraph} toggleGraphRequest={this.state.toggleGraphRequest}/> : <DisplayedUserInfo handleToggleGraph={this.handleToggleGraph} userDisplayedData={this.state.userDisplayedData} toggleGraphRequest={this.state.toggleGraphRequest} handleToggleGraph={this.handleToggleGraph}/>
             }
-            <div className="profile_events">
-              <div className="profile_events_container">
-                {
-                  (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>) : 
-                  !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.map(event => <UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>)
-                }
+            <div className="profile_dashboard">
+              <div className="profile_dashboard_nav">
+                <span onClick={(e) => {this.handleProfileDashBoardClick(e)}} id="active">Active Events</span>
+                <span onClick={(e) => {this.handleProfileDashBoardClick(e)}}  id="closed">Closed Events</span>
+                <span onClick={(e) => {this.handleProfileDashBoardClick(e)}}  id="friends">Friends</span>
               </div>
-            </div>
-            <div className="profile_friends">
-              <div className="profile_friends_container">
-                {
-                  (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend} />) : 
-                  !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend}/>)
-                }
-              </div>
-            </div>
+              {
+                this.state.dashRender === 'active' ?
+                  <div className="profile_events">
+                    <div className="profile_events_container">
+                      {
+                        (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((activeEvents, event) => {
+                          if(event.status === 'active'){ 
+                            return activeEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                          }
+                          return activeEvents;
+                        }, []) : 
+                        !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((activeEvents, event) => { 
+                          if(event.status === 'active'){  
+                            return activeEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                          }
+                          return activeEvents;
+                        }, [])
+                      }
+                    </div>
+                  </div>
+                : this.state.dashRender === 'closed' ?
+                  <div className="profile_events">
+                    <div className="profile_events_container">
+                      {
+                        (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((closedEvents, event) => {
+                          if(event.status === 'closed'){  
+                            return closedEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                          }
+                          return closedEvents;
+                        }, []) : 
+                        !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((closedEvents, event) => { 
+                          if(event.status === 'closed'){  
+                            return closedEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                          }
+                          return closedEvents;
+                        }, [])
+                      }
+                    </div>
+                  </div>
+                : <div className="profile_friends">
+                    <div className="profile_friends_container">
+                      {
+                        (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend} />) : 
+                        !!this.state.userDisplayedData.friends.length && this.state.userDisplayedData.friends.map(friend => <UserFriend  displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={friend.userID} friend={friend} handleAddFriend={this.handleAddFriend} handleUnfriend={this.handleUnfriend}/>)
+                      }
+                    </div>
+                  </div>
+              }
+            </div>        
           </div>  
         </div>
       );
     }
   }
 }
+
 
 export default Profile;
 
