@@ -5,7 +5,7 @@ import Chatroom from './Chatroom.jsx';
 import axios from 'axios'
 import { GoogleMap, Marker } from "react-google-maps"
 import CreateMap from './CreateMap.jsx';
-
+import EditEvent from './EditEvent.jsx';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -18,13 +18,18 @@ class Dashboard extends React.Component {
       roomName: 'asd',
       location: '',
       locale: '',
-      members: []
+      members: [],
+      editEvent: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.getMembers = this.getMembers.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.setLocale = this.setLocale.bind(this);
     this.handleAddFriend = this.handleAddFriend.bind(this); 
+    this.confirmEvent = this.confirmEvent.bind(this)
+    this.editEvent = this.editEvent.bind(this)
+    this.handleOpen = this.handleOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
   
   handleClick (div, item) {
@@ -39,7 +44,16 @@ class Dashboard extends React.Component {
     })
     $('.db_panel_2').css("z-index", "1")
   }
-
+  handleOpen() {
+    this.setState({
+      editEvent: true
+    })
+  }
+  handleClose() {
+    this.setState({
+      editEvent: false
+    })
+  }
   handleAddFriend(friendID) {
     axios.post('/friendship_update', {userID: this.props.userData, friendID, add: 1})
     .then((response) => {
@@ -59,13 +73,37 @@ class Dashboard extends React.Component {
       console.log(err)
     })
   }
+  confirmEvent() { 
+    axios.post('/confirmEvent', {userID: this.props.userData, eventID: this.state.select_event_id})
+    .then((res) => {
+
+    })
+    .catch((err) => {
+
+    })
+  }
+  editEvent(event) {
+    axios.post('/editEvent', {userID: this.props.userData, event: event, eventID: this.state.select_event_id})
+    .then((res) => {
+      this.setState({
+        editEvent: false
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        editEvent: false
+      })
+    })
+    // console.log('changing id' , this.state.select_event_id)
+    // console.log(event)
+  }
 
   componentWillMount() {
     axios.get('/dashboard/events', {params: {userID: this.props.userData}})
     .then((res) => {
       // console.log('events in dashboard: ', res.data)
       this.setState({
-        events: res.data,
+        events: res.data.reverse(),
         select_event_id: res.data[0].eventID
       // }, () => {console.log('state\'s events: ', this.state.events)})
       }, () => {
@@ -108,14 +146,16 @@ handleLocationChange (location) {
             </div>
           </div>
 
+          <EditEvent showModal={this.state.editEvent} handleClose={() => this.handleClose()} handleSubmit={this.editEvent} event={this.state.events[this.state.currentRoom]}/>
+
           <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
           
-          <EventDetails members={this.state.members.reduce((arrOfMembers, member) => {
+          <EventDetails handleOpen={this.handleOpen}userID={this.props.userData} members={this.state.members.reduce((arrOfMembers, member) => {
             if(member.userID === loggedInUser) {
               return arrOfMembers;
             }
             return arrOfMembers.concat([member])
-          }, [])} currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale} handleAddFriend={this.handleAddFriend}/>
+          }, [])} currentRoom={this.state.events[this.state.currentRoom]} handleLocationChange={this.handleLocationChange} setLocale={this.setLocale} handleAddFriend={this.handleAddFriend} confirmEvent={this.confirmEvent}/>
 
       </div>
     </div>
@@ -124,14 +164,16 @@ handleLocationChange (location) {
 }
 
 const EventListItem = (props) => (
-  props.selected ? (<li style={{backgroundColor: 'rgba(136, 136, 136, .25)'}}><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
-  : (<li><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
+  props.selected ? (<li style={{backgroundColor: 'rgba(136, 136, 136, .25)'}}><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src={props.item.imgLink}/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
+  : (<li><div className="eventListItem" onClick={(e) => props.handleClick(e, props)}><div style={{display: 'inline-block', height: '100%', alignItems: 'center'}}><img className="eventListPhoto"height="50px" width="50px"src={props.item.imgLink}/></div><span className="eventListName">{props.item.eventName}</span></div></li>)
 )
 
 const EventDetails = (props) => (
   <div className="db_panel_3">
     <div className="db_detail">
     <span className="db_detail_swap" onClick={() => {$('.db_panel_3').css("z-index", "-2"); $('.db_panel_2').css("z-index", "2")}}>Back<hr/></span>
+      {props.currentRoom.creatorID === props.userID ? <button onClick={(e) => {e.preventDefault(); props.handleOpen()}}>Edit Event</button> : null }
+      {props.currentRoom.creatorID === props.userID ? <button onClick={(e) => {e.preventDefault(); props.confirmEvent()}}>Confirm Event</button> : null }
       <h1>Description:</h1>
       <div className="db_detail_description">{props.currentRoom.eventDesc}</div>
       <h1>Members:</h1>
@@ -141,14 +183,14 @@ const EventDetails = (props) => (
           (<li 
             key={member.userID}
             onClick={() => {props.handleAddFriend(member.userID)}}
-            ><img className="eventListPhoto"height="40px" width="40px"src="http://johnsonlegalpc.com/wp-content/uploads/2016/09/person.png"/>{member.username}</li>)
+            ><img className="eventListPhoto"height="40px" width="40px"src={member.profilePic}/>{member.username}</li>)
           )}
       </ul>
       <h1>Start Date:</h1>
-      <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
+      <div className="db_detail_startDate">{new Date(props.currentRoom.startDate).toLocaleDateString() + ' ' +  new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
       <h1>End Date:</h1>
-      <div className="db_detail_endDate">{new Date(props.currentRoom.endDate).toLocaleTimeString()}</div>
-      <div className="db_detail_map"><CreateMap geo={props.currentRoom.locationgeo} getEventCoordinate={props.handleLocationChange} setLocale={props.setLocale}/></div>
+      <div className="db_detail_endDate">{new Date(props.currentRoom.endDate).toLocaleDateString() + ' ' + new Date(props.currentRoom.startDate).toLocaleTimeString()}</div>
+      <div className="db_detail_map"><CreateMap getEventCoordinate={props.handleLocationChange} setLocale={props.setLocale}/></div>
     </div>
   </div>
 )
