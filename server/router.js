@@ -173,10 +173,10 @@ router.get('/profile/data/:userID', (req, res) => {
 							friendRequestResults.forEach((isFriend, idx, results) => {
 								if(idx % 2 === 0) {
 									if(isFriend === null) {
-										pendingFriendRequest.push([isFriend, results[ ++idx]])
-										pendingFriendRequestData.push(db.Users.findOne({where: { userID: results[idx].friendID}}))
+										pendingFriendRequest.push([isFriend, results[ ++idx ]])
+										pendingFriendRequestData.push(db.Users.findOne({where: { userID: results[ idx ].friendID}}))
 									} else {
-										friends[`${results[ ++idx ]}`] = [isFriend, results[idx]]
+										friends[ ++idx ] = [isFriend, results[idx]]
 									}
 								}
 							})
@@ -350,6 +350,16 @@ router.post('/event_attendance_update', (req, res) => {
 })
 
 router.post('/createEvent', (req, res) => {
+	const CATEGORIES = {
+		arts: 'https://librariestaskforce.blog.gov.uk/wp-content/uploads/sites/159/2016/08/LD_IconCulture.png',
+		drinks: 'https://d27t3nufpewl0w.cloudfront.net/lichess/e7fd1e30904c7fcb9b86dd6aba626f3d536be03c_raster.png',
+		gaming: 'https://www.shareicon.net/download/2015/08/29/92894_game_2133x2133.png',
+		exercise: 'https://www.shareicon.net/download/2015/09/22/104946_fitness_512x512.png',
+		music: 'https://cdn4.iconfinder.com/data/icons/music-and-entertainment/512/Music_Entertainment_Crowd-512.png',
+		food: 'https://housing.umn.edu/sites/housing.umn.edu/files/dining_icon-01.png',
+		outdoors: 'https://cdn0.iconfinder.com/data/icons/camping-circular/128/camping_outdoors_equipment-07-512.png',
+		movies: 'https://cdn4.iconfinder.com/data/icons/ballicons-2-new-generation-of-flat-icons/100/cinema-256.png'
+	}
 	let eventName = req.body.eventName;
 	let capacity = req.body.capacity;
 	let creatorID = req.body.creatorID;
@@ -357,7 +367,7 @@ router.post('/createEvent', (req, res) => {
 	let eventDesc = req.body.eventDesc;
 	let startDate = req.body.startDate;
 	let endDate = req.body.endDate;
-	let imgLink = "http://winthehumanrace.ca/wp-content/uploads/2014/04/Pink-event.jpg";
+	let imgLink = CATEGORIES[ req.body.category ]
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
 

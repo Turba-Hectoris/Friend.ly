@@ -35,7 +35,9 @@ export const FriendRequestListItem = ({ ID, requestObj, handleAddFriend, handleU
         <Link className="friend_request_image" onClick={() => {getUserDisplayedData(ID)}} to={`/profile/${ID}`}>
           <img src={`${requestObj.profilePic}`} alt=""/>
         </Link> :
-        <img src={`${requestObj.profilePic}`} alt=""/>
+        <span className="friend_request_image" >  
+          <img src={`${requestObj.profilePic}`} alt=""/>
+        </span>  
       }  
         <span className="friend_request_username">{requestObj.username}</span>
       {
