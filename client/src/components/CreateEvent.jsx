@@ -198,14 +198,15 @@ class CreateEvent extends React.Component{
             }>
             { formApi => (
               <form onSubmit={formApi.submitForm} id="form2">
-                <label htmlFor="eventName">Event name</label>
-                <StyledText field="eventName" id="eventName" />
-                <label htmlFor="eventDesc">Event description</label>
-                <StyledTextArea field="eventDesc" id="eventDesc" />
-                <label>How many people?</label>
-                <StyledSelect field="capacity" id="capacity" options={capacity} />
-                <label htmlFor="category" className="d-block">Event category</label>
-                <StyledSelect field="category" id="category" options={categories} />
+                <StyledText field="eventName" id="eventName" placeholder="Event Name"/>
+                <br/>
+                <StyledTextArea field="eventDesc" id="eventDesc" placeholder="Description..." style={{width: '60%', height: '20%', fontSize: '24px'}}/>
+                <br/>
+                <StyledSelect field="capacity" id="capacity" options={capacity} placeholder="Capacity" style={{fontSize: '24px'}}/>
+                <br/>
+                <StyledSelect field="category" id="category" options={categories} placeholder="Category" style={{fontSize: '24px'}}/>
+                <br/>
+                <StyledCheckbox field="authorize" id="authorize" label="Authorize" className="d-inline-block" style={{fontSize: '24px', color: '#fff'}}/>
                 <DateRangePicker
                   startDate={this.state.startDate} 
                   startDateId="your_unique_start_date_id" 
@@ -216,7 +217,7 @@ class CreateEvent extends React.Component{
                   onFocusChange={focusedInput => this.setState({ focusedInput })} 
                 />
                 <br/>
-                <button type="submit" className="mb-4 btn btn-primary">Submit</button>
+                <button type="submit" className="mb-4 btn btn-primary" style={{padding: '2px', height:'10%', width: '10%'}}>Submit</button>
               </form>
             )}
           </Form>
