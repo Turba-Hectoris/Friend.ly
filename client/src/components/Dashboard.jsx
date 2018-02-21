@@ -33,8 +33,6 @@ class Dashboard extends React.Component {
   }
   
   handleClick (div, item) {
-      // div.target.style.backgroundColor = 'red'
-    // console.log(item)
     this.setState( prevState => ({
       currentRoom: item.roomNumber,
       roomName: item.eventName,
@@ -94,26 +92,21 @@ class Dashboard extends React.Component {
         editEvent: false
       })
     })
-    // console.log('changing id' , this.state.select_event_id)
-    // console.log(event)
   }
 
   componentWillMount() {
     axios.get('/dashboard/events', {params: {userID: this.props.userData}})
     .then((res) => {
-      // console.log('events in dashboard: ', res.data)
       this.setState({
         events: res.data.reverse(),
         select_event_id: res.data[0].eventID
-      // }, () => {console.log('state\'s events: ', this.state.events)})
       }, () => {
         this.getMembers()
       });
-      // console.log('state\'s events: ', this.state.events);
     })
   }
 
-handleLocationChange (location) {
+  handleLocationChange (location) {
     this.setState({
       location: location
     });
@@ -124,6 +117,7 @@ handleLocationChange (location) {
       locale: locale
     })
   }
+
   render () {
     let loggedInUser = this.props.userData;
     return (
@@ -177,7 +171,6 @@ const EventDetails = (props) => (
       <h1>Description:</h1>
       <div className="db_detail_description">{props.currentRoom.eventDesc}</div>
       <h1>Members:</h1>
-      {/*<div className="db_detail_members">{props.currentRoom.capacity + ' maximum attendees'}</div>*/}
       <ul className="db_detail_members">
         {props.members.map((member, idx) => 
           (<li 
