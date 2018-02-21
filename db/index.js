@@ -59,7 +59,6 @@ const Friendships = sequelize.define('friendships', {
 	}
 })
 
-
 const Events = sequelize.define('events', {
 	eventID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
@@ -114,7 +113,6 @@ const UserEvents = sequelize.define('userevents', {
 		type: Sequelize.INTEGER
 	}
 })
-
 
 Users.sync({force: false})
 
