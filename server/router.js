@@ -421,9 +421,8 @@ router.post('/createEvent', (req, res) => {
 	let imgLink = CATEGORIES[ req.body.category ]
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
-	console.log('here')
+
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
-		console.log(user)
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationname: locationname, locationgeo: locationgeo}}).spread((event, created) => {
 			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
@@ -432,21 +431,32 @@ router.post('/createEvent', (req, res) => {
 		})
 	})
 })
+
 router.post('/confirmEvent', (req, res) => {
-  console.log(req.body.eventID, req.body.userID)
-  db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
+  db.Events.findOne({where: {eventID: req.body.eventID}}).then(event => {
     if (event.creatorID === req.body.userID) {
-      event.update({status: 'closed'}).then(() => {
-        res.end()
+      event.update({status: 'closed'}).then(updatedEvent => {
+      	db.UserEvents.findAll({where: {eventID: updatedEvent.eventID}}).then(userIDs => {
+      		let emails = [];
+ 					let users = userIDs.map(userID => {
+      			return db.Users.findOne({where: {userID: userID.dataValues.userID}})
+      		});
+      		      		
+      		Promise.all(users).then((users) => {
+      			users.forEach(user => {
+      				if(user.userID !== updatedEvent.creatorID) {
+      					emails.push(user.email)
+      				}
+      			});
+      			const result = {emails: emails, event: updatedEvent};
+      			res.send(result);
+      		})
+      	})
       })
-    } else {
-      res.end()
-    }
-  })
+  }})
 })
 
 router.post('/editEvent', (req, res) => {
-  console.log(req.body.eventID, req.body.userID, req.body.event)
   db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
     if (event.creatorID === req.body.userID) {
       event.update({
@@ -483,20 +493,19 @@ router.get('/profile/events', (req, res) => {
 
 router.get('/search/events', (req, res) => {
   const term = req.query.term;
-  const like = {[db.Op.iLike]: '%' + term + '%'};
-  const where = {[db.Op.and]: [
-  	{status: 'active'},
-  	{[db.Op.or]: [
-  		{category: like},
-  		{eventName: like},
-  		{eventDesc: like}
-  	]}
-  ]};
-	
-  db.Events.findAll({where: where}).then((events) => {
-  	res.send(events)
-  })
+	const like = {[db.Op.iLike]: '%' + term + '%'};
+	const where = {[db.Op.and]: [
+		{status: 'active'},
+		{[db.Op.or]: [
+			{category: like},
+			{eventName: like},
+			{eventDesc: like}
+		]}
+	]};
 
+	db.Events.findAll({where: where}).then((events) => {
+		res.send(events)
+	})
 })
 
 router.get('/search/userevents', (req, res) => {

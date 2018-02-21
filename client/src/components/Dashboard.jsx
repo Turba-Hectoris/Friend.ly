@@ -71,15 +71,39 @@ class Dashboard extends React.Component {
       console.log(err)
     })
   }
+
   confirmEvent() { 
     axios.post('/confirmEvent', {userID: this.props.userData, eventID: this.state.select_event_id})
-    .then((res) => {
-
+    .then(res => {
+      const emails = res.data.emails.map(email => {
+        return {'email': email}
+      });
+      const event = {};
+      event.summary = res.data.event.eventName;
+      event.location = res.data.event.locationname;
+      event.description = res.data.event.eventDesc;
+      event.start = {};
+      event.start.dateTime = res.data.event.startDate;
+      event.start.timeZone = 'America/Los_Angeles';
+      event.end = {};
+      event.end.dateTime = res.data.event.endDate;
+      event.end.timeZone = 'America/Los_Angeles';
+      event.attendees = emails;
+      event.reminders = {
+          'useDefault': false,
+          'overrides': [
+            {'method': 'email', 'minutes': 24 * 60},
+            {'method': 'popup', 'minutes': 10}
+          ]
+        };
+      this.props.updateConfirmedEvent(event);
+      window.alert("Successfully confirmed! Please click Calendar Authorization to add it to calendars of members")
     })
     .catch((err) => {
-
+      console.log(err)
     })
   }
+
   editEvent(event) {
     axios.post('/editEvent', {userID: this.props.userData, event: event, eventID: this.state.select_event_id})
     .then((res) => {

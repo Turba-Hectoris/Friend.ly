@@ -11,7 +11,7 @@ const Main = (props) => (
   <div style={{height:'100%'}}>
     <Switch>
       <Route exact path="/" render={() => {
-        return props.isLogin ? <Dashboard userData={props.userData} username={props.username}/> 
+        return props.isLogin ? <Dashboard userData={props.userData} username={props.username} updateConfirmedEvent={props.updateConfirmedEvent}/> 
         : <Homepage />
       }}/>
       <Route path="/search" render={ ({ match, history }) => <Search match={match} history={history} isLogin={props.isLogin} userID={props.userData} username={props.username}/> }/>
