@@ -26,7 +26,7 @@ class EditEvent extends React.Component {
       capacity: nextProps.event.capacity,
       startDate: nextProps.event.startDate,
       endDate: nextProps.event.endDate,
-      imgLink: nextProps.event.imgLink
+      imgLink: nextProps.event.imgLink,
     })
   }
 

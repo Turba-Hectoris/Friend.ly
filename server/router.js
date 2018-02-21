@@ -409,6 +409,7 @@ router.post('/createEvent', (req, res) => {
 })
 
 router.post('/confirmEvent', (req, res) => {
+
   db.Events.findOne({where: {eventID: req.body.eventID}}).then(event => {
     if (event.creatorID === req.body.userID) {
       event.update({status: 'closed'}).then(updatedEvent => {
