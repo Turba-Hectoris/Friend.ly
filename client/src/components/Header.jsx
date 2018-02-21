@@ -12,7 +12,7 @@ class Header extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      redirect: false,
+      redirect: false
     };
     this.closeModal = this.closeModal.bind(this)
     this.onLogOut = this.onLogOut.bind(this)
@@ -38,8 +38,8 @@ class Header extends React.Component {
       let userID, username;
       ({userID, username} = response.data)
       if (userID) {
-          this.closeModal()
-          this.props.toggleLogin(userID, username)
+        this.closeModal()
+        this.props.toggleLogin(userID, username)
       }
     })
   }
@@ -47,21 +47,15 @@ class Header extends React.Component {
   onLogOut() {
     axios.post('/logout', {userID: this.props.userData}).then((response) => {   
       if (response.data) {
-          this.props.toggleLogin(null, null)
+        this.props.toggleLogin(null, null)
       }
     })
   }
-  
-  onLoginSuccess(method, response) {
-    console.log(response)
-    console.log('logged successfully with ' + method);
+  //Need these two empty functions to satisfy ReactModalLogin conditions
+  onLoginSuccess() {
   }
 
-  onLoginFail(method, response) {
-    console.log('logging failed with ' + method);
-    this.setState({
-      error: response
-    })
+  onLoginFail() {
   }
 
   onRegister() {
@@ -69,13 +63,12 @@ class Header extends React.Component {
     let username = document.querySelector('#registerUsername').value
     let password = document.querySelector('#registerPassword').value
     axios.post('/signup', {
-        email: email,
-        username: username,
-        password: password
+      email: email,
+      username: username,
+      password: password
     }).then((response) => {
       let userID, username;
       ({userID, username} = response.data)
-      //this was passing a single object before refactor
       this.props.toggleLogin(userID, username)    
     })
   }
@@ -98,10 +91,9 @@ class Header extends React.Component {
     });
   }
 
-
     render() {
-        return (
-    <header className="nav">
+      return (
+      <header className="nav">
         <span className="logo" ><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
         <ul id="nav">
@@ -114,7 +106,7 @@ class Header extends React.Component {
         {' '}
         { 
           this.props.isLogin &&
-          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth /></li>
+          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth event={this.props.confirmedEvent}/></li>
         }
         {' '}
         {

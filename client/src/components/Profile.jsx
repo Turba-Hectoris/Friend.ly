@@ -12,14 +12,6 @@ import LoadingScreen from './LoadingScreen.jsx';
 
 
 
-
-
-
-///////////////////////////////////////////////////////////
-////////////DUMMY DATA FOR NO INTERNET ACCESS//////////////
-import  dummyData from '../../../userProfileDummyData.js';
-///////////////////////////////////////////////////////////
-
 class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -48,10 +40,8 @@ class Profile extends React.Component {
 
   //init change edit to true, then when clicked again submit form data to post request
   componentWillUpdate(nextProps, nextState) {
-    if(this.state.edit === true && String(nextState.edit) === 'false') {
-      
-      let queryString = $('#profile_form').serialize().replace('%20', '');
-      
+    if(this.state.edit === true && String(nextState.edit) === 'false') {     
+      let queryString = $('#profile_form').serialize().replace('%20', '');      
       axios.post(`/profile_form_update?${queryString}`, {userID: this.props.loggedInUserID})
       .then((res) => { 
         this.getUserDisplayedData(this.props.loggedInUserID)
@@ -259,7 +249,6 @@ class Profile extends React.Component {
     }
   }
 }
-
 
 export default Profile;
 

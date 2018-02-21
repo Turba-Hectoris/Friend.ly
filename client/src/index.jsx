@@ -6,7 +6,6 @@ import axios from 'axios';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
-import userProfileDummyData from '../../userProfileDummyData.js';
 import {roomsRef} from '../../firebaseConfig.js';
 
 class App extends React.Component {
@@ -15,11 +14,16 @@ class App extends React.Component {
     this.state = {
       isLogin: false,
       userData: '',
-      username: ''
+      username: '',
+      confirmedEvent: null
     }
     this.toggleLogin = this.toggleLogin.bind(this)
     this.registerServiceWorker = this.registerServiceWorker.bind(this);
+    this.updateConfirmedEvent = this.updateConfirmedEvent.bind(this);
+  }
 
+  updateConfirmedEvent(event) {
+    this.setState({confirmedEvent: event})
   }
 
   toggleLogin(userID, username) {
@@ -62,21 +66,19 @@ class App extends React.Component {
   }
 
   createNewRoom (roomId) {
-    //after create an event, get the eventId as roomId to create a new room
     roomId.messages = [];
     roomsRef.push(roomId);
   }
 
   deleteRoom (roomId) {
-    // when event expired, delete the chatroom as well, if so desired
     roomsRef.child(roomId).remove();
   }
 
   render () {
     return (
       <div style={{height:'100%'}}>
-        <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin} userData={this.state.userData}/>
-        <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username}/>
+        <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin} userData={this.state.userData} confirmedEvent={this.state.confirmedEvent}/>
+        <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username} updateConfirmedEvent={this.updateConfirmedEvent}/>
       </div>
     );
   }

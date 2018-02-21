@@ -25,19 +25,12 @@ router.post('/sendNotifs', (req, res) => {
 				}
 			}
 			webPush.sendNotification(pushSubscription, payload,{}).then((res) => {
-				console.log('this is the response', res)
+				
 			}).catch((err) => {
-				console.log('this is the error', err)
+				console.log(err)
 			})
 		}
-		})
-		// for (var i = 0; i < results.length; i++) {
-		// 	if (results[i].endpoints !== null) {
-		// 		console.log(i, results[i])
-		// 	}
-		// }
-		
-
+	})
 })
 })
 
@@ -54,7 +47,6 @@ router.post('/subscribeNotifs', (req, res) => {
 	  }
 	})
 	.then((user) => {
-		console.log(user.dataValues)
 		let newEndpoint = req.body.notificationEndPoint;
 		let newAuth = req.body.auth;
 		if (user.dataValues.endpoints === null || user.dataValues.endpoints.indexOf(newEndpoint) === -1) {
@@ -67,20 +59,6 @@ router.post('/subscribeNotifs', (req, res) => {
 			res.send('duplicate endpoint found')
 		}
 	})
-
-	// let payload = 'hey how are ya'
-	// let pushSubscription = {
-	// 		endpoint: req.body.notificationEndPoint,
-	// 		keys: {
-	// 			p256dh: req.body.publicKey,
-	// 			auth: req.body.auth
-	// 		}
-	// 	}
-	// webPush.sendNotification(pushSubscription, payload, {}).then((res) => {
-	// 	console.log(res)
-	// }).catch((err) => {
-	// 	console.log('error is', err)
-	// })
 })
 
 router.get('/checklogin', util.checkUser, (req, res) => {
@@ -160,10 +138,8 @@ router.post('/login', (req, res) => {
 
 router.get('/dashboard/events', (req, res) => {
 	const userID = req.query.userID;
-		//EVENTS ---Refactor to join tables
 	db.UserEvents.findAll({where: {userID: userID}}).then((events) => {
 		let eventsData = [];
-
 		eventsData = events.map(({ eventID }) => {
 			return db.Events.findOne({where: {eventID: eventID}})
 		})
@@ -421,6 +397,7 @@ router.post('/createEvent', (req, res) => {
 	let imgLink = CATEGORIES[ req.body.category ]
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
+
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationname: locationname, locationgeo: locationgeo}}).spread((event, created) => {
@@ -430,16 +407,30 @@ router.post('/createEvent', (req, res) => {
 		})
 	})
 })
+
 router.post('/confirmEvent', (req, res) => {
-  db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
+
+  db.Events.findOne({where: {eventID: req.body.eventID}}).then(event => {
     if (event.creatorID === req.body.userID) {
-      event.update({status: 'closed'}).then(() => {
-        res.end()
+      event.update({status: 'closed'}).then(updatedEvent => {
+      	db.UserEvents.findAll({where: {eventID: updatedEvent.eventID}}).then(userIDs => {
+      		let emails = [];
+ 					let users = userIDs.map(userID => {
+      			return db.Users.findOne({where: {userID: userID.dataValues.userID}})
+      		});
+      		      		
+      		Promise.all(users).then((users) => {
+      			users.forEach(user => {
+      				if(user.userID !== updatedEvent.creatorID) {
+      					emails.push(user.email)
+      				}
+      			});
+      			const result = {emails: emails, event: updatedEvent};
+      			res.send(result);
+      		})
+      	})
       })
-    } else {
-      res.end()
-    }
-  })
+  }})
 })
 
 router.post('/editEvent', (req, res) => {
@@ -479,20 +470,19 @@ router.get('/profile/events', (req, res) => {
 
 router.get('/search/events', (req, res) => {
   const term = req.query.term;
-  const like = {[db.Op.iLike]: '%' + term + '%'};
-  const where = {[db.Op.and]: [
-  	{status: 'active'},
-  	{[db.Op.or]: [
-  		{category: like},
-  		{eventName: like},
-  		{eventDesc: like}
-  	]}
-  ]};
-	
-  db.Events.findAll({where: where}).then((events) => {
-  	res.send(events)
-  })
+	const like = {[db.Op.iLike]: '%' + term + '%'};
+	const where = {[db.Op.and]: [
+		{status: 'active'},
+		{[db.Op.or]: [
+			{category: like},
+			{eventName: like},
+			{eventDesc: like}
+		]}
+	]};
 
+	db.Events.findAll({where: where}).then((events) => {
+		res.send(events)
+	})
 })
 
 router.get('/search/userevents', (req, res) => {
@@ -517,10 +507,6 @@ router.post('/search/userevents/add', (req, res) => {
 			res.send('full');
 		}
 	})
-
 })
-
-
-///////////////////////////////////////////////////////////////////
 
 module.exports = router;

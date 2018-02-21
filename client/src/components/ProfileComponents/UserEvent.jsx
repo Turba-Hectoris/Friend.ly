@@ -17,6 +17,7 @@ export class UserEvent extends React.Component{
     let dateObj = new Date(dateStr);
     return dateObj.toLocaleDateString();
   }
+  
 componentWillMount() {
   ((category) => {
     const COLORS = {

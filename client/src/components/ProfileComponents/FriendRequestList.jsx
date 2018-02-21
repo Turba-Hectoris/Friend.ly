@@ -9,7 +9,7 @@ class FriendRequestList extends React.Component {
     }
   }
 
-render(){
+  render(){
     return (
       <div className="friend_request_list">
           {this.props.fetchedFriendRequest.map((request) => {

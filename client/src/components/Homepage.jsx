@@ -32,19 +32,15 @@ class Homepage extends React.Component {
     };
     $(window).scroll(function() {
        if ($('.demoImage1').isOnScreen() == true) {
-         // alert("removing orange");
          $('.demoImage1').css('opacity','1');   
        }
         if ($('.demoImage2').isOnScreen() == true) {
-         // alert("removing orange");
          $('.demoImage2').css('opacity','1');   
        }
         if ($('.demoImage3').isOnScreen() == true) {
-         // alert("removing orange");
          $('.demoImage3').css('opacity','1');  
        }
          if ($('.demoImage4').isOnScreen() == true) {
-         // alert("removing orange");
          $('.demoImage4').css('opacity','1');   
        }
 });
