@@ -77,10 +77,6 @@ class App extends React.Component {
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin} userData={this.state.userData}/>
         <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username}/>
-        {
-        //Don't modify unless you're aaron
-      /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>
-      <Homepage/>*/}
       </div>
     );
   }

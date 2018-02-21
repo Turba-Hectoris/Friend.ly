@@ -421,9 +421,7 @@ router.post('/createEvent', (req, res) => {
 	let imgLink = CATEGORIES[ req.body.category ]
 	let locationname = req.body.locationName;
 	let locationgeo = req.body.locationGeo;
-	console.log('here')
 	db.Users.findOne({where: {userID: creatorID}}).then(user => {
-		console.log(user)
 		const creatorName = user.username;
 		db.Events.findCreateFind({where: {imgLink: imgLink, startDate: startDate, endDate: endDate, eventName: eventName, capacity: capacity, eventDesc: eventDesc, category: category, creatorID: creatorID, creatorName: creatorName, locationname: locationname, locationgeo: locationgeo}}).spread((event, created) => {
 			db.UserEvents.findCreateFind({where: {userID: creatorID, eventID: event.dataValues.eventID}}).spread((userevent, created) => {
@@ -433,7 +431,6 @@ router.post('/createEvent', (req, res) => {
 	})
 })
 router.post('/confirmEvent', (req, res) => {
-  console.log(req.body.eventID, req.body.userID)
   db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
     if (event.creatorID === req.body.userID) {
       event.update({status: 'closed'}).then(() => {
@@ -446,7 +443,6 @@ router.post('/confirmEvent', (req, res) => {
 })
 
 router.post('/editEvent', (req, res) => {
-  console.log(req.body.eventID, req.body.userID, req.body.event)
   db.Events.findOne({where: {eventID: req.body.eventID}}).then((event) => {
     if (event.creatorID === req.body.userID) {
       event.update({

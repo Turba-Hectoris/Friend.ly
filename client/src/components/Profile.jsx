@@ -7,6 +7,10 @@ import UserEvent from './ProfileComponents/UserEvent.jsx';
 import LoggedInUserInfo from './ProfileComponents/LoggedInUserInfo.jsx';
 import DisplayedUserInfo from './ProfileComponents/DisplayedUserInfo.jsx';
 import FriendRequestList from './ProfileComponents/FriendRequestList.jsx';
+import EditEvent from './EditEvent.jsx';
+import LoadingScreen from './LoadingScreen.jsx';
+
+
 
 
 
@@ -25,7 +29,10 @@ class Profile extends React.Component {
       toggleFriendRequest: false,
       toggleGraphRequest: false,
       edit: false,
-      dashRender: 'active'
+      dashRender: 'active',
+      editEvent: false,
+      event: ''
+
     }
     this.getUserDisplayedData = this.getUserDisplayedData.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
@@ -36,6 +43,7 @@ class Profile extends React.Component {
     this.toggleFriendRequestList = this.toggleFriendRequestList.bind(this);
     this.handleToggleGraph = this.handleToggleGraph.bind(this);
     this.handleProfileDashBoardClick = this.handleProfileDashBoardClick.bind(this);
+    this.editEvent = this.editEvent.bind(this);
   }
 
   //init change edit to true, then when clicked again submit form data to post request
@@ -117,9 +125,46 @@ class Profile extends React.Component {
     .catch(err => console.log(err));
   }
 
-  handleEventDetails(eventID) {
-    //..reroute to event slected page
-          //this.props.history.action.push('/path_to_edit_event_page_HERE', [state]?)
+  handleEventDetails(event) {
+    this.setState({event: event}, () => {
+      this.handleOpen()
+    })
+  }
+
+  handleOpen() {
+    this.setState({
+      editEvent: true
+    })
+  }
+
+  handleClose() {
+    this.setState({
+      editEvent: false
+    })
+  }
+
+  confirmEvent() { 
+    axios.post('/confirmEvent', {userID: this.props.loggedInUserID, eventID: event.eventID})
+    .then((res) => {
+
+    })
+    .catch((err) => {
+
+    })
+  }
+
+  editEvent(event) {
+    axios.post('/editEvent', {userID: this.props.loggedInUserID, event: event, eventID: this.state.event.eventID})
+    .then((res) => {
+      this.setState({
+        editEvent: false
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        editEvent: false
+      })
+    })
   }
 
   handleToggleGraph() {
@@ -165,13 +210,13 @@ class Profile extends React.Component {
                       {
                         (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((activeEvents, event) => {
                           if(event.status === 'active'){ 
-                            return activeEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                            return activeEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleEventDetails={this.handleEventDetails}/>])
                           }
                           return activeEvents;
                         }, []) : 
                         !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((activeEvents, event) => { 
                           if(event.status === 'active'){  
-                            return activeEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                            return activeEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} />])
                           }
                           return activeEvents;
                         }, [])
@@ -184,13 +229,13 @@ class Profile extends React.Component {
                       {
                         (this.props.match.params.id == this.props.loggedInUserID) ? !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((closedEvents, event) => {
                           if(event.status === 'closed'){  
-                            return closedEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                            return closedEvents.concat([<UserEvent displayedUser={null} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleOpen={this.handleOpen}/>])
                           }
                           return closedEvents;
                         }, []) : 
                         !!this.state.userDisplayedData.events.length && this.state.userDisplayedData.events.reduce((closedEvents, event) => { 
                           if(event.status === 'closed'){  
-                            return closedEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleEventDetails={this.handleEventDetails}/>])
+                            return closedEvents.concat([<UserEvent displayedUser={this.props.match.params.id} loggedInUserID={this.props.loggedInUserID} key={event.eventID} event={event} handleJoinEvent={this.handleJoinEvent} handleOpen={this.handleOpen}/>])
                           }
                           return closedEvents;
                         }, [])
@@ -207,7 +252,8 @@ class Profile extends React.Component {
                   </div>
               }
             </div>        
-          </div>  
+          </div> 
+          <EditEvent showModal={this.state.editEvent} handleClose={() => this.handleClose()} handleSubmit={this.editEvent} event={this.state.event} /> 
         </div>
       );
     }
