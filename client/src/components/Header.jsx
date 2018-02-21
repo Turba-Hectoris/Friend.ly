@@ -12,7 +12,7 @@ class Header extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      redirect: false,
+      redirect: false
     };
     this.closeModal = this.closeModal.bind(this)
     this.onLogOut = this.onLogOut.bind(this)
@@ -108,7 +108,7 @@ class Header extends React.Component {
         {' '}
         { 
           this.props.isLogin &&
-          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth /></li>
+          <li style={{color: '#ffffff', textDecoration: 'none'}}><GoogleAuth event={this.props.confirmedEvent}/></li>
         }
         {' '}
         {
