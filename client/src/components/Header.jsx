@@ -51,17 +51,11 @@ class Header extends React.Component {
       }
     })
   }
-  
-  onLoginSuccess(method, response) {
-    console.log(response)
-    console.log('logged successfully with ' + method);
+  //Need these two empty functions to satisfy ReactModalLogin conditions
+  onLoginSuccess() {
   }
 
-  onLoginFail(method, response) {
-    console.log('logging failed with ' + method);
-    this.setState({
-      error: response
-    })
+  onLoginFail() {
   }
 
   onRegister() {

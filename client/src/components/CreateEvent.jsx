@@ -89,6 +89,8 @@ class CreateEvent extends React.Component{
     this.subscribeUser = this.subscribeUser.bind(this);
   }
 
+//Function to convert public key to U int 8 Array format
+
   urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -104,10 +106,12 @@ class CreateEvent extends React.Component{
     return outputArray;
   }
 
+//Send push notification subscription details to server, where the user details will be saved
+//to "endpoint" and "auth" fields in the user table
+
  sendSubscriptionToServer(endpoint, key, auth) {
     let encodedKey = btoa(String.fromCharCode.apply(null, new Uint8Array(key)));
     let encodedAuth = btoa(String.fromCharCode.apply(null, new Uint8Array(auth)));
-    console.log('HERE IS ENCODED KEY WEE', encodedKey, encodedAuth)
     axios.post('/subscribeNotifs', {
       publicKey: encodedKey,
       auth: encodedAuth,
@@ -116,7 +120,8 @@ class CreateEvent extends React.Component{
     }).then((res) => console.log(JSON.stringify(res)))
   }
 
-
+//After service worker is ready and user permissions notifications, get unique data from the
+//push notification subscription and pass it to the sendSubscriptionToServer function
   subscribeUser() {
     navigator.serviceWorker.ready.then((reg) => {
     let subscribeParams = {userVisibleOnly: true};
@@ -139,7 +144,7 @@ class CreateEvent extends React.Component{
     });
 
   }
-
+//Function which asks user for permission to subscribe their browser to push notifs for Friend.ly
  askPermission() {
   return new Promise(function(resolve, reject) {
     const permissionResult = Notification.requestPermission(function(result) {
@@ -162,7 +167,7 @@ class CreateEvent extends React.Component{
   componentWillMount() {
     this.askPermission()
   }
-
+// These two functions are passed down to the Google Maps component to reset map orientation on location change
   handleLocationChange (location) {
     this.setState({
       location: location
