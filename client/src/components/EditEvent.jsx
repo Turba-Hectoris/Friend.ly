@@ -17,6 +17,7 @@ class EditEvent extends React.Component {
     this.handleDescChange = this.handleDescChange.bind(this)
     this.handleCapChange = this.handleCapChange.bind(this)
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       eventName: nextProps.event.eventName,
@@ -28,21 +29,25 @@ class EditEvent extends React.Component {
       imgLink: nextProps.event.imgLink
     })
   }
+
   handleNameChange(val) {
     this.setState({
       eventName: val
     })
   }
+
   handleDescChange(val) {
     this.setState({
       eventDesc: val
     })
   }
+
   handleCapChange(val) {
     this.setState({
       capacity: Number(val)
     })
   }
+
   render() {
     return (
       <Modal isOpen={this.props.showModal} ariaHideApp={false} style={{content: {zIndex: '10'}, overlay: {zIndex: '10', textAlign:'center', width: '50%',minWidth: '450px', margin:'auto', height: '50%'}}}>
@@ -56,12 +61,9 @@ class EditEvent extends React.Component {
           <div>Capacity: <input type='text' value={this.state.capacity} onChange={(e) => {this.handleCapChange(e.target.value)}}></input></div>
           <button onClick={() => {this.props.handleSubmit(this.state)}}>Submit</button>
         </div>
-
-
         <button onClick={() => {this.props.handleClose()}} style={{padding: '10px', fontSize: '18px'}}>Cancel</button>
       </Modal>)
   }
 }
-
 
 export default EditEvent

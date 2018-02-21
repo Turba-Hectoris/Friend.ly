@@ -74,6 +74,7 @@ class Search extends React.Component {
   getEvents (callback) {
     axios.get('/search/events', {params: {term: this.state.term}})
     .then(response => {
+      console.log('response from all: ', response.data)
       this.setState({events: response.data}, () => {
         this.sortBy();
         if(callback) callback();

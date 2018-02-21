@@ -5,41 +5,11 @@ import GoogleLogin from 'react-google-login';
 class GoogleAuth extends React.Component {
   constructor(props) {
     super(props)
-    // will refactor to event = this.props.event && this.props.emails(for attendees); remove the state
-    this.state = {
-      event: {
-        'summary': 'Google I/O 2015',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-          'dateTime': '2018-02-15T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'end': {
-          'dateTime': '2018-02-17T17:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'attendees': [
-          {'email': 'abc@gmail.com'},
-          {'email': 'cba@gmail.com'}
-        ],
-        'reminders': {
-          'useDefault': false,
-          'overrides': [
-            {'method': 'email', 'minutes': 24 * 60},
-            {'method': 'popup', 'minutes': 10}
-          ]
-        }
-      }
-    };
-
     this.responseGoogle = this.responseGoogle.bind(this);
   }
 
   responseGoogle(res) {
-    console.log('in google res: ', res)
-    const event = this.state.event;
-    console.log('event is: ', event)
+    const event = JSON.stringify(this.props.event);
     function makeApiCall () {
       var request = gapi.client.calendar.events.insert({
         'calendarId': 'primary',
