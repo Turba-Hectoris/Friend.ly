@@ -226,7 +226,7 @@ class CreateEvent extends React.Component{
               </form>
             )}
           </Form>
-          <CreateMap geo={this.state.locationGeo} getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
+          <CreateMap geo={this.state.location} getEventCoordinate={this.handleLocationChange} setLocale={this.setLocale}/>
         </div>
       </div>
       )

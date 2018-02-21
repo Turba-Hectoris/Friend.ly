@@ -16,6 +16,7 @@ const CreateMap = compose(
 
     lifecycle({
     componentWillReceiveProps() {
+      console.log('GEO PROPS', this.props.geo)
         if(this.props.geo) {
           this.setState({center: {
             lat: this.props.geo.lat,
@@ -65,7 +66,7 @@ const CreateMap = compose(
               markers: nextMarkers,
             }, () => {
               this.props.getEventCoordinate({'lat': this.state.center.lat(),'lng': this.state.center.lng()})
-              this.props.setLocale(refs.searchBox.state.__SECRET_SEARCH_BOX_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.gm_accessors_.places.gd.formattedPrediction)
+              this.props.setLocale(refs.searchBox.state.__SECRET_SEARCH_BOX_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.gm_accessors_.places.dd.formattedPrediction)
             });
             // refs.map.fitBounds(bounds);
           },
