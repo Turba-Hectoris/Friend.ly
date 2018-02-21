@@ -3,76 +3,75 @@ import axios from 'axios';
 import 'react-dates/initialize'; 
 import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 import {
-    Form,
-    StyledText,
-    StyledTextArea,
-    StyledRadio,
-    StyledRadioGroup,
-    StyledSelect,
-    StyledCheckbox
-  } from 'react-form';
+  Form,
+  StyledText,
+  StyledTextArea,
+  StyledRadio,
+  StyledRadioGroup,
+  StyledSelect,
+  StyledCheckbox
+} from 'react-form';
 import CreateMap from './CreateMap.jsx';
 
-  let pubKey = 'BPiwireF6caAoVpDjfv49II350Ad-JnZpC-1M4F5jV1RkXrowLEn0YikrSwUIVB83cf465FKw8rIFVoeusM8ewQ';
+let pubKey = 'BPiwireF6caAoVpDjfv49II350Ad-JnZpC-1M4F5jV1RkXrowLEn0YikrSwUIVB83cf465FKw8rIFVoeusM8ewQ';
 
+let categories = [ //Categories that the user can choose when creating an event
+  {
+    label: 'Movies',
+    value: 'movies'
+  },
+  {
+    label: 'Outdoors',
+    value: 'outdoors'
+  },
+  {
+    label: 'Food/Dining',
+    value: 'food'
+  },
+  {
+    label: 'Live Music',
+    value: 'music'
+  },
+  {
+    label: 'Exercise',
+    value: 'exercise'
+  },
+  {
+    label: 'Gaming',
+    value: 'gaming'
+  },
+  {
+    label: 'Drinks',
+    value: 'drinks'
+  },
+  {
+    label: 'Arts & Culture',
+    value: 'arts'
+  }
+]
 
-    let categories = [ //Categories that the user can choose when creating an event
-      {
-        label: 'Movies',
-        value: 'movies'
-      },
-      {
-        label: 'Outdoors',
-        value: 'outdoors'
-      },
-      {
-        label: 'Food/Dining',
-        value: 'food'
-      },
-      {
-        label: 'Live Music',
-        value: 'music'
-      },
-      {
-        label: 'Exercise',
-        value: 'exercise'
-      },
-      {
-        label: 'Gaming',
-        value: 'gaming'
-      },
-      {
-        label: 'Drinks',
-        value: 'drinks'
-      },
-      {
-        label: 'Arts & Culture',
-        value: 'arts'
-      }
-    ]
-
-  let capacity = [
-    {
-      label: '2',
-      value: '2'
-    },
-    {
-      label: '3',
-      value: '3'
-    },
-    {
-      label: '4',
-      value: '4'
-    },
-    {
-      label: '5',
-      value: '5'
-    },
-    {
-      label: '6',
-      value: '6'
-    }
-  ]
+let capacity = [
+  {
+    label: '2',
+    value: '2'
+  },
+  {
+    label: '3',
+    value: '3'
+  },
+  {
+    label: '4',
+    value: '4'
+  },
+  {
+    label: '5',
+    value: '5'
+  },
+  {
+    label: '6',
+    value: '6'
+  }
+]
 
 class CreateEvent extends React.Component{
   constructor(props) {
@@ -94,22 +93,21 @@ class CreateEvent extends React.Component{
   urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
 
     for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
+      outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
   }
 
 //Send push notification subscription details to server, where the user details will be saved
 //to "endpoint" and "auth" fields in the user table
-
- sendSubscriptionToServer(endpoint, key, auth) {
+  sendSubscriptionToServer(endpoint, key, auth) {
     let encodedKey = btoa(String.fromCharCode.apply(null, new Uint8Array(key)));
     let encodedAuth = btoa(String.fromCharCode.apply(null, new Uint8Array(auth)));
     axios.post('/subscribeNotifs', {
@@ -197,7 +195,6 @@ class CreateEvent extends React.Component{
               locationName: this.state.locale,
               locationGeo: this.state.location
               }).then(response => {
-                console.log('response from submit: ', response.data)
                 this.props.history.push('/');
               })})
             }>

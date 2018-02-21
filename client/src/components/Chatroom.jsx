@@ -18,7 +18,6 @@ class Chatroom extends React.Component {
 
   // This component should have access to the currently logged in user, and the currentRoom passed down as props. We will then use the current room 
   // ID to communicate with the firebase server. 
-
   componentWillReceiveProps(nextProps) {
     this.state.ref.off()
     this.setState(previousState => ({
@@ -69,8 +68,8 @@ class Chatroom extends React.Component {
     this.setState({
       temp: 1
     })
-    // $('.db_detail_map').height($('.db_detail_map').width())
   }
+
   handleSubmit() {
     if (this.state.input.length) {
       this.state.ref.push({
@@ -86,6 +85,7 @@ class Chatroom extends React.Component {
      $('.db_typingText').html('')  
     }
   }
+
   handleNewMessage (newMessage, key) {
     newMessage.createdAt = new Date(newMessage.timestamp).toLocaleTimeString();
     newMessage.key = key;
@@ -99,10 +99,12 @@ class Chatroom extends React.Component {
   handleChatSwap() {
     $('.db_panel_2').css("z-index", "-1")
   }
+
   handleInfoSwap() {
     $('.db_panel_2').css("z-index", "-1")
     $('.db_panel_3').css("z-index", "2")
   }
+
   render() {
     return (<div className="db_panel_2" key={2}>
             <div className="db_info">
@@ -111,7 +113,6 @@ class Chatroom extends React.Component {
               <span className="db_info_swap" onClick={() => {this.handleInfoSwap()}}>Details</span>
             </div>
             <div className="db_chatroom">
-              {/*<h2>{'Chatroom ' + this.props.currentRoom}</h2>*/}
               <h3>{'This is the beginning of your chat history with ' + this.props.roomName }</h3>
               <ul style={{listStyle: 'none', margin: '10px', paddingLeft:'0', fontSize: '16px'}}>
                 {this.state.messages.map((item, idx) => {

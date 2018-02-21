@@ -18,12 +18,12 @@ export class ImageEditIcon extends React.Component {
     formData.append('file', image)
 
     const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        },
-        params: {
-          userID: loggedInUserID
-        }
+      headers: {
+          'content-type': 'multipart/form-data'
+      },
+      params: {
+        userID: loggedInUserID
+      }
     }
 
     return axios.post(url, formData, config)
@@ -36,7 +36,7 @@ export class ImageEditIcon extends React.Component {
         onDrop={(files) => {this.handleDrop(files, loggedInUserID)}}
         className="profile_dropzone"
       >
-        <img src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
+      <img src="http://www.iconninja.com/files/9/26/395/instagram-insta-photo-social-media-camera-icon.svg" alt=""/>
       </Dropzone >
 		)
 	}
