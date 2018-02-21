@@ -38,8 +38,8 @@ class Header extends React.Component {
       let userID, username;
       ({userID, username} = response.data)
       if (userID) {
-          this.closeModal()
-          this.props.toggleLogin(userID, username)
+        this.closeModal()
+        this.props.toggleLogin(userID, username)
       }
     })
   }
@@ -47,7 +47,7 @@ class Header extends React.Component {
   onLogOut() {
     axios.post('/logout', {userID: this.props.userData}).then((response) => {   
       if (response.data) {
-          this.props.toggleLogin(null, null)
+        this.props.toggleLogin(null, null)
       }
     })
   }
@@ -63,13 +63,12 @@ class Header extends React.Component {
     let username = document.querySelector('#registerUsername').value
     let password = document.querySelector('#registerPassword').value
     axios.post('/signup', {
-        email: email,
-        username: username,
-        password: password
+      email: email,
+      username: username,
+      password: password
     }).then((response) => {
       let userID, username;
       ({userID, username} = response.data)
-      //this was passing a single object before refactor
       this.props.toggleLogin(userID, username)    
     })
   }
@@ -92,10 +91,9 @@ class Header extends React.Component {
     });
   }
 
-
     render() {
-        return (
-    <header className="nav">
+      return (
+      <header className="nav">
         <span className="logo" ><Link to="/" style={{color: '#ffffff', textDecoration: 'none'}}>Friend.ly</Link></span>
         {' '}
         <ul id="nav">

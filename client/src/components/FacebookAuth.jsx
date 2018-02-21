@@ -3,12 +3,12 @@ import FacebookLogin from 'react-facebook-login';
 import axios from 'axios';
 
 class FacebookAuth extends React.Component {
-	    constructor(props) {
-        super(props)
-        this.responseFacebook = this.responseFacebook.bind(this)
+  constructor(props) {
+    super(props)
+    this.responseFacebook = this.responseFacebook.bind(this)
 	}
 
-  	responseFacebook(res) {
+  responseFacebook(res) {
   	let newObj = {
   		username: res.name,
   		email: res.email,
@@ -20,7 +20,6 @@ class FacebookAuth extends React.Component {
     axios.post('/facebookLogin', newObj).then((response) => {
     	let userID, username
     	({userID, username} = response.data)
-      //this was passing a single object before refactor
       this.props.toggleLogin(userID, username)    
     })
   }

@@ -6,7 +6,6 @@ import axios from 'axios';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
-import userProfileDummyData from '../../userProfileDummyData.js';
 import {roomsRef} from '../../firebaseConfig.js';
 
 class App extends React.Component {
@@ -67,13 +66,11 @@ class App extends React.Component {
   }
 
   createNewRoom (roomId) {
-    //after create an event, get the eventId as roomId to create a new room
     roomId.messages = [];
     roomsRef.push(roomId);
   }
 
   deleteRoom (roomId) {
-    // when event expired, delete the chatroom as well, if so desired
     roomsRef.child(roomId).remove();
   }
 
@@ -82,10 +79,6 @@ class App extends React.Component {
       <div style={{height:'100%'}}>
         <Header isLogin={this.state.isLogin} toggleLogin={this.toggleLogin} userData={this.state.userData} confirmedEvent={this.state.confirmedEvent}/>
         <Main isLogin={this.state.isLogin} userData={this.state.userData} username={this.state.username} updateConfirmedEvent={this.updateConfirmedEvent}/>
-        {
-        //Don't modify unless you're aaron
-      /*<header className="nav"><span className='logo' style={{marginLeft:'10%'}}>Friend.ly</span><ul><li>Events</li><li>Profile</li></ul></header>
-      <Homepage/>*/}
       </div>
     );
   }
