@@ -30,5 +30,5 @@ bower_components/
 client/dist/bundle.js
 config.js
 package-lock.json
-firebaseConfig.js
 upload
+.env

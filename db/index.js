@@ -1,9 +1,9 @@
-const keys = require('../config.js');
+// const keys = require('../config.js');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
-const sequelize = new Sequelize('hectorfriendlydb', keys.pgresLogin, keys.pgresPW, {
-	host: 'hrnyc12hector.csoqhkc1zx8z.us-east-2.rds.amazonaws.com',
+const sequelize = new Sequelize('hectorfriendlydb', process.env.pgresLogin, process.env.pgresPW, {
+	host: process.env.pgresAddress,
 	dialect: 'postgres',
   pool: {
 		max: 5,

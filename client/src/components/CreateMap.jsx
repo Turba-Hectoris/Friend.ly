@@ -16,7 +16,6 @@ const CreateMap = compose(
 
     lifecycle({
     componentWillReceiveProps() {
-      console.log('GEO PROPS', this.props.geo)
         if(this.props.geo) {
           this.setState({center: {
             lat: this.props.geo.lat,
