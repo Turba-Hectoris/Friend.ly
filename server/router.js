@@ -7,7 +7,7 @@ const cloudinarySDK = require('../service_wrappers/cloudinary.js')
 const multer  = require('multer')
 const webPush = require('web-push');
 const upload = multer({'dest': 'upload/'});
-let vapidKeys = require('../config.js').vapidKeys
+// let vapidKeys = require('../config.js').vapidKeys
 const createfFileOnReq = upload.single('file');
 
 router.post('/sendNotifs', (req, res) => {
@@ -20,7 +20,7 @@ router.post('/sendNotifs', (req, res) => {
 			let pushSubscription = {
 				endpoint: result.endpoints[0],
 				keys: {
-					p256dh: vapidKeys.publicKey,
+					p256dh: process.env.vapidPub,
 					auth: result.endpointauths[0]
 				}
 			}
@@ -38,8 +38,8 @@ router.post('/subscribeNotifs', (req, res) => {
 	webPush.setGCMAPIKey(req.body.publicKey)
 	webPush.setVapidDetails(
 		'mailto:wjeichhold@gmail.com',
-		vapidKeys.publicKey,
-		vapidKeys.privateKey
+		process.env.vapidPub,
+		process.env.vapidPriv
 		)
 		db.Users.find({
 	  where: {
