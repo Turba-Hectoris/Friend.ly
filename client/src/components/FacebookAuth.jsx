@@ -33,7 +33,9 @@ class FacebookAuth extends React.Component {
         scope="public_profile,user_friends"
         callback={this.responseFacebook}
         size='small'
-        style={{color: '#ffffff', textDecoration: 'none'}}
+        version='v2.3'
+        xfbml='true'
+        style={{color: '#4c69ba', textDecoration: 'none', fontFamily: 'inherit'}}
       />
     )
   }
