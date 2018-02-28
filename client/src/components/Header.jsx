@@ -21,7 +21,6 @@ class Header extends React.Component {
     this.closeModal = this.closeModal.bind(this)
     this.onLogOut = this.onLogOut.bind(this)
     this.facebookLogin = this.facebookLogin.bind(this)
-
   } 
 
   openModal() {
@@ -58,8 +57,9 @@ class Header extends React.Component {
   }
 
   onLoginFail(err) {
-    console.error(err)
-    this.setState({error: true})
+    console.error('Login failure Message', err);
+    this.setState({error: true});
+    this.finishLoading();
   }
 
   onRegister() {
@@ -99,7 +99,8 @@ class Header extends React.Component {
   facebookLogin(oauth, res) {
     axios.get(`https://graph.facebook.com/me?fields?id,name,picture,website,gender,verified,link&access_token=${res.authResponse.accessToken}`)
     .then(({ data: { gender, id, link, name: username, picture: { data: { url: picture } } , verified, email} }) => {
-      axios.post('/facebookLogin', { username, email, id, picture, gender, link, verified }).then(({ data:{ userID, username } }) => {
+      axios.post('/facebookLogin', { username, email, id, picture, gender, link, verified })
+      .then(({ data:{ userID, username } }) => {
         this.closeModal()
         this.props.toggleLogin(userID, username)    
       })
