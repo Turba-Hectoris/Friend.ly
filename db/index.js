@@ -1,17 +1,26 @@
-const keys = require('../config.js');
+const config = require('../config.js');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
-const sequelize = new Sequelize('hectorfriendlydb', keys.pgresLogin, keys.pgresPW, {
-	host: 'hrnyc12hector.csoqhkc1zx8z.us-east-2.rds.amazonaws.com',
+const sequelize = new Sequelize(config.pgDB, config.pgresLogin, config.pgresPW, {
+	host: config.pgHost,
 	dialect: 'postgres',
   pool: {
 		max: 5,
 		min: 0,
-		acquire: 30000,
-		idle: 10000
+		idle: 3000
 	}
 })
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+	});
+	
 const Users = sequelize.define('users', {
 	userID: {
 		type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true
