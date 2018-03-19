@@ -1,8 +1,7 @@
-const config = require('../config.js');
 const cloudinaryModule  = require('cloudinary');
-const api_key = config.cloudinary_API 
-const api_secret = config.cloudinary_SECRET 
-const cloud_name = config.cloudinary_cloud_name 
+const api_key = process.env.cloudinary_API 
+const api_secret = process.env.cloudinary_SECRET 
+const cloud_name = process.env.cloudinary_cloud_name 
 
 cloudinaryModule.config({
   cloud_name,

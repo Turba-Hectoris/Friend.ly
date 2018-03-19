@@ -5,6 +5,10 @@ import axios from 'axios';
 import FacebookAuth from './FacebookAuth.jsx';
 import GoogleAuth from './GoogleAuth.jsx';
 
+
+import FacebookLogin from 'react-facebook-login';
+
+
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -16,6 +20,7 @@ class Header extends React.Component {
     };
     this.closeModal = this.closeModal.bind(this)
     this.onLogOut = this.onLogOut.bind(this)
+    this.facebookLogin = this.facebookLogin.bind(this)
   } 
 
   openModal() {
@@ -34,14 +39,13 @@ class Header extends React.Component {
   onLogin() {
     let username = document.querySelector('#loginUsername').value
     let password = document.querySelector('#loginPassword').value
-    axios.post('/login', { username, password }).then(response => {
-      let userID, username;
-      ({userID, username} = response.data)
+    axios.post('/login', { username, password }).then(({ data: { userID, username } }) => {
       if (userID) {
         this.closeModal()
         this.props.toggleLogin(userID, username)
       }
     })
+    .catch(err => this.onLoginFail(err))
   }
 
   onLogOut() {
@@ -51,11 +55,11 @@ class Header extends React.Component {
       }
     })
   }
-  //Need these two empty functions to satisfy ReactModalLogin conditions
-  onLoginSuccess() {
-  }
 
-  onLoginFail() {
+  onLoginFail(err) {
+    console.error('Login failure Message', err);
+    this.setState({error: true});
+    this.finishLoading();
   }
 
   onRegister() {
@@ -71,6 +75,7 @@ class Header extends React.Component {
       ({userID, username} = response.data)
       this.props.toggleLogin(userID, username)    
     })
+    .catch(err => this.onLoginFail(err))
   }
 
   startLoading() {
@@ -89,6 +94,19 @@ class Header extends React.Component {
     this.setState({
       error: null
     });
+  }
+
+  facebookLogin(oauth, res) {
+    axios.get(`https://graph.facebook.com/me?fields?id,name,picture,website,gender,verified,link&access_token=${res.authResponse.accessToken}`)
+    .then(({ data: { gender, id, link, name: username, picture: { data: { url: picture } } , verified, email} }) => {
+      axios.post('/facebookLogin', { username, email, id, picture, gender, link, verified })
+      .then(({ data:{ userID, username } }) => {
+        this.closeModal()
+        this.props.toggleLogin(userID, username)    
+      })
+      .catch(err => console.error(err))
+    })
+    .catch(err => console.error(err))
   }
 
     render() {
@@ -117,7 +135,6 @@ class Header extends React.Component {
             >
             Login
           </Link>
-          <FacebookAuth toggleLogin={this.props.toggleLogin}/> 
           <ReactModalLogin
             visible={this.state.showModal}
             onCloseModal={this.closeModal.bind(this)}
@@ -134,6 +151,18 @@ class Header extends React.Component {
             }}
             startLoading={this.startLoading.bind(this)}
             finishLoading={this.finishLoading.bind(this)}
+            providers={{
+              facebook: {
+                config: {
+                appId: "574210012929596",
+                cookie: true,
+                version: 'v2.3',
+                xfbml: true,
+                },
+                onLoginSuccess: this.facebookLogin.bind(this),
+                onLoginFail: this.onLoginFail.bind(this),
+                label: "Continue with Facebook"
+              }}}
             form = {{
               onLogin: this.onLogin.bind(this),
               loginBtn: {
