@@ -1,22 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import firebase from 'firebase';
-
-const config = {
-  apiKey: firebaseApiKey,
-  authDomain: firebaseAuthDomain,
-  databaseURL: firebaseDatabaseURL,
-  projectId: firebaseProjectId,
-  storageBucket: firebaseStorageBucket,
-  messagingSenderId: firebaseMessagingSenderId
-};
-
-firebase.initializeApp(config);
-
-const rootRef = firebase.database().ref();
-const roomsRef = firebase.database().ref('/rooms');
-const timestamp = firebase.database.ServerValue.TIMESTAMP;
-
+import { roomsRef, rootRef, timestamp } from '../../../firebaseConfig.js'
 class Chatroom extends React.Component {
   constructor(props) {
     super(props)

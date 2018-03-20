@@ -6,7 +6,7 @@ import axios from 'axios';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
-import {roomsRef} from '../../firebaseConfig.js';
+import { roomsRef } from '../../firebaseConfig.js';
 
 class App extends React.Component {
   constructor(props) {

@@ -25,16 +25,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      "FACEBOOKAPI": JSON.stringify("151471828880746"),
-      "FACEBOOKAPI_test": JSON.stringify("181201405996031"),
-      "GOOGLEMAPAPI": JSON.stringify("AIzaSyCkfO-RW0Nnrf20PbGUQ8t_Wj25RhPT6oA"),
-      "firebaseApiKey": JSON.stringify("AIzaSyCrsU8SDvy9t6bjCfeMOYIq4ZdAP9D_vTA"),
-      "firebaseDatabaseURL": JSON.stringify('https://friendly-af05e.firebaseio.com'),
-      "firebaseAuthDomain": JSON.stringify("friendly-1f06b.firebaseapp.com"),
-      "firebaseProjectId": JSON.stringify("friendly-1f06b"),
-      "firebaseStorageBucket": JSON.stringify("friendly-1f06b.appspot.com"),
-      "firebaseMessagingSenderId": JSON.stringify("843003113068")
+    new Dotenv({
+      path: './.env', // Path to .env file (this is the default)
+      safe: true // load .env.example (defaults to "false" which does not use dotenv-safe)
     })
   ]
 };
