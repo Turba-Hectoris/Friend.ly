@@ -2,11 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import ReactModalLogin from 'react-modal-login';
 import axios from 'axios';
-import FacebookAuth from './FacebookAuth.jsx';
 import GoogleAuth from './GoogleAuth.jsx';
-
-
-import FacebookLogin from 'react-facebook-login';
 
 
 class Header extends React.Component {
@@ -97,7 +93,7 @@ class Header extends React.Component {
   }
 
   facebookLogin(oauth, res) {
-    axios.get(`https://graph.facebook.com/me?fields?id,name,picture,website,gender,verified,link&access_token=${res.authResponse.accessToken}`)
+    axios.get(`https://graph.facebook.com/me?fields=id,name,picture,website,gender,verified,link&access_token=${res.authResponse.accessToken}`)
     .then(({ data: { gender, id, link, name: username, picture: { data: { url: picture } } , verified, email} }) => {
       axios.post('/facebookLogin', { username, email, id, picture, gender, link, verified })
       .then(({ data:{ userID, username } }) => {
@@ -154,9 +150,9 @@ class Header extends React.Component {
             providers={{
               facebook: {
                 config: {
-                appId: "574210012929596",
+                appId: FACEBOOKAPI,
                 cookie: true,
-                version: 'v2.3',
+                version: 'v2.12',
                 xfbml: true,
                 },
                 onLoginSuccess: this.facebookLogin.bind(this),

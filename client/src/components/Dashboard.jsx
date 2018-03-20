@@ -122,8 +122,8 @@ class Dashboard extends React.Component {
     axios.get('/dashboard/events', {params: {userID: this.props.userData}})
     .then((res) => {
       this.setState({
-        events: res.data.reverse(),
-        select_event_id: res.data[0].eventID
+        events: res.data[0] ? res.data.reverse() : this.state.events,
+        select_event_id: res.data[0] ? res.data[0].eventID : 0 
       }, () => {
         this.getMembers()
       });
@@ -166,7 +166,7 @@ class Dashboard extends React.Component {
 
           <EditEvent showModal={this.state.editEvent} handleClose={() => this.handleClose()} handleSubmit={this.editEvent} event={this.state.events[this.state.currentRoom]}/>
 
-          <Chatroom roomId={this.state.select_event_id} roomName={(this.state.events[this.state.currentRoom]).eventName} username={this.state.username}/>
+          <Chatroom roomId={this.state.select_event_id} roomName={this.state.events[this.state.currentRoom].eventName} username={this.state.username}/>
           
           <EventDetails handleOpen={this.handleOpen}userID={this.props.userData} members={this.state.members.reduce((arrOfMembers, member) => {
             if(member.userID === loggedInUser) {
