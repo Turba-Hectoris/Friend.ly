@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import { roomsRef, rootRef, timestamp } from '../../../firebaseConfig.js'
+import { roomsRef, rootRef, timestamp } from '../index.jsx';
 class Chatroom extends React.Component {
   constructor(props) {
     super(props)

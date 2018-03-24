@@ -2,8 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
-const ENV_DIR = path.join(__dirname, '/.en');
-const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
@@ -28,9 +26,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new Dotenv({
-      path: './.env', // Path to .env file (this is the default)
-      safe: false // load .env.example (defaults to "false" which does not use dotenv-safe)
+    new webpack.DefinePlugin({
+      'FACEBOOKAPI': JSON.stringify("151471828880746"),
+      'GOOGLEMAPAPI': JSON.stringify("AIzaSyCkfO-RW0Nnrf20PbGUQ8t_Wj25RhPT6oA"),
+      'firebaseApiKey': JSON.stringify("AIzaSyCrsU8SDvy9t6bjCfeMOYIq4ZdAP9D_vTA"),
+      'firebaseDatabaseURL': JSON.stringify("https://friendly-af05e.firebaseio.com"),
+      'firebaseAuthDomain': JSON.stringify("friendly-1f06b.firebaseapp.com"),
+      'firebaseProjectId': JSON.stringify("friendly-1f06b"),
+      'firebaseStorageBucket': JSON.stringify("friendly-1f06b.appspot.com"),
+      'firebaseMessagingSenderId': JSON.stringify("843003113068")
     })
   ]
 };

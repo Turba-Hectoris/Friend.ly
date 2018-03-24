@@ -6,7 +6,23 @@ import axios from 'axios';
 import Homepage from './components/Homepage.jsx';
 import Header from './components/Header.jsx';
 import Main from './components/Main.jsx';
-import { roomsRef } from '../../firebaseConfig.js';
+import firebase from 'firebase';
+
+const config = {
+  apiKey: firebaseApiKey,
+  authDomain: firebaseAuthDomain,
+  databaseURL: firebaseDatabaseURL,
+  projectId: firebaseProjectId,
+  storageBucket: firebaseStorageBucket,
+  messagingSenderId: firebaseMessagingSenderId
+};
+
+firebase.initializeApp(config);
+
+export const rootRef = firebase.database().ref();
+export const roomsRef = firebase.database().ref('/rooms');
+export const timestamp = firebase.database.ServerValue.TIMESTAMP;
+
 
 class App extends React.Component {
   constructor(props) {
