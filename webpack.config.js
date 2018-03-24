@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
+const ENV_DIR = path.join(__dirname, '/.en');
+const Dotenv = require('dotenv-webpack');
+
 
 module.exports = {
   node: {
@@ -27,7 +30,7 @@ module.exports = {
   plugins: [
     new Dotenv({
       path: './.env', // Path to .env file (this is the default)
-      safe: true // load .env.example (defaults to "false" which does not use dotenv-safe)
+      safe: false // load .env.example (defaults to "false" which does not use dotenv-safe)
     })
   ]
 };
