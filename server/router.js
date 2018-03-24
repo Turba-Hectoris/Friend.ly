@@ -100,15 +100,16 @@ router.post('/facebookLogin', (req, res) => {
 
 router.post('/signup', (req, res) => {
 	let username = req.body.username;
-	db.Users.findOne({where: {username: username}}).then( async (foundUser) => {
+	db.Users.findOne({where: {username: username}}).then((foundUser) => {
 		if (!foundUser) {
-			let password = await bcrypt.hash(req.body.password, 4)
-
-			db.Users.findCreateFind({where: {username: username, passHash: password, email: req.body.email}})
-			.spread((user, created) => {
-				({userID, username} = user.dataValues)
-				res.status(200).send({userID, username});
-			})
+				bcrypt.hash(req.body.password, 4)
+				.then((hash) => {
+					db.Users.findCreateFind({where: {username: username, passHash: hash, email: req.body.email}})
+					.spread((user, created) => {
+						({userID, username} = user.dataValues)
+						res.status(200).send({userID, username});
+					})
+				})
 		} else {
 			({userID, username} = foundUser.dataValues)
 			res.status(200).send({response: 'Already a member', userID, username});
